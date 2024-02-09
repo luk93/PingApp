@@ -25,8 +25,8 @@ namespace PingApp
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger _logger;
-        private DeviceList _deviceList;
-        private DevicePingSender _testPingSender;
+        private readonly DeviceList _deviceList;
+        private readonly DevicePingSender _testPingSender;
         public MainWindow()
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace PingApp
             _deviceList = new DeviceList();
             _deviceList.FillDeviceList();
 
-            AutoResetEvent waiter = new AutoResetEvent(false);
+            AutoResetEvent waiter = new(false);
 
             _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger);
 

@@ -142,7 +142,7 @@ namespace PingApp.ViewModel
             }
         }
 
-        private IPAddress? ConvertStrToIpAddress(string? ipString)
+        private static IPAddress? ConvertStrToIpAddress(string? ipString)
         {
             if (ipString == null) return null;
             try

@@ -17,10 +17,10 @@ namespace PingApp.Tools
         private readonly ILogger _logger;
         private readonly string _data;
         private readonly byte[] _buffer;
-        private int _timeout;
-        private PingOptions _options;
-        private DeviceList _deviceList;
-        private Queue<Device> _deviceQueue;
+        private readonly int _timeout;
+        private readonly PingOptions _options;
+        private readonly DeviceList _deviceList;
+        private readonly Queue<Device> _deviceQueue;
         private bool _isSending;
 
         public DevicePingSender(DeviceList deviceList, string data, int timeout, ILogger logger)

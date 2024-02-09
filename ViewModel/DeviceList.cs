@@ -28,7 +28,7 @@ namespace PingApp.ViewModel
 
         public DeviceList()
         {
-            _devices = new ObservableCollection<Device>();
+            _devices = [];
         }
         public void FillDeviceList()
         {
