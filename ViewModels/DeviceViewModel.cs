@@ -1,43 +1,33 @@
-﻿using System;
+﻿using PingApp.Models;
+using PingApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Xml.Linq;
+using static PingApp.Models.Device;
 
 namespace PingApp.ViewModel
 {
-    class Device : ViewModelBase
+    class DeviceViewModel: ViewModelBase, IObserver
     {
-        private string _name;
-        private PingStatus _status;
-        private IPStatus _ipStatus;
-        private bool _isBusy;
+        private Device _device;
         private string _ipString;
-        private DateTime _lastReplyDt;
-        private PingReply _lastReply;
-
-        public enum PingStatus
-        {
-            None,
-            Waiting,
-            Canceled,
-            Success,
-            Failure
-        }
         public string? Name
         {
             get
             {
-                return _name;
+                return _device.Name;
             }
             set
             {
-                if (_name != value)
+                if (_device.Name != value)
                 {
-                    _name = value;
+                    _device.Name = value;
                     OnPropertyChanged(nameof(Name));
                 }
             }
@@ -46,29 +36,29 @@ namespace PingApp.ViewModel
         {
             get
             {
-                return _status;
+                return _device.Status;
             }
             set
             {
-                if (_status != value)
+                if (_device.Status != value)
                 {
-                    _status = value;
+                    _device.Status = value;
                     OnPropertyChanged(nameof(Status));
                 }
             }
         }
-        public IPStatus IPStatus
+        public IPStatus IpStatus
         {
             get
             {
-                return _ipStatus;
+                return _device.IpStatus;
             }
             set
             {
-                if (_ipStatus != value)
+                if (_device.IpStatus != value)
                 {
-                    _ipStatus = value;
-                    OnPropertyChanged(nameof(IPStatus));
+                    _device.IpStatus = value;
+                    OnPropertyChanged(nameof(IpStatus));
                 }
             }
         }
@@ -76,18 +66,18 @@ namespace PingApp.ViewModel
         {
             get
             {
-                return _isBusy;
+                return _device.IsBusy;
             }
             set
             {
-                if (_isBusy != value)
+                if (_device.IsBusy != value)
                 {
-                    _isBusy = value;
+                    _device.IsBusy = value;
                     OnPropertyChanged(nameof(IsBusy));
                 }
             }
         }
-        public string? IpString 
+        public string? IpString
         {
             get
             {
@@ -110,38 +100,37 @@ namespace PingApp.ViewModel
             }
             private set { }
         }
-        public DateTime LastReplyDt 
+        public DateTime LastReplyDt
         {
             get
             {
-                return _lastReplyDt;
+                return _device.LastReplyDt;
             }
             set
             {
-                if (_lastReplyDt != value)
+                if (_device.LastReplyDt != value)
                 {
-                    _lastReplyDt = value;
+                    _device.LastReplyDt = value;
                     OnPropertyChanged(nameof(LastReplyDt));
                 }
             }
         }
 
-        public PingReply? LastReply 
+        public PingReply? LastReply
         {
             get
             {
-                return _lastReply;
+                return _device.LastReply;
             }
             set
             {
-                if (_lastReply != value)
+                if (_device.LastReply != value)
                 {
-                    _lastReply = value;
+                    _device.LastReply = value;
                     OnPropertyChanged(nameof(LastReply));
                 }
             }
         }
-
         private static IPAddress? ConvertStrToIpAddress(string? ipString)
         {
             if (ipString == null) return null;
@@ -152,6 +141,34 @@ namespace PingApp.ViewModel
             catch
             {
                 return null;
+            }
+        }
+
+        public DeviceViewModel(Device device)
+        {
+            _device = device;
+            Name = device.Name;
+            Status = device.Status;
+            IpStatus = device.IpStatus;
+            IpAddress = device.IpAddress;
+            IpString = device.IpString;
+            IsBusy = device.IsBusy;
+            LastReplyDt = device.LastReplyDt;
+            LastReply = device.LastReply;
+        }
+        public void HandleDeviceChanged(Object sender, EventArgs args)
+        {
+            if (sender is Device changedDevice && ReferenceEquals(changedDevice, _device))
+            {
+                Name = changedDevice.Name;
+                Status = changedDevice.Status;
+                IpStatus = changedDevice.IpStatus;
+                IpAddress = changedDevice.IpAddress;
+                IpString = changedDevice.IpString;
+                IsBusy = changedDevice.IsBusy;
+                LastReplyDt = changedDevice.LastReplyDt;
+                LastReply = changedDevice.LastReply;
+                OnPropertyChanged(null);
             }
         }
     }
