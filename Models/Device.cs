@@ -24,7 +24,7 @@ namespace PingApp.Models
         public bool IsBusy { get; set; }
         public string IpString { get; set; }
         public DateTime LastReplyDt { get; set; }
-        public PingReply LastReply { get; set; }
+        public PingReply? LastReply { get; set; }
         public enum PingStatus
         {
             None,
@@ -32,6 +32,15 @@ namespace PingApp.Models
             Canceled,
             Success,
             Failure
+        }
+        public Device(string name, string ipString)
+        {
+            Name = name;
+            IpString = ipString;
+            Status = PingStatus.None;
+            IpStatus = IPStatus.Unknown;
+            LastReply = null;
+            LastReplyDt = DateTime.MinValue;
         }
         private static IPAddress? ConvertStrToIpAddress(string? ipString)
         {

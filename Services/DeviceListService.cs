@@ -1,8 +1,10 @@
-﻿using PingApp.Models;
+﻿using OfficeOpenXml;
+using PingApp.Models;
 using PingApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -18,37 +20,28 @@ namespace PingApp.Services
         {
             _deviceList = deviceList;
         }
-        public void FillDeviceList()
+        public async Task UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceList.Clear();
-            _deviceList.Add(new Device()
+            var package = new ExcelPackage(file);
+            await package.LoadAsync(file);
+            var ws = package.Workbook.Worksheets[0];
+            int row = 2;
+            int col = 1;
+            if (ws != null)
             {
-                Name = "CS1",
-                IpString = "192.168.1.31",
-                Status = PingStatus.None,
-                IpStatus = IPStatus.Unknown,
-            });
-            _deviceList.Add(new Device()
-            {
-                Name = "CS2",
-                IpString = "192.168.1.32",
-                Status = PingStatus.None,
-                IpStatus = IPStatus.Unknown,
-            });
-            _deviceList.Add(new Device()
-            {
-                Name = "CS3",
-                IpString = "192.168.1.33",
-                Status = PingStatus.None,
-                IpStatus = IPStatus.Unknown,
-            });
-            _deviceList.Add(new Device()
-            {
-                Name = "Camera",
-                IpString = "192.168.1.64",
-                Status = PingStatus.None,
-                IpStatus = IPStatus.Unknown,
-            });
+                while (!string.IsNullOrWhiteSpace(ws.Cells[row, col].Value?.ToString()))
+                {
+                    if (!string.IsNullOrWhiteSpace(ws.Cells[row, col + 1].Value?.ToString()))
+                    {
+                        var name = (ws.Cells[row, col].Value.ToString());
+                        var ipString = (ws.Cells[row, col + 1].Value.ToString());
+                        Device newObj = new(name, ipString);
+                        _deviceList.Add(newObj);
+                    }
+                    row++;
+                }
+            }
         }
     }
 }

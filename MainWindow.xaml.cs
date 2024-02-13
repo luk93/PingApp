@@ -35,8 +35,8 @@ namespace PingApp
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger _logger;
         private readonly DevicePingSender _testPingSender;
-        private readonly ObservableCollection<Device> _deviceList;
-        private readonly DeviceListService _deviceListService; 
+        private readonly DeviceListService _deviceListService;
+        private ObservableCollection<Device> _deviceList;
         private FileInfo? _xlsxFile;
         DeviceListViewModel DeviceListViewModel { get; set; } 
         public MainWindow()
@@ -59,16 +59,13 @@ namespace PingApp
 
             _deviceList = new ObservableCollection<Device>();
             _deviceListService = new DeviceListService(_deviceList);
-            _deviceListService.FillDeviceList();
+            
             DeviceListViewModel = new(_deviceList);
 
             AutoResetEvent waiter = new(false);
 
-            _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger);
-            foreach(var device in DeviceListViewModel.Devices)
-            {
-                _testPingSender.DeviceChanged += device.HandleDeviceChanged;
-            }
+            _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger, TbStatus);
+            SubscribeDeviceChangeEvents();
             this.DataContext = DeviceListViewModel;
 
         }
@@ -85,13 +82,17 @@ namespace PingApp
                 _testPingSender.SendPingToDeviceList();
             }
         }
-        private void B_GetDevicesFromExcel_Click(object sender, RoutedEventArgs e)
+        private async void B_GetDevicesFromExcel_ClickAsync(object sender, RoutedEventArgs e)
         {
-            _xlsxFile = SelectXlsxFileAndTryToUse("Select Exported from Studion5000 Tags Table (.xlsx)");
+            _xlsxFile = SelectXlsxFileAndTryToUse("Select excel file which contains Devices (Name,IP Address) (.xlsx)");
             if (_xlsxFile != null)
             {
-                TB_Status.AddLine($"File ${_xlsxFile.FullName} selected!");
+                TbStatus.AddLine($"File ${_xlsxFile.FullName} selected!");
+                await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
+                DeviceListViewModel.UpdateDevices(_deviceList);
+                SubscribeDeviceChangeEvents();
             }
+
         }
         #endregion
         #region UI_Functions
@@ -128,11 +129,19 @@ namespace PingApp
                 {
                     return xlsx;
                 }
-                TB_Status.AddLine($"File not exist or in use!");
+                TbStatus.AddLine($"File not exist or in use!");
                 return null;
             }
-            TB_Status.AddLine($"File not selected!");
+            TbStatus.AddLine($"File not selected!");
             return null;
+        }
+        public void SubscribeDeviceChangeEvents()
+        {
+            //Davice changed events subsription
+            foreach (var device in DeviceListViewModel.Devices)
+            {
+                _testPingSender.DeviceChanged += device.HandleDeviceChanged;
+            }
         }
         #endregion
     }

@@ -30,5 +30,9 @@ namespace PingApp.ViewModel
         {
             Devices = new ObservableCollection<DeviceViewModel>(devices.Select(device => new DeviceViewModel(device)));
         }
+        public void UpdateDevices(IEnumerable<Device> devices) 
+        {
+            Devices = new ObservableCollection<DeviceViewModel>(devices.Select(device => new DeviceViewModel(device)));
+        }
     }
 }
