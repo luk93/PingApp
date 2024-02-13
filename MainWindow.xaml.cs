@@ -84,6 +84,7 @@ namespace PingApp
         }
         private async void B_GetDevicesFromExcel_ClickAsync(object sender, RoutedEventArgs e)
         {
+            DisableButtonAndChangeCursor(sender);
             _xlsxFile = SelectXlsxFileAndTryToUse("Select excel file which contains Devices (Name,IP Address) (.xlsx)");
             if (_xlsxFile != null)
             {
@@ -92,6 +93,7 @@ namespace PingApp
                 DeviceListViewModel.UpdateDevices(_deviceList);
                 SubscribeDeviceChangeEvents();
             }
+            EnableButtonAndChangeCursor(sender);
 
         }
         #endregion

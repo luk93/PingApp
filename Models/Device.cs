@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace PingApp.Models
 {
-    class Device
+    public partial class Device
     {
+        [Key]
+        public int Id { get; set; }
         public string Name {  get; set; }
         public PingStatus Status { get; set; }
         public IPStatus IpStatus { get; set; }
