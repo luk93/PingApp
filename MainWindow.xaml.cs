@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using OfficeOpenXml;
 using PingApp.Extensions;
@@ -24,6 +26,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+using TextFileExport.Db;
+using PingApp.Db;
+using System.Reflection;
+using System.Diagnostics;
+using PingApp.DbServices;
+using System.Data;
 
 namespace PingApp
 {
@@ -32,19 +40,24 @@ namespace PingApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly ILogger _logger;
-        private readonly DevicePingSender _testPingSender;
-        private readonly DeviceListService _deviceListService;
+        private ILoggerFactory _loggerFactory;
+        private ILogger _logger;
+        private DevicePingSender _testPingSender;
+        private DeviceListService _deviceListService;
         private ObservableCollection<Device> _deviceList;
         private FileInfo? _xlsxFile;
+        private AppDbContextFactory _appDbContextFactory;
+        public IDataService<Device> DeviceRecordService { get; set; }
         DeviceListViewModel DeviceListViewModel { get; set; } 
+
         public MainWindow()
         {
             InitializeComponent();
-
+            InitializeAsync();
+        }
+        private async void InitializeAsync()
+        {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
             //Logger Configuration
             _loggerFactory = LoggerFactory.Create(builder =>
             {
@@ -57,24 +70,33 @@ namespace PingApp
             _logger = _loggerFactory.CreateLogger("logger");
             _logger.LogInformation("Logging Started");
 
+            //Internal DB
+            var _connString = "Data Source=internalDb.db";
+            void ConfigureDbContext(DbContextOptionsBuilder o) => o.LogTo(message => Debug.WriteLine(message))
+                                                                   .UseLoggerFactory(_loggerFactory)
+                                                                   .EnableSensitiveDataLogging()
+                                                                   .UseSqlite(_connString);
+
+            _appDbContextFactory = new AppDbContextFactory(ConfigureDbContext);
+            using (var context = _appDbContextFactory.CreateDbContext())
+            {
+                context.Database.EnsureCreated();
+                TbStatus.AddLine($"{DateTime.Now} - Db is created!");
+            }
+            DeviceRecordService = new GenericDataService<Device>(_appDbContextFactory);
+
+            //Device List
             _deviceList = new ObservableCollection<Device>();
             _deviceListService = new DeviceListService(_deviceList);
-            
             DeviceListViewModel = new(_deviceList);
-
+            //Pinger
             AutoResetEvent waiter = new(false);
-
             _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger, TbStatus);
+            //UI Binding
             SubscribeDeviceChangeEvents();
             this.DataContext = DeviceListViewModel;
-
         }
         #region UI_EventHandlers
-        private void _testPingSender_DeviceChanged(object? sender, EventArgs e)
-        {
-            LV_Devices.Items.Refresh();
-        }
-
         private void B_TriggerAll_Click(object sender, RoutedEventArgs e)
         {
             if (DeviceListViewModel != null)
@@ -94,6 +116,10 @@ namespace PingApp
                 SubscribeDeviceChangeEvents();
             }
             EnableButtonAndChangeCursor(sender);
+            foreach (var device in _deviceList)
+            {
+                DeviceRecordService.Create(device);
+            }
 
         }
         #endregion

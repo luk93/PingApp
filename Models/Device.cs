@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PingApp.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -9,10 +11,8 @@ using System.Threading.Tasks;
 
 namespace PingApp.Models
 {
-    public partial class Device
+    public partial class Device : DbSetBaseModel
     {
-        [Key]
-        public int Id { get; set; }
         public string Name {  get; set; }
         public PingStatus Status { get; set; }
         public IPStatus IpStatus { get; set; }
@@ -24,9 +24,11 @@ namespace PingApp.Models
             }
             private set { }
         }
+        [NotMapped]
         public bool IsBusy { get; set; }
         public string IpString { get; set; }
         public DateTime LastReplyDt { get; set; }
+        [NotMapped]
         public PingReply? LastReply { get; set; }
         public enum PingStatus
         {

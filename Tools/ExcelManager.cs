@@ -10,9 +10,8 @@ namespace PingApp.Tools
 {
     public static class ExcelManager
     {
-        public static ExcelPackage? CreateExcelFile(string path, StreamWriter streamWriter)
+        public static ExcelPackage? CreateExcelFile(string path)
         {
-            if (streamWriter == null) throw new ArgumentNullException(nameof(streamWriter));
             var file = new FileInfo(path);
             if (file.Exists)
             {

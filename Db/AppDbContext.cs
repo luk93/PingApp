@@ -19,7 +19,10 @@ namespace TextFileExport.Db
 {
     public partial class AppDbContext : DbContext
     {
+        private const string _connString = "Data Source=internalDb.db";
+
         private readonly ILoggerFactory _loggerFactory;
+        public virtual DbSet<Device> Devices { get; set; } = null!;
 
         public AppDbContext(ILoggerFactory loggerFactory)
         {
@@ -30,8 +33,11 @@ namespace TextFileExport.Db
             : base(options)
         {
         }
+        //Used for scaffold purposes
+        public AppDbContext() : this(new DbContextOptionsBuilder<AppDbContext>().UseSqlite("Data Source=internalDb.db").Options)
+        {
+        }
 
-        public virtual DbSet<Device> Devices { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,7 +50,7 @@ namespace TextFileExport.Db
                     .LogTo(message => Debug.WriteLine(message))
                     .UseLoggerFactory(_loggerFactory)
                     .EnableSensitiveDataLogging()
-                    .UseSqlite();
+                    .UseSqlite(_connString);
             }
         }
 
