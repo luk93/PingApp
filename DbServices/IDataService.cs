@@ -13,5 +13,6 @@ namespace PingApp.DbServices
         Task<T> Create(T entity);
         Task<T> Update(int id, T entity);
         Task<bool> Delete(int id);
+        Task<bool> DeleteAll();
     }
 }

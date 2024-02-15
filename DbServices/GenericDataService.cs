@@ -30,6 +30,11 @@ namespace PingApp.DbServices
             return await _nonQueryDataService.Delete(id);
         }
 
+        public async Task<bool> DeleteAll()
+        {
+            return await _nonQueryDataService.DeleteAll();
+        }
+
         public async Task<T> Get(int id)
         {
             using (var context = _contextFactory.CreateDbContext())

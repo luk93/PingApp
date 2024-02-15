@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PingApp.Db;
 using PingApp.Models.Base;
+using PingApp.Models;
 
 namespace PingApp.DbServices.Common
 {
@@ -36,6 +37,20 @@ namespace PingApp.DbServices.Common
                 if (entity != null)
                 {
                     context.Set<T>().Remove(entity);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<bool> DeleteAll()
+        {
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                var entities = await context.Set<T>().ToListAsync();
+                if (entities.Any())
+                {
+                    context.Set<T>().RemoveRange(entities);
                     await context.SaveChangesAsync();
                     return true;
                 }

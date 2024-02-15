@@ -22,7 +22,7 @@ namespace TextFileExport.Db
         private const string _connString = "Data Source=internalDb.db";
 
         private readonly ILoggerFactory _loggerFactory;
-        public virtual DbSet<Device> Devices { get; set; } = null!;
+        public virtual DbSet<DeviceDb> Devices { get; set; } = null!;
 
         public AppDbContext(ILoggerFactory loggerFactory)
         {
@@ -56,7 +56,7 @@ namespace TextFileExport.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Device>(entity =>
+            modelBuilder.Entity<DeviceDb>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });

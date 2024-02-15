@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using static PingApp.Models.Device;
+using static PingApp.Models.DeviceDb;
 
 namespace PingApp.ViewModel
 {

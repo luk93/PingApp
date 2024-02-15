@@ -9,18 +9,19 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using static PingApp.Models.Device;
 
 namespace PingApp.Services
 {
     class DeviceListService
     {
-        private ObservableCollection<Device> _deviceList;
-        public DeviceListService(ObservableCollection<Device> deviceList)
+        private List<Device> _deviceList;
+        public DeviceListService(List<Device> deviceList)
         {
             _deviceList = deviceList;
         }
-        public async Task UpdateDevicesFromExcelFile(FileInfo file)
+        public async Task<List<Device>> UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceList.Clear();
             var package = new ExcelPackage(file);
@@ -42,6 +43,7 @@ namespace PingApp.Services
                     row++;
                 }
             }
+            return _deviceList;
         }
     }
 }

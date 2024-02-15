@@ -32,6 +32,8 @@ using System.Reflection;
 using System.Diagnostics;
 using PingApp.DbServices;
 using System.Data;
+using System.Windows.Interop;
+using Dapper;
 
 namespace PingApp
 {
@@ -44,10 +46,10 @@ namespace PingApp
         private ILogger _logger;
         private DevicePingSender _testPingSender;
         private DeviceListService _deviceListService;
-        private ObservableCollection<Device> _deviceList;
+        private List<Device> _deviceList;
         private FileInfo? _xlsxFile;
         private AppDbContextFactory _appDbContextFactory;
-        public IDataService<Device> DeviceRecordService { get; set; }
+        public DeviceRecordService DeviceRecordService { get; set; }
         DeviceListViewModel DeviceListViewModel { get; set; } 
 
         public MainWindow()
@@ -70,6 +72,11 @@ namespace PingApp
             _logger = _loggerFactory.CreateLogger("logger");
             _logger.LogInformation("Logging Started");
 
+            //Device List
+            _deviceList = new List<Device>();
+            _deviceListService = new DeviceListService(_deviceList);
+            DeviceListViewModel = new(_deviceList);
+
             //Internal DB
             var _connString = "Data Source=internalDb.db";
             void ConfigureDbContext(DbContextOptionsBuilder o) => o.LogTo(message => Debug.WriteLine(message))
@@ -78,20 +85,25 @@ namespace PingApp
                                                                    .UseSqlite(_connString);
 
             _appDbContextFactory = new AppDbContextFactory(ConfigureDbContext);
+            DeviceRecordService = new DeviceRecordService(_appDbContextFactory);
             using (var context = _appDbContextFactory.CreateDbContext())
             {
-                context.Database.EnsureCreated();
-                TbStatus.AddLine($"{DateTime.Now} - Db is created!");
+                if (context.Database.CanConnect())
+                {
+                    TbStatus.AddLine($"{DateTime.Now} - Db already exists - Data loaded!");
+                    _deviceList = (await DeviceRecordService.GetAll())?.ToList() ?? new List<Device>();
+                    DeviceListViewModel.UpdateDevices(_deviceList);
+                }
+                else
+                {
+                    context.Database.EnsureCreated();
+                    TbStatus.AddLine($"{DateTime.Now} - Db has been created!");
+                }
             }
-            DeviceRecordService = new GenericDataService<Device>(_appDbContextFactory);
-
-            //Device List
-            _deviceList = new ObservableCollection<Device>();
-            _deviceListService = new DeviceListService(_deviceList);
-            DeviceListViewModel = new(_deviceList);
+            
             //Pinger
             AutoResetEvent waiter = new(false);
-            _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger, TbStatus);
+            _testPingSender = new DevicePingSender(_deviceList, "################################", 3000, _logger, TbStatus, DeviceRecordService);
             //UI Binding
             SubscribeDeviceChangeEvents();
             this.DataContext = DeviceListViewModel;
@@ -108,18 +120,30 @@ namespace PingApp
         {
             DisableButtonAndChangeCursor(sender);
             _xlsxFile = SelectXlsxFileAndTryToUse("Select excel file which contains Devices (Name,IP Address) (.xlsx)");
-            if (_xlsxFile != null)
+            if (_xlsxFile == null)
             {
-                TbStatus.AddLine($"File ${_xlsxFile.FullName} selected!");
-                await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
-                DeviceListViewModel.UpdateDevices(_deviceList);
-                SubscribeDeviceChangeEvents();
+                EnableButtonAndChangeCursor(sender);
+                return;
+            }
+            TbStatus.AddLine($"File ${_xlsxFile.FullName} selected!");
+            _deviceList = await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
+            DeviceListViewModel.UpdateDevices(_deviceList);
+            SubscribeDeviceChangeEvents();
+            try
+            {
+                await DeviceRecordService.DeleteAll();
+                foreach (var device in _deviceList)
+                {
+                    await DeviceRecordService.Create(device);
+                }
+            }
+            catch (Exception ex) 
+            {
+                var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
+                _logger.LogError(msg);
+                TbStatus.AddLine(msg);
             }
             EnableButtonAndChangeCursor(sender);
-            foreach (var device in _deviceList)
-            {
-                DeviceRecordService.Create(device);
-            }
 
         }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PingApp.DbServices;
 using PingApp.Extensions;
 using PingApp.Models;
 using System;
@@ -23,24 +24,27 @@ namespace PingApp.Tools
         private readonly byte[] _buffer;
         private readonly int _timeout;
         private readonly PingOptions _options;
-        private readonly ObservableCollection<Device> _deviceList;
+        private readonly List<Device> _deviceList;
         private readonly Queue<Device> _deviceQueue;
         private bool _isSending;
         private readonly TextBlock _tbStatus;
+        private readonly DeviceRecordService _deviceRecordService;
 
         public event EventHandler<EventArgs> DeviceChanged;
-        public DevicePingSender(ObservableCollection<Device> deviceList, string data, int timeout, ILogger logger, TextBlock tbStatus)
+        public DevicePingSender(List<Device> deviceList, string data, int timeout, ILogger logger, TextBlock tbStatus, DeviceRecordService deviceRecordService)
         {
             _deviceList = deviceList;
             _ping = new Ping();
             _logger = logger;
             _tbStatus = tbStatus;
+            _deviceRecordService = deviceRecordService;
             _data = data;
             _buffer = Encoding.ASCII.GetBytes(_data);
             _timeout = timeout;
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<Device>();
             _isSending = false;
+
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
@@ -67,13 +71,18 @@ namespace PingApp.Tools
                 _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
             }
         }
-        public void PingCompletedCallback(object sender, PingCompletedEventArgs e)
+        public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)
         {
             Device feedbackDevice = (Device)e.UserState;
             if (e.Cancelled) PingCancelled(e, feedbackDevice);
             else if (e.Error != null) PingError(e, feedbackDevice);
             else PingFeedback(e, feedbackDevice);
             feedbackDevice.IsBusy = false;
+            var entity = await _deviceRecordService.GetByIpAddressAndName(feedbackDevice.IpAddress, feedbackDevice.Name);
+            if (entity != null) 
+            {
+                await _deviceRecordService.Update(entity.Id, feedbackDevice);
+            }
             OnDeviceChange(feedbackDevice);
             _isSending = false;
             SendPingToNextDevice();
