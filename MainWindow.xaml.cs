@@ -34,6 +34,7 @@ using PingApp.DbServices;
 using System.Data;
 using System.Windows.Interop;
 using Dapper;
+using PingApp.Commands;
 
 namespace PingApp
 {
@@ -44,6 +45,8 @@ namespace PingApp
     {
         private ILoggerFactory _loggerFactory;
         private ILogger _logger;
+        private ICommand _triggerAllCommand;
+        private ICommand _getDevicesFromExcelCommand;
         private DevicePingSender _testPingSender;
         private DeviceListService _deviceListService;
         private List<Device> _deviceList;
@@ -75,7 +78,10 @@ namespace PingApp
             //Device List
             _deviceList = new List<Device>();
             _deviceListService = new DeviceListService(_deviceList);
-            DeviceListViewModel = new(_deviceList);
+            //VieModel
+            _triggerAllCommand = new TriggerAllCommand();
+            _getDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceList);
+            DeviceListViewModel = new(_deviceList, _triggerAllCommand, _getDevicesFromExcelCommand);
 
             //Internal DB
             var _connString = "Data Source=internalDb.db";

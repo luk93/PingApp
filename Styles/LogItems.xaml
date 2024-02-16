@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:selectors="clr-namespace:PingApp.Selectors">
+    
+    <Style x:Key="Verbose" TargetType="ListViewItem">
+        <Setter Property="Background" Value="Beige" />
+    </Style>
+    <Style x:Key="Debug" TargetType="ListViewItem">
+        <Setter Property="Background" Value="LightGreen" />
+    </Style>
+    <Style x:Key="Information" TargetType="ListViewItem">
+        <Setter Property="Background" Value="LightBlue" />
+    </Style>
+    <Style x:Key="Warning" TargetType="ListViewItem">
+        <Setter Property="Background" Value="DarkOrange" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="Error" TargetType="ListViewItem">
+        <Setter Property="Background" Value="Red" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="Fatal" TargetType="ListViewItem">
+        <Setter Property="Background" Value="DarkRed" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    
+    <selectors:LogItemStyle x:Key="logItemStyleSelector"
+                            VerboseStyle="{StaticResource Verbose}"
+                            DebugStyle="{StaticResource Debug}"
+                            InformationStyle="{StaticResource Information}"
+                            WarningStyle="{StaticResource Warning}"
+                            ErrorStyle="{StaticResource Error}"
+                            FatalStyle="{StaticResource Fatal}"/>
+    
+</ResourceDictionary>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PingApp.ViewModel
+namespace PingApp.ViewModels.Base
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

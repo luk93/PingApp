@@ -1,5 +1,5 @@
 ﻿using PingApp.Models;
-using PingApp.ViewModels;
+using PingApp.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
