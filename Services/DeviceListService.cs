@@ -1,6 +1,6 @@
 ﻿using OfficeOpenXml;
 using PingApp.Models;
-using PingApp.ViewModel;
+using PingApp.Stores;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,16 +14,16 @@ using static PingApp.Models.Device;
 
 namespace PingApp.Services
 {
-    class DeviceListService
+    public class DeviceListService
     {
-        private List<Device> _deviceList;
-        public DeviceListService(List<Device> deviceList)
+        private DeviceListStore _deviceStore;
+        public DeviceListService(DeviceListStore deviceList)
         {
-            _deviceList = deviceList;
+            _deviceStore = deviceList;
         }
-        public async Task<List<Device>> UpdateDevicesFromExcelFile(FileInfo file)
+        public async Task<DeviceListStore> UpdateDevicesFromExcelFile(FileInfo file)
         {
-            _deviceList.Clear();
+            _deviceStore.DeviceList.Clear();
             var package = new ExcelPackage(file);
             await package.LoadAsync(file);
             var ws = package.Workbook.Worksheets[0];
@@ -38,12 +38,17 @@ namespace PingApp.Services
                         var name = (ws.Cells[row, col].Value.ToString());
                         var ipString = (ws.Cells[row, col + 1].Value.ToString());
                         Device newObj = new(name, ipString);
-                        _deviceList.Add(newObj);
+                        _deviceStore.DeviceList.Add(newObj);
                     }
                     row++;
                 }
             }
-            return _deviceList;
+            return _deviceStore;
+        }
+
+        internal DeviceListStore GetDevices()
+        {
+            return _deviceStore;
         }
     }
 }

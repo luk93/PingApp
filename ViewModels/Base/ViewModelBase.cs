@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingApp.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace PingApp.ViewModels.Base
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : ObservableObject
     {
+        public delegate TViewModel CreateViewModel<TViewModel>() where TViewModel : ViewModelBase;
         public virtual void Dispose() { }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

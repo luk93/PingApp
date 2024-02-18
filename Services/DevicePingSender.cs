@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using PingApp.DbServices;
 using PingApp.Extensions;
 using PingApp.Models;
+using PingApp.Services;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using System.Windows.Interop;
 
 namespace PingApp.Tools
 {
-    class DevicePingSender
+    public class DevicePingSender
     {
         private readonly Ping _ping;
         private readonly ILogger _logger;
@@ -24,23 +25,21 @@ namespace PingApp.Tools
         private readonly byte[] _buffer;
         private readonly int _timeout;
         private readonly PingOptions _options;
-        private readonly List<Device> _deviceList;
+        private readonly DeviceListService _deviceListService;
         private readonly Queue<Device> _deviceQueue;
         private bool _isSending;
-        private readonly TextBlock _tbStatus;
         private readonly DeviceRecordService _deviceRecordService;
 
         public event EventHandler<EventArgs> DeviceChanged;
-        public DevicePingSender(List<Device> deviceList, string data, int timeout, ILogger logger, TextBlock tbStatus, DeviceRecordService deviceRecordService)
+        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService)
         {
-            _deviceList = deviceList;
+            _deviceListService = deviceListService;
             _ping = new Ping();
             _logger = logger;
-            _tbStatus = tbStatus;
             _deviceRecordService = deviceRecordService;
-            _data = data;
+            _data = "################################";
             _buffer = Encoding.ASCII.GetBytes(_data);
-            _timeout = timeout;
+            _timeout = 3000;
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<Device>();
             _isSending = false;
@@ -54,7 +53,7 @@ namespace PingApp.Tools
         }
         public void SendPingToDeviceList()
         {
-            foreach (Device device in _deviceList)
+            foreach (Device device in _deviceListService.GetDevices().DeviceList)
             {
                 _deviceQueue.Enqueue(device);
             }
@@ -95,8 +94,8 @@ namespace PingApp.Tools
             feedbackDevice.IpStatus = e.Reply.Status;
             OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping canceled!";
-            _logger.LogWarning(msg);
-            _tbStatus.AddLine($"{DateTime.Now} - {msg}");
+            _logger.Warning(msg);
+            Log.Warning($"{DateTime.Now} - {msg}");
         }
         private void PingError(PingCompletedEventArgs e, Device feedbackDevice)
         {
@@ -106,8 +105,8 @@ namespace PingApp.Tools
             feedbackDevice.IpStatus = e.Reply.Status;
             OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping failed: {e.Error}";
-            _logger.LogWarning(msg);
-            _tbStatus.AddLine($"{DateTime.Now} - {msg}");
+            _logger.Warning(msg);
+            Log.Warning($"{DateTime.Now} - {msg}");
         }
         private void PingFeedback(PingCompletedEventArgs e, Device feedbackDevice)
         {
@@ -128,8 +127,8 @@ namespace PingApp.Tools
                 feedbackDevice.IpStatus = e.Reply.Status;
                 OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply.Options.Ttl}, Size: {e.Reply.Buffer.Length}";
-                _logger.LogInformation(msg);
-                _tbStatus.AddLine($"{DateTime.Now} - {msg}");
+                _logger.Information(msg);
+                Log.Information($"{DateTime.Now} - {msg}");
             }
             else
             {
@@ -139,8 +138,8 @@ namespace PingApp.Tools
                 feedbackDevice.IpStatus = e.Reply.Status;
                 OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping failed! {e.Reply.Status}";
-                _logger.LogWarning(msg);
-                _tbStatus.AddLine($"{DateTime.Now} - {msg}");
+                _logger.Warning(msg);
+                Log.Warning($"{DateTime.Now} - {msg}");
             }
         }
 

@@ -5,80 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tools="clr-namespace:PingApp.Tools"
         xmlns:local="clr-namespace:PingApp"
+        xmlns:controls="clr-namespace:PingApp.Controls"
         mc:Ignorable="d"
-        Title="Ping App" Height="450" Width="900" MinHeight="450" MinWidth="900"
+        Title="Ping App" Height="600" Width="910" MinHeight="600" MinWidth="910"
         Background="#546A76"
         Foreground="#F5E9E2" Icon="/icons8-ping-96.png"
         >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
-        <ListView x:Name ="LV_Devices"  Margin="5,0,5,5" Grid.Row="1" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
-                  ItemsSource="{Binding Path=Devices}">
-            <ListView.Background>
-                <SolidColorBrush Color="AliceBlue"/>
-            </ListView.Background>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160" Header="Name" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Ip Address">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding IpString, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="100" Width="100"  Header="Status">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Last Reply Timestamp">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LastReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="IP Status">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding IpStatus, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="60" Width="60"  Header="Is Busy">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Margin="5, 0" IsEnabled="False" IsChecked="{Binding IsBusy, Mode=OneWay}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button x:Name="B_TriggerAll" Content="Trigger All" Margin="150,0,15,5" Grid.Row="2" Grid.Column="0" Width="150" Height="25" Click="B_TriggerAll_Click" />
-        <Button x:Name="B_GetDevicesFromExcel" Content="Get Devices from Excel" Margin="15,0,150,5" Grid.Row="2" Grid.Column="1" Width="150" Height="25" Click="B_GetDevicesFromExcel_ClickAsync"/>
-        <Button x:Name="B_GetDevicesFromExcelTest" Content="Get Devices from Excel Command" Margin="15,0,-250,5" Grid.Row="2" Grid.Column="3" Width="150" Height="25" Command="{Binding GetDevicesFromExcelCommand}"/>
-        <ScrollViewer Grid.Row="3" Grid.ColumnSpan="4" Margin="5,10,5,10" CanContentScroll="True" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" Grid.RowSpan="2">
-            <TextBlock x:Name= "TbStatus"  TextWrapping="Wrap"  Height="Auto" Width="Auto" ><Run Language="pl-pl"/><LineBreak/><Run Language="pl-pl"/></TextBlock>
+        <controls:PingAppRibbon Grid.Row="0" DataContext="{Binding Ribbon}"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ContentControl Content="{Binding Navigator.CurrentViewModel}"/>
         </ScrollViewer>
+        <controls:PingAppStatusBar Grid.Row="2" DataContext="{Binding StatusBar}"/>
     </Grid>
 </Window>

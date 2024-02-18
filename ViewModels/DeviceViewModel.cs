@@ -12,9 +12,9 @@ using System.Xml.Linq;
 using static PingApp.Models.Device;
 using static PingApp.Models.DeviceDb;
 
-namespace PingApp.ViewModel
+namespace PingApp.ViewModels
 {
-    class DeviceViewModel: ViewModelBase, IObserver
+    public class DeviceViewModel: ViewModelBase, IObserver
     {
         private Device _device;
         private string _ipString;

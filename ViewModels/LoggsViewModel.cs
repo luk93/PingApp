@@ -32,12 +32,12 @@ namespace PingApp.ViewModels
 
             //Style selector test - to delete after adjusting styles
             //
-            Log.Information("Logging started");
-            Log.Debug("Debug test");
-            Log.Verbose("Verbose test");
-            Log.Warning("Warning test");
-            Log.Error("Error test");
-            Log.Fatal("Fatal test");
+            //Log.Information("Logging started");
+            //Log.Debug("Debug test");
+            //Log.Verbose("Verbose test");
+            //Log.Warning("Warning test");
+            //Log.Error("Error test");
+            //Log.Fatal("Fatal test");
         }
     }
 }

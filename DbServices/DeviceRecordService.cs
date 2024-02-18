@@ -2,7 +2,7 @@
 using PingApp.Db;
 using PingApp.DbServices.Common;
 using PingApp.Models;
-using PingApp.ViewModel;
+using PingApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
