@@ -13,73 +13,20 @@
         </Grid.RowDefinitions>
 
         <fluent:Ribbon x:Name="RibbonWin" Grid.Row="0">
-            <!-- Quick Access Items -->
-            <!-- To do -->
-            <!-- Ribbon Backstage File -->
-            <fluent:Ribbon.Menu>
-                <fluent:Backstage Header="File">
-                    <fluent:BackstageTabControl>
-                        <fluent:BackstageTabItem Header="New" Icon="Resources/newfile_white.png"/>
-                        <fluent:BackstageTabItem Header="Open" Icon="Resources/open_white.png"/>
-                        <fluent:BackstageTabItem Header="Save" Icon="Resources/save_white.png"/>
-                        <fluent:BackstageTabItem Header="Save As" Icon="Resources/saveAs_white.png"/>
-                        <fluent:BackstageTabItem Header="Exit" Icon="Resources/exit_white.png"/>
-                        <fluent:SeparatorTabItem/>
-                        <fluent:BackstageTabItem Header="Settings" Icon="Resources/settings_white.png"/>
-                        <fluent:BackstageTabItem Header="User Management" Icon="Resources/users_white.png"/>
-                        <fluent:SeparatorTabItem/>
-                        <fluent:BackstageTabItem Header="Help" Icon="Resources/help_white.png"/>
-                        <fluent:BackstageTabItem Header="Program Info" Icon="Resources/info_white.png"/>
-                    </fluent:BackstageTabControl>
-                </fluent:Backstage>
-            </fluent:Ribbon.Menu>
-            <!-- Ribbon Tab #1:  -->
-            <fluent:RibbonTabItem Header="Ping App" KeyTip="S">
-                <!-- Project  group-->
-                <fluent:RibbonGroupBox x:Name="GroupProject" Header="Project">
-                    <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/import.png"/>
-                    <fluent:Button Header="Configure" LargeIcon="Resources/configProp.png"/>
-                    <fluent:Button Header="Check" LargeIcon="Resources/check.png"/>
-                    <fluent:Button Header="Load" LargeIcon="Resources/load.png"/>
-                </fluent:RibbonGroupBox>
-                <!-- Edit  group-->
-                <fluent:RibbonGroupBox x:Name="GroupEdit" Header="Edit">
-                    <fluent:Button Header="Insert Column" LargeIcon="Resources/addCol.png"/>
-                    <fluent:Button Header="Delete Column" LargeIcon="Resources/delCol.png"/>
-                    <fluent:Button Header="Insert Row" LargeIcon="Resources/addRow.png"/>
-                    <fluent:Button Header="Delete Row" LargeIcon="Resources/delRow.png"/>
-                    <fluent:Button Header="Search" LargeIcon="Resources/search.png"/>
-                    <fluent:Button Header="Replace" LargeIcon="Resources/replace.png"/>
-                    <fluent:Button Header="Undo" LargeIcon="Resources/undo.png"/>
-                    <fluent:Button Header="Redo" LargeIcon="Resources/redo.png"/>
-                </fluent:RibbonGroupBox>
-                <!-- Print  group-->
-                <fluent:RibbonGroupBox x:Name="GroupPrint" Header="Print">
-                    <fluent:Button Header="Preview" LargeIcon="Resources/preview.png"/>
-                    <fluent:Button Header="Setup page" LargeIcon="Resources/print.png"/>
-                </fluent:RibbonGroupBox>
-                <!-- Test  group-->
-                <fluent:RibbonGroupBox x:Name="GroupTest" Header="Test">
-                    <fluent:Button Header="Update" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/update.png"/>
+             <!--Ribbon Tab #2: Excel--> 
+            <fluent:RibbonTabItem Header="Excel" KeyTip="S">
+                 <!--Excel group-->
+                <fluent:RibbonGroupBox x:Name="GroupProject" Header="Excel File" Width="200">
+                    <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
+                    <fluent:Button Header="Export" LargeIcon="Resources/excel_export.png"/>
+                    <fluent:Button Header="Config" LargeIcon="Resources/excel_config.png"/>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
-            <!-- Ribbon Tab #2: PLC -->
-            <fluent:RibbonTabItem Header="PLC" KeyTip="P">
-                <!-- Status  group-->
-                <fluent:RibbonGroupBox x:Name="GroupStatus" Header="Status">
-                    <fluent:Button Header="PLC Connected" LargeIcon="Resources/red_X.png"/>
-                    <fluent:Button Header="PLC Taught in " LargeIcon="Resources/red_X.png"/>
-                    <fluent:Button Header="Matrix synchronized" LargeIcon="Resources/red_X.png"/>
-                </fluent:RibbonGroupBox>
-            </fluent:RibbonTabItem>
-            <!-- Ribbon Tab #3: View -->
-            <fluent:RibbonTabItem Header="View" KeyTip="S">
-                <!-- View  group-->
-                <fluent:RibbonGroupBox x:Name="GroupView" Header="View">
-                    <fluent:Button Header="PLC Tag Browser" LargeIcon="Resources/red_X.png"/>
-                    <fluent:Button Header="System messages" LargeIcon="Resources/red_X.png"/>
-                    <fluent:Button Header="Test result" LargeIcon="Resources/red_X.png"/>
-                    <fluent:Button Header="Test protocol" LargeIcon="Resources/red_X.png"/>
+             <!--Ribbon Tab #2: Pinger--> 
+            <fluent:RibbonTabItem Header="Pinger" KeyTip="P">
+                 <!--Status  group-->
+                <fluent:RibbonGroupBox x:Name="GroupStatus" Header="Devices Operations" Width="200">
+                    <fluent:Button Header="Trigger All" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
         </fluent:Ribbon>

@@ -10,32 +10,10 @@
 
   <ItemGroup>
     <None Remove="icons8-ping-96.png" />
-    <None Remove="Resources\addCol.png" />
-    <None Remove="Resources\addRow.png" />
-    <None Remove="Resources\check.png" />
-    <None Remove="Resources\configProp.png" />
-    <None Remove="Resources\delCol.png" />
-    <None Remove="Resources\delRow.png" />
-    <None Remove="Resources\exit_white.png" />
-    <None Remove="Resources\exportPdf.png" />
-    <None Remove="Resources\help_white.png" />
-    <None Remove="Resources\import.png" />
-    <None Remove="Resources\info_white.png" />
-    <None Remove="Resources\load.png" />
-    <None Remove="Resources\newfile_white.png" />
-    <None Remove="Resources\open_white.png" />
-    <None Remove="Resources\preview.png" />
-    <None Remove="Resources\print.png" />
-    <None Remove="Resources\redo.png" />
-    <None Remove="Resources\red_X.png" />
-    <None Remove="Resources\replace.png" />
-    <None Remove="Resources\saveAs_white.png" />
-    <None Remove="Resources\save_white.png" />
-    <None Remove="Resources\search.png" />
-    <None Remove="Resources\settings_white.png" />
-    <None Remove="Resources\undo.png" />
-    <None Remove="Resources\update.png" />
-    <None Remove="Resources\users_white.png" />
+    <None Remove="Resources\excel_config.png" />
+    <None Remove="Resources\excel_export.png" />
+    <None Remove="Resources\excel_import.png" />
+    <None Remove="Resources\exchange.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,84 +37,10 @@
 
   <ItemGroup>
     <Resource Include="icons8-ping-96.png" />
-    <Resource Include="Resources\addCol.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\addRow.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\check.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\configProp.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\delCol.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\delRow.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\exit_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\exportPdf.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\help_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\import.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\info_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\load.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\newfile_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\open_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\preview.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\print.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\redo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\red_X.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\replace.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\saveAs_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\save_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\search.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\settings_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\undo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\update.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\users_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\excel_config.png" />
+    <Resource Include="Resources\excel_export.png" />
+    <Resource Include="Resources\excel_import.png" />
+    <Resource Include="Resources\exchange.png" />
   </ItemGroup>
 
   <ItemGroup>
