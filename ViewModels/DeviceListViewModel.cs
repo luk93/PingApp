@@ -1,7 +1,7 @@
-﻿
-using PingApp.Commands;
+﻿using PingApp.Commands;
 using PingApp.Models;
 using PingApp.Stores;
+using PingApp.Tools;
 using PingApp.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -15,10 +15,13 @@ using System.Windows.Input;
 
 namespace PingApp.ViewModels
 {
+    
     public class DeviceListViewModel : ViewModelBase
     {
+        private DevicePingSender _pingSender;
+        private DeviceListStore? _deviceStore;
         private ObservableCollection<DeviceViewModel> _deviceViewModels;
-        ObservableCollection<DeviceViewModel> Devices
+        public ObservableCollection<DeviceViewModel> Devices
         {
             get
             {
@@ -31,14 +34,36 @@ namespace PingApp.ViewModels
             }
         }
         public bool CanTrigger => Devices.Count > 0;
-        public DeviceListViewModel(DeviceListStore deviceStore)
+        public DeviceListViewModel(DeviceListStore deviceStore, DevicePingSender devicePingSender)
         {
-            Devices = new ObservableCollection<DeviceViewModel>(deviceStore.DeviceList.Select(device => new DeviceViewModel(device)));
+            _deviceStore = deviceStore;
+            _pingSender = devicePingSender;
+            UpdateDevices(_deviceStore.DeviceList);
+            _deviceStore.Loaded += OnLoad;
+            _deviceStore.Updated += OnUpdate;
         }
-        public void UpdateDevices(DeviceListStore deviceStore) 
+        public override void Dispose()
         {
-            Devices = new ObservableCollection<DeviceViewModel>(deviceStore.DeviceList.Select(device => new DeviceViewModel(device)));
+            if(_deviceStore != null) _deviceStore.Loaded -= OnLoad;
+            base.Dispose();
         }
+        private void OnLoad(List<Device> deviceList)
+        {
+            UpdateDevices(deviceList);
+        }
+        private void OnUpdate(List<Device> deviceList)
+        {
+            UpdateDevices(deviceList);
+        }
+        public void UpdateDevices(List<Device> deviceList) 
+        {
+            Devices = new ObservableCollection<DeviceViewModel>(deviceList.Select(device => new DeviceViewModel(device)));
+            foreach(var device in Devices) 
+            {
+                _pingSender.DeviceChanged += device.HandleDeviceChanged;
+            }
+        }
+
        
     }
 }

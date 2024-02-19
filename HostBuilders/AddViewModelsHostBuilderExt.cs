@@ -17,16 +17,15 @@ namespace PingApp.HostBuilders
         {
             return host.ConfigureServices(services =>
             {
-                services.AddSingleton<IPingAppViewModelFactory<DeviceListViewModel>, PingAppViewModelFactory>();
-                services.AddSingleton<IRootPingAppViewModelFactory, RootPingAppViewModelFactory>();
+                services.AddSingleton<IPingAppViewModelFactory, PingAppViewModelFactory>();
 
-                services.AddSingleton<DeviceViewModel>();
-                services.AddSingleton<DeviceListViewModel>();
-                services.AddSingleton<LoggsViewModel>();
-                services.AddSingleton<MainViewModel>();
+                services.AddTransient<DeviceViewModel>();
+                services.AddTransient<DeviceListViewModel>();
+                services.AddTransient<LoggsViewModel>();
+                services.AddTransient<MainViewModel>();
 
-                //services.AddSingleton<CreateViewModel<DeviceListViewModel>>(services => () => services.GetRequiredService<DeviceListViewModel>());
-                //services.AddSingleton<CreateViewModel<LoggsViewModel>>(services => () => services.GetRequiredService<LoggsViewModel>());
+                services.AddSingleton<CreateViewModel<DeviceListViewModel>>(services => () => services.GetRequiredService<DeviceListViewModel>());
+                services.AddSingleton<CreateViewModel<LoggsViewModel>>(services => () => services.GetRequiredService<LoggsViewModel>());
 
             });
         }

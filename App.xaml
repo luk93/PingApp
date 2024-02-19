@@ -5,13 +5,16 @@
              xmlns:viewmodels="clr-namespace:PingApp.ViewModels">
     <Application.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="/Styles/LogItems.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <DataTemplate DataType="{x:Type viewmodels:DeviceListViewModel}">
                 <views:DeviceListView/>
             </DataTemplate>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

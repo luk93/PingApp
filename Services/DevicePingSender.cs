@@ -53,7 +53,7 @@ namespace PingApp.Tools
         }
         public void SendPingToDeviceList()
         {
-            foreach (Device device in _deviceListService.GetDevices().DeviceList)
+            foreach (Device device in _deviceListService.GetDeviceStore().DeviceList)
             {
                 _deviceQueue.Enqueue(device);
             }
@@ -95,7 +95,7 @@ namespace PingApp.Tools
             OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping canceled!";
             _logger.Warning(msg);
-            Log.Warning($"{DateTime.Now} - {msg}");
+            Log.Warning($"{msg}");
         }
         private void PingError(PingCompletedEventArgs e, Device feedbackDevice)
         {
@@ -106,7 +106,7 @@ namespace PingApp.Tools
             OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping failed: {e.Error}";
             _logger.Warning(msg);
-            Log.Warning($"{DateTime.Now} - {msg}");
+            Log.Warning($"{msg}");
         }
         private void PingFeedback(PingCompletedEventArgs e, Device feedbackDevice)
         {
@@ -128,7 +128,7 @@ namespace PingApp.Tools
                 OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply.Options.Ttl}, Size: {e.Reply.Buffer.Length}";
                 _logger.Information(msg);
-                Log.Information($"{DateTime.Now} - {msg}");
+                Log.Information($"{msg}");
             }
             else
             {
@@ -139,7 +139,7 @@ namespace PingApp.Tools
                 OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping failed! {e.Reply.Status}";
                 _logger.Warning(msg);
-                Log.Warning($"{DateTime.Now} - {msg}");
+                Log.Warning($"{msg}");
             }
         }
 

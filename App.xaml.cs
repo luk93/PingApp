@@ -2,7 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OfficeOpenXml;
+using PingApp.Db;
+using PingApp.DbServices;
 using PingApp.HostBuilders;
+using PingApp.Models;
+using PingApp.Stores;
+using PingApp.ViewModels;
 using Serilog;
 using System.Configuration;
 using System.Data;
@@ -32,16 +37,36 @@ namespace PingApp
                        .AddViewModels()
                        .AddViews();
         }
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             if (_host != null)
             {
                 _host.Start();
+                var dbExist = false;
+                AppDbContextFactory contextFactory = _host.Services.GetRequiredService<AppDbContextFactory>();
+                using (var context = contextFactory.CreateDbContext())
+                {
+                    if(context.Database.CanConnect())
+                    {
+                        DeviceRecordService deviceRecordService = _host.Services.GetRequiredService<DeviceRecordService>();
+                        DeviceListStore deviceListStore = _host.Services.GetService<DeviceListStore>();
+                        DeviceListViewModel deviceListViewModel = _host.Services.GetService<DeviceListViewModel>();
+                        dbExist = true;
+                        List<Device> deviceList = (await deviceRecordService.GetAll()).ToList() ?? new List<Device>();
+                        deviceListStore.Load(deviceList);
+                        deviceListViewModel.UpdateDevices(deviceListStore.DeviceList);
+                    }
+                    else
+                        context.Database.EnsureCreated();
+                }
+                
                 ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Steel");
                 Window window = _host.Services.GetRequiredService<MainWindow>();
                 window.Show();
-                Log.Information("Window opened!");
+                if (dbExist) Log.Information($"Db already exists - Data loaded!");
+                else Log.Information($"Db has been created!");
+
             }
             base.OnStartup(e);
         }

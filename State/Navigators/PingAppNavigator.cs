@@ -29,7 +29,7 @@ namespace PingApp.State.Navigators
             }
         }
         public ICommand UpdateCurrentViewModelCommand {get; set;}
-        public PingAppNavigator(IRootPingAppViewModelFactory viewModelFactory)
+        public PingAppNavigator(IPingAppViewModelFactory viewModelFactory)
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
         }

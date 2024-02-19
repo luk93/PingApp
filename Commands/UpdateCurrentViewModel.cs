@@ -14,9 +14,9 @@ namespace PingApp.Commands
     {
 
         private readonly IPingAppNavigator _navigator;
-        private readonly IRootPingAppViewModelFactory _viewModelFactory;
+        private readonly IPingAppViewModelFactory _viewModelFactory;
 
-        public UpdateCurrentViewModelCommand(IPingAppNavigator navigator, IRootPingAppViewModelFactory viewModelFactory)
+        public UpdateCurrentViewModelCommand(IPingAppNavigator navigator, IPingAppViewModelFactory viewModelFactory)
         {
             _navigator = navigator;
             _viewModelFactory = viewModelFactory;

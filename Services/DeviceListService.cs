@@ -21,7 +21,7 @@ namespace PingApp.Services
         {
             _deviceStore = deviceList;
         }
-        public async Task<DeviceListStore> UpdateDevicesFromExcelFile(FileInfo file)
+        public async Task<List<Device>> UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceStore.DeviceList.Clear();
             var package = new ExcelPackage(file);
@@ -43,10 +43,10 @@ namespace PingApp.Services
                     row++;
                 }
             }
-            return _deviceStore;
+            return _deviceStore.DeviceList;
         }
 
-        internal DeviceListStore GetDevices()
+        internal DeviceListStore GetDeviceStore()
         {
             return _deviceStore;
         }

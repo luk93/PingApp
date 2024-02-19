@@ -1,4 +1,5 @@
 ﻿using PingApp.Models;
+using PingApp.Stores;
 using PingApp.ViewModels.Base;
 using System;
 using System.Collections.Generic;

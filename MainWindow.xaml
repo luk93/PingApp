@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:PingApp"
         xmlns:controls="clr-namespace:PingApp.Controls"
         mc:Ignorable="d"
-        Title="Ping App" Height="600" Width="910" MinHeight="600" MinWidth="910"
+        Title="Ping App" Height="auto" Width="auto" MinHeight="600" MinWidth="910"
         Background="#546A76"
         Foreground="#F5E9E2" Icon="/icons8-ping-96.png"
         >
@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <controls:PingAppRibbon Grid.Row="0" DataContext="{Binding Ribbon}"/>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <ContentControl Content="{Binding Navigator.CurrentViewModel}"/>
+            <ContentControl Content="{Binding CurrentViewModel}"/>
         </ScrollViewer>
         <controls:PingAppStatusBar Grid.Row="2" DataContext="{Binding StatusBar}"/>
     </Grid>

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace PingApp.ViewModels.Factories
 {
-    public interface IPingAppViewModelFactory<T> where T : ViewModelBase
+    public interface IPingAppViewModelFactory
     {
-        T CreateViewModel();
+        ViewModelBase CreateViewModel(ViewType viewType);
     }
 }

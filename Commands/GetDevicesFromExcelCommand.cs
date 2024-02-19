@@ -37,8 +37,8 @@ namespace PingApp.Commands
             _xlsxFile = FileTools.SelectXlsxFileAndTryToUse("Select excel file which contains Devices (Name,IP Address) (.xlsx)");
             if (_xlsxFile == null) return;
             Log.Information($"File ${_xlsxFile.FullName} selected!");
-            _deviceStore = await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
-            _deviceListViewModel.UpdateDevices(_deviceStore);
+            var deviceList = await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
+            _deviceStore.Load(deviceList);
             try
             {
                 await _deviceRecordService.DeleteAll();
