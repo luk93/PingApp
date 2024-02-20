@@ -19,26 +19,18 @@ namespace PingApp.Selectors
         public Style? FatalStyle { get; set; }
         public override Style? SelectStyle(object item, DependencyObject container)
         {
-            LogEvent? logEvent = item as LogEvent;
-            if(logEvent == null) return null;
+            if (item is not LogEvent logEvent) return null;
 
-            switch (logEvent.Level)
+            return logEvent.Level switch
             {
-                case LogEventLevel.Verbose:
-                    return VerboseStyle;
-                case LogEventLevel.Debug:
-                    return DebugStyle;
-                case LogEventLevel.Information:
-                    return InformationStyle;
-                case LogEventLevel.Warning:
-                    return WarningStyle;
-                case LogEventLevel.Error:
-                    return ErrorStyle;
-                case LogEventLevel.Fatal:
-                    return FatalStyle;
-                default:
-                    return null;
-            }
+                LogEventLevel.Verbose => VerboseStyle,
+                LogEventLevel.Debug => DebugStyle,
+                LogEventLevel.Information => InformationStyle,
+                LogEventLevel.Warning => WarningStyle,
+                LogEventLevel.Error => ErrorStyle,
+                LogEventLevel.Fatal => FatalStyle,
+                _ => null,
+            };
         }
     }
 }

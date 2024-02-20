@@ -14,6 +14,8 @@
     <None Remove="Resources\excel_export.png" />
     <None Remove="Resources\excel_import.png" />
     <None Remove="Resources\exchange.png" />
+    <None Remove="Resources\folder_open.png" />
+    <None Remove="Resources\folder_select.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.Observable" Version="2.0.2" />
@@ -41,6 +44,8 @@
     <Resource Include="Resources\excel_export.png" />
     <Resource Include="Resources\excel_import.png" />
     <Resource Include="Resources\exchange.png" />
+    <Resource Include="Resources\folder_open.png" />
+    <Resource Include="Resources\folder_select.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,19 +13,24 @@
         </Grid.RowDefinitions>
 
         <fluent:Ribbon x:Name="RibbonWin" Grid.Row="0">
-             <!--Ribbon Tab #2: Excel--> 
+             <!--Ribbon Tab #2: Excel-->
             <fluent:RibbonTabItem Header="Excel" KeyTip="S">
-                 <!--Excel group-->
-                <fluent:RibbonGroupBox x:Name="GroupProject" Header="Excel File" Width="200">
+                <!--Excel group-->
+                <fluent:RibbonGroupBox x:Name="GroupExcel" Header="Excel File" Width="200">
                     <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
-                    <fluent:Button Header="Export" LargeIcon="Resources/excel_export.png"/>
+                    <fluent:Button Header="Export" Command="{Binding ExportDevicesToExcelCommand}" LargeIcon="Resources/excel_export.png"/>
                     <fluent:Button Header="Config" LargeIcon="Resources/excel_config.png"/>
                 </fluent:RibbonGroupBox>
+                <!--Export group-->
+                <fluent:RibbonGroupBox x:Name="GroupExport" Header="Export path" Width="200">
+                    <fluent:Button Header="Change Export Path" Command="{Binding ChangeExportPathCommand}" LargeIcon="Resources/folder_select.png"/>
+                    <fluent:Button Header="Open Export Folder" Command="{Binding OpenExportFolderCommand}" LargeIcon="Resources/folder_open.png"/>
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
-             <!--Ribbon Tab #2: Pinger--> 
+            <!--Ribbon Tab #2: Pinger--> 
             <fluent:RibbonTabItem Header="Pinger" KeyTip="P">
                  <!--Status  group-->
-                <fluent:RibbonGroupBox x:Name="GroupStatus" Header="Devices Operations" Width="200">
+                <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Devices Operations" Width="200">
                     <fluent:Button Header="Trigger All" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>

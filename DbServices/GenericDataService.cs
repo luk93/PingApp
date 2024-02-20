@@ -10,17 +10,12 @@ using System.Threading.Tasks;
 
 namespace PingApp.DbServices
 {
-    public class GenericDataService<T> : IDataService<T> where T : DbSetBaseModel
+    public class GenericDataService<T>(AppDbContextFactory contextFactory) : IDataService<T> where T : DbSetBaseModel
     {
-        private readonly AppDbContextFactory _contextFactory;
-        private readonly NonQueryDataService<T> _nonQueryDataService;
-        public GenericDataService(AppDbContextFactory contextFactory)
-        {
-            _contextFactory = contextFactory;
-            _nonQueryDataService = new NonQueryDataService<T>(contextFactory);
-        }
+        private readonly AppDbContextFactory _contextFactory = contextFactory;
+        private readonly NonQueryDataService<T> _nonQueryDataService = new(contextFactory);
 
-        public async Task<T> Create(T entity)
+        public async Task<T?> Create(T entity)
         {
             return await _nonQueryDataService.Create(entity) ?? null;
         }
@@ -35,23 +30,19 @@ namespace PingApp.DbServices
             return await _nonQueryDataService.DeleteAll();
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T?> Get(int id)
         {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                return await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id) ?? null;
-            }
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id) ?? null;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>?> GetAll()
         {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                return await context.Set<T>().ToListAsync() ?? null;
-            }
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Set<T>().ToListAsync() ?? null;
         }
 
-        public async Task<T> Update(int id, T entity)
+        public async Task<T?> Update(int id, T entity)
         {
             return await _nonQueryDataService.Update(id, entity) ?? null;
         }

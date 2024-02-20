@@ -14,25 +14,15 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class GetDevicesFromExcelCommand : AsyncCommandBase
+    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceListViewModel _deviceListViewModel, DeviceRecordService deviceRecordService) : AsyncCommandBase
     {
-        private DeviceListService _deviceListService;
-        private DeviceListStore _deviceStore;
-        private ILogger _logger;
-        private FileInfo? _xlsxFile; 
-        private DeviceListViewModel _deviceListViewModel;
-        private DeviceRecordService _deviceRecordService;
-        public GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, 
-                                          DeviceListViewModel deviceListViewModel, DeviceRecordService deviceRecordService)
-        {
-            _deviceStore = deviceStore;
-            _logger = logger;
-            _xlsxFile = null;
-            _deviceListService = deviceListService;
-            _deviceListViewModel = deviceListViewModel;
-            _deviceRecordService = deviceRecordService;
-        }
-        public override async Task ExecuteAsync(object parameter)
+        private readonly DeviceListService _deviceListService = deviceListService;
+        private readonly DeviceListStore _deviceStore = deviceStore;
+        private readonly ILogger _logger = logger;
+        private FileInfo? _xlsxFile = null; 
+        private readonly DeviceRecordService _deviceRecordService = deviceRecordService;
+
+        public override async Task ExecuteAsync(object? parameter)
         {
             _xlsxFile = FileTools.SelectXlsxFileAndTryToUse("Select excel file which contains Devices (Name,IP Address) (.xlsx)");
             if (_xlsxFile == null) return;

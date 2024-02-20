@@ -14,13 +14,10 @@ using static PingApp.Models.Device;
 
 namespace PingApp.Services
 {
-    public class DeviceListService
+    public class DeviceListService(DeviceListStore deviceList)
     {
-        private DeviceListStore _deviceStore;
-        public DeviceListService(DeviceListStore deviceList)
-        {
-            _deviceStore = deviceList;
-        }
+        private readonly DeviceListStore _deviceStore = deviceList;
+
         public async Task<List<Device>> UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceStore.DeviceList.Clear();

@@ -10,23 +10,16 @@ using System.Windows.Input;
 
 namespace PingApp.Commands
 {
-    public class UpdateCurrentViewModelCommand : CommandBase
+    public class UpdateCurrentViewModelCommand(IPingAppNavigator navigator, IPingAppViewModelFactory viewModelFactory) : CommandBase
     {
 
-        private readonly IPingAppNavigator _navigator;
-        private readonly IPingAppViewModelFactory _viewModelFactory;
-
-        public UpdateCurrentViewModelCommand(IPingAppNavigator navigator, IPingAppViewModelFactory viewModelFactory)
-        {
-            _navigator = navigator;
-            _viewModelFactory = viewModelFactory;
-        }
+        private readonly IPingAppNavigator _navigator = navigator;
+        private readonly IPingAppViewModelFactory _viewModelFactory = viewModelFactory;
 
         public override void Execute(object? parameter)
         {
-           if(parameter is ViewType)
+            if (parameter is ViewType viewType)
             {
-                ViewType viewType = (ViewType)parameter;
                 _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
             }
         }

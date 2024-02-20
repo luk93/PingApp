@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,12 +68,14 @@ namespace PingApp.Tools
                 Device nextDevice = _deviceQueue.Dequeue();
                 nextDevice.IsBusy = true;
                 OnDeviceChange(nextDevice);
-                _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
+                if (nextDevice != null)
+                    _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
             }
         }
         public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)
         {
-            Device feedbackDevice = (Device)e.UserState;
+            Device? feedbackDevice = (Device?)e.UserState ?? null;
+            if (feedbackDevice == null) return;
             if (e.Cancelled) PingCancelled(e, feedbackDevice);
             else if (e.Error != null) PingError(e, feedbackDevice);
             else PingFeedback(e, feedbackDevice);
@@ -126,7 +129,7 @@ namespace PingApp.Tools
                 feedbackDevice.Status = Device.PingStatus.Success;
                 feedbackDevice.IpStatus = e.Reply.Status;
                 OnDeviceChange(feedbackDevice);
-                var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply.Options.Ttl}, Size: {e.Reply.Buffer.Length}";
+                var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply?.Options?.Ttl}, Size: {e.Reply?.Buffer.Length}";
                 _logger.Information(msg);
                 Log.Information($"{msg}");
             }

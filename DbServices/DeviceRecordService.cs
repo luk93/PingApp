@@ -12,15 +12,11 @@ using System.Threading.Tasks;
 
 namespace PingApp.DbServices
 {
-    public class DeviceRecordService
+    public class DeviceRecordService(AppDbContextFactory contextFactory)
     {
-        private readonly AppDbContextFactory _contextFactory;
-        private readonly NonQueryDataService<DeviceDb> _nonQueryDataService;
-        public DeviceRecordService(AppDbContextFactory contextFactory)
-        {
-            _contextFactory = contextFactory;
-            _nonQueryDataService = new NonQueryDataService<DeviceDb>(contextFactory);
-        }
+        private readonly AppDbContextFactory _contextFactory = contextFactory;
+        private readonly NonQueryDataService<DeviceDb> _nonQueryDataService = new(contextFactory);
+
         public async Task<Device?> Create(Device device)
         {
             DeviceDb deviceDb = new()
@@ -48,34 +44,26 @@ namespace PingApp.DbServices
         }
         public async Task<Device?> Get(int id)
         {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                var deviceDb = await context.Set<DeviceDb>().FirstOrDefaultAsync((e) => e.Id == id) ?? null;
-                if (deviceDb == null) return null;
-                Device device = new(deviceDb);
-                return device;
-            }
+            using var context = _contextFactory.CreateDbContext();
+            var deviceDb = await context.Set<DeviceDb>().FirstOrDefaultAsync((e) => e.Id == id) ?? null;
+            if (deviceDb == null) return null;
+            Device device = new(deviceDb);
+            return device;
         }
         public async Task<Device?> GetByIpAddressAndName(IPAddress ipAddress, string name)
         {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                var deviceDb = await context.Set<DeviceDb>().FirstOrDefaultAsync((e) => e.IpAddress == ipAddress && e.Name == name) ?? null;
-                if (deviceDb == null) return null;
-                Device device = new(deviceDb);
-                return device;
-            }
+            using var context = _contextFactory.CreateDbContext();
+            var deviceDb = await context.Set<DeviceDb>().FirstOrDefaultAsync((e) => e.IpAddress == ipAddress && e.Name == name) ?? null;
+            if (deviceDb == null) return null;
+            Device device = new(deviceDb);
+            return device;
         }
         public async Task<IEnumerable<Device>?> GetAll()
         {
-            using (var context = _contextFactory.CreateDbContext())
-            {
-                var devicesDb = await context.Set<DeviceDb>().ToListAsync() ?? null;
-                if (devicesDb == null) return null;
-                return devicesDb.Select(db => new Device(db));
-
-
-            }
+            using var context = _contextFactory.CreateDbContext();
+            var devicesDb = await context.Set<DeviceDb>().ToListAsync() ?? null;
+            if (devicesDb == null) return null;
+            return devicesDb.Select(db => new Device(db));
         }
 
         public async Task<Device?> Update(int id, Device device)

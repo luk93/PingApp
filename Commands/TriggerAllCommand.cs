@@ -8,18 +8,12 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class TriggerAllCommand : CommandBase
+    public class TriggerAllCommand(DeviceListViewModel deviceListViewModel, DevicePingSender devicePingSender) : CommandBase
     {
-        private readonly DeviceListViewModel _deviceListViewModel;
-        private readonly DevicePingSender _devicePingSender;
+        private readonly DeviceListViewModel _deviceListViewModel = deviceListViewModel;
+        private readonly DevicePingSender _devicePingSender = devicePingSender;
 
-        public TriggerAllCommand(DeviceListViewModel deviceListViewModel, DevicePingSender devicePingSender)
-        {
-            _deviceListViewModel = deviceListViewModel;
-            _devicePingSender = devicePingSender;
-        }
-
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
             _devicePingSender.SendPingToDeviceList();
         }

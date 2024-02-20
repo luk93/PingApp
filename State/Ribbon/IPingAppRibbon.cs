@@ -11,5 +11,7 @@ namespace PingApp.State.Ribbon
     {
         public ICommand? TriggerAllCommand { get;}
         public ICommand? GetDevicesFromExcelCommand { get;}
+        public ICommand? ChangeExportPathCommand { get;}
+        public ICommand? ExportDevicesToExcelCommand { get;}
     }
 }

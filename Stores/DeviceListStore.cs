@@ -10,6 +10,18 @@ namespace PingApp.Stores
     public class DeviceListStore
     {
         private List<Device> _deviceList;
+        private string _xlsxExportPath;
+        public string XlsxExportPath
+        {
+            get 
+            { 
+                return _xlsxExportPath; 
+            }
+            set 
+            { 
+                _xlsxExportPath = value;
+            }
+        }
         public List<Device> DeviceList => _deviceList;
         public event Action<List<Device>> Loaded;
         public event Action<List<Device>> Updated;

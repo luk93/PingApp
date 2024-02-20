@@ -39,7 +39,6 @@ namespace PingApp.Db
                     return (count > 0);
                 }
             }
-            return false;
         }
         public static bool ColumnInTableExists(this AppDbContext context, string tableName, string columnName)
         {
@@ -52,7 +51,6 @@ namespace PingApp.Db
                     return result == 1;
                 }
             }
-            return false;
         }
     }
 }

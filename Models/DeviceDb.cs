@@ -13,7 +13,7 @@ namespace PingApp.Models
 {
     public class DeviceDb : DbSetBaseModel
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public PingStatus Status { get; set; }
         public IPStatus IpStatus { get; set; }
         public IPAddress? IpAddress
@@ -25,7 +25,7 @@ namespace PingApp.Models
             set { }
         }
 
-        public string IpString { get; set; }
+        public string? IpString { get; set; }
         public DateTime LastReplyDt { get; set; }
         public enum PingStatus
         {

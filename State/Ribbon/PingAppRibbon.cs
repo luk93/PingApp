@@ -21,14 +21,19 @@ namespace PingApp.Ribbon
     public class PingAppRibbon : IPingAppRibbon
     {
         private readonly ILogger _logger;
-        private DeviceListViewModel _deviceListViewModel;
-        private DevicePingSender _devicePingSender;
-        private DeviceListService _deviceListService;
-        private DeviceRecordService _deviceRecordService;
-        private DeviceListStore _deviceStore;
+        private readonly DeviceListViewModel _deviceListViewModel;
+        private readonly DevicePingSender _devicePingSender;
+        private readonly DeviceListService _deviceListService;
+        private readonly DeviceRecordService _deviceRecordService;
+        private readonly DeviceListStore _deviceStore;
 
         public ICommand? TriggerAllCommand { get;}
         public ICommand? GetDevicesFromExcelCommand { get ;}
+
+        public ICommand? ChangeExportPathCommand { get; }
+
+        public ICommand? ExportDevicesToExcelCommand { get; }
+        public ICommand? OpenExportFolderCommand { get; }
 
         public PingAppRibbon(ILogger logger, DeviceListViewModel deviceListViewModel, DevicePingSender devicePingSender, 
                             DeviceListService deviceListService, DeviceRecordService deviceRecordService, DeviceListStore deviceStore)
@@ -40,8 +45,10 @@ namespace PingApp.Ribbon
             _deviceRecordService = deviceRecordService;
             _deviceStore = deviceStore;
             TriggerAllCommand = new TriggerAllCommand(_deviceListViewModel, _devicePingSender);
-            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceListViewModel, _deviceRecordService); ;
-           
+            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceListViewModel, _deviceRecordService);
+            ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
+            ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _logger);
+            OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);
         }
     }
 }

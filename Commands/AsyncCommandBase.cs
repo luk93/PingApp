@@ -38,7 +38,7 @@ namespace PingApp.Commands
                 IsExecuting = false;
             }
         }
-        public abstract Task ExecuteAsync(object parameter);
+        public abstract Task ExecuteAsync(object? parameter);
     }
 }
 

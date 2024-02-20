@@ -8,13 +8,9 @@ using TextFileExport.Db;
 
 namespace PingApp.Db
 {
-    public class AppDbContextFactory
+    public class AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
     {
-        private readonly Action<DbContextOptionsBuilder> _configureDbContext;
-        public AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
-        {
-            _configureDbContext = configureDbContext;
-        }
+        private readonly Action<DbContextOptionsBuilder> _configureDbContext = configureDbContext;
 
         public AppDbContext CreateDbContext()
         {

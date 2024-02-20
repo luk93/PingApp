@@ -16,7 +16,7 @@ namespace PingApp.Models
         public bool IsBusy { get; set; }
         public PingReply? LastReply { get; set; }
 
-        public Device(string name, string ipString)
+        public Device(string? name, string? ipString)
         {
             Name = name;
             IpString = ipString;

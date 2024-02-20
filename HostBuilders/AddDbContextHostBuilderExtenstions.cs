@@ -22,10 +22,7 @@ namespace PingApp.HostBuilders
             return host.ConfigureServices((context, services) =>
             {
                 string connectionString = "Data Source=internalDb.db";
-                Action<DbContextOptionsBuilder> configureDbContext = o => o.UseSqlite(connectionString);
-                    //.LogTo(message => Debug.WriteLine(message))  // Optional: You can remove this line if using Serilog exclusively
-                    //.UseLoggerFactory(loggerFactory)
-                    //.EnableSensitiveDataLogging();
+                void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString);
 
                 services.AddDbContext<AppDbContext>(configureDbContext);
                 services.AddSingleton(new AppDbContextFactory(configureDbContext));
