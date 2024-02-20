@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceListViewModel _deviceListViewModel, DeviceRecordService deviceRecordService) : AsyncCommandBase
+    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceRecordService deviceRecordService) : AsyncCommandBase
     {
         private readonly DeviceListService _deviceListService = deviceListService;
         private readonly DeviceListStore _deviceStore = deviceStore;

@@ -1,4 +1,5 @@
-﻿using PingApp.DbServices;
+﻿using AutoMapper;
+using PingApp.DbServices;
 using PingApp.Models;
 using PingApp.Services;
 using PingApp.Stores;
@@ -14,14 +15,15 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class ExportDevicesToExcelCommand(DeviceListStore deviceStore, ILogger logger) : AsyncCommandBase
+    public class ExportDevicesToExcelCommand(DeviceListStore deviceStore, ILogger logger, IMapper mapper) : AsyncCommandBase
     {
         private readonly DeviceListStore _deviceStore = deviceStore;
-        private readonly ILogger _logger = logger; 
+        private readonly ILogger _logger = logger;
+        private readonly IMapper _mapper = mapper;
 
         public override async Task ExecuteAsync(object? parameter)
         {
-            if(!Directory.Exists(_deviceStore.XlsxExportPath))
+            if (!Directory.Exists(_deviceStore.XlsxExportPath))
             {
                 var openFolderDialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
                 {
@@ -34,7 +36,7 @@ namespace PingApp.Commands
                     Log.Information($"Export path changed to '{_deviceStore.XlsxExportPath}'");
                 }
             }
-            var xlsxFilePath = $"{_deviceStore.XlsxExportPath}\\DevicesPingStatus_{FileTools.GetDateTimeString()}.xlsx"; 
+            var xlsxFilePath = $"{_deviceStore.XlsxExportPath}\\DevicesPingStatus_{FileTools.GetDateTimeString()}.xlsx";
             var excelPackage = ExcelManager.CreateExcelFile(xlsxFilePath);
             if (excelPackage == null)
             {
@@ -46,7 +48,7 @@ namespace PingApp.Commands
             try
             {
                 var ws = excelPackage.Workbook.Worksheets.Add("DeviceList");
-                var range = ws.Cells["A1"].LoadFromCollection(_deviceStore.DeviceList, true);
+                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<DeviceDb>>(_deviceStore.DeviceList), true);
                 range.AutoFitColumns();
                 await ExcelManager.SaveExcelFile(excelPackage);
                 var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
@@ -58,6 +60,6 @@ namespace PingApp.Commands
                 Log.Error(msg);
             }
         }
-        
+
     }
 }

@@ -21,6 +21,7 @@ namespace PingApp.HostBuilders
         {
             return host.ConfigureServices(services =>
             {
+                services.AddAutoMapper(host.GetType().Assembly);
                 services.AddSingleton<IPingAppStatusBar, PingAppStatusBar>(s => new PingAppStatusBar(s.GetRequiredService<LoggsViewModel>()));
                 services.AddSingleton<IPingAppNavigator, PingAppNavigator>();
                 services.AddSingleton<IPingAppRibbon, PingAppRibbon>();
