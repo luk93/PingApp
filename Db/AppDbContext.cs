@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Windows.Navigation;
 using PingApp.Models;
 
-namespace TextFileExport.Db
+namespace PingApp.Db
 {
     public partial class AppDbContext : DbContext
     {

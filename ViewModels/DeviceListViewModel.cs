@@ -20,13 +20,13 @@ namespace PingApp.ViewModels
     {
         private DevicePingSender _pingSender;
         private DeviceListStore? _deviceStore;
-        private ObservableCollection<DeviceViewModel> _deviceViewModels;
-        public ObservableCollection<DeviceViewModel> Devices
+        private ObservableCollection<Device> _devices;
+        public ObservableCollection<Device> Devices
         {
-            get => _deviceViewModels;
+            get => _devices;
             set
             {
-                _deviceViewModels = value;
+                _devices = value;
                 OnPropertyChanged(nameof(Devices));
             }
         }
@@ -34,8 +34,9 @@ namespace PingApp.ViewModels
         public DeviceListViewModel(DeviceListStore deviceStore, DevicePingSender devicePingSender)
         {
             _deviceStore = deviceStore;
+            _devices = new(_deviceStore.DeviceList);
             _pingSender = devicePingSender;
-            UpdateDevices(_deviceStore.DeviceList);
+
             _deviceStore.Loaded += OnLoad;
             _deviceStore.Updated += OnUpdate;
         }
@@ -46,21 +47,11 @@ namespace PingApp.ViewModels
         }
         private void OnLoad(List<Device> deviceList)
         {
-            UpdateDevices(deviceList);
+            Devices = new(deviceList);
         }
         private void OnUpdate(List<Device> deviceList)
         {
-            UpdateDevices(deviceList);
-        }
-        public void UpdateDevices(List<Device> deviceList) 
-        {
-            Devices = new ObservableCollection<DeviceViewModel>(deviceList.Select(device => new DeviceViewModel(device)));
-            foreach(var device in Devices) 
-            {
-                _pingSender.DeviceChanged += device.HandleDeviceChanged;
-            }
-        }
-
-       
+            Devices = new(deviceList);
+        }       
     }
 }

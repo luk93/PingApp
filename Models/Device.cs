@@ -8,14 +8,145 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using static PingApp.Models.DeviceDb;
 
 namespace PingApp.Models
 {
-    public partial class Device : DeviceDb
+    public partial class Device : ObservableBaseModel
     {
-        public bool IsBusy { get; set; }
-        public PingReply? LastReply { get; set; }
-
+        private string _name;
+        public string? Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+        }
+        private PingStatus _status;
+        public PingStatus Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged(nameof(Status));
+                }
+            }
+        }
+        private IPStatus _ipStatus;
+        public IPStatus IpStatus
+        {
+            get
+            {
+                return _ipStatus;
+            }
+            set
+            {
+                if (_ipStatus != value)
+                {
+                    _ipStatus = value;
+                    OnPropertyChanged(nameof(IpStatus));
+                }
+            }
+        }
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                if (_isBusy != value)
+                {
+                    _isBusy = value;
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
+        }
+        private string? _ipString;
+        public string? IpString
+        {
+            get
+            {
+                return _ipString;
+            }
+            set
+            {
+                if (_ipString != value)
+                {
+                    _ipString = value;
+                    OnPropertyChanged(nameof(IpString));
+                    OnPropertyChanged(nameof(IpAddress));
+                }
+            }
+        }
+        public IPAddress? IpAddress
+        {
+            get
+            {
+                return ConvertStrToIpAddress(IpString);
+            }
+            private set { }
+        }
+        private DateTime _lastReplyDt;
+        public DateTime LastReplyDt
+        {
+            get
+            {
+                return _lastReplyDt;
+            }
+            set
+            {
+                if (_lastReplyDt != value)
+                {
+                    _lastReplyDt = value;
+                    OnPropertyChanged(nameof(LastReplyDt));
+                }
+            }
+        }
+        private PingReply? _lastReply;
+        public PingReply? LastReply
+        {
+            get
+            {
+                return _lastReply;
+            }
+            set
+            {
+                if (_lastReply != value)
+                {
+                    _lastReply = value;
+                    OnPropertyChanged(nameof(LastReply));
+                }
+            }
+        }
+        private static IPAddress? ConvertStrToIpAddress(string? ipString)
+        {
+            if (ipString == null) return null;
+            try
+            {
+                return IPAddress.Parse(ipString);
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public Device(string? name, string? ipString)
         {
             Name = name;
@@ -25,18 +156,6 @@ namespace PingApp.Models
             LastReply = null;
             LastReplyDt = DateTime.MinValue;
             IsBusy = false;
-            LastReply = null;
-        }
-        public Device(DeviceDb deviceDb) 
-        {
-            Id = deviceDb.Id;
-            Name = deviceDb.Name;
-            IpString = deviceDb.IpString;
-            Status = deviceDb.Status;
-            IpStatus = deviceDb.IpStatus;
-            IpAddress = deviceDb.IpAddress;
-            LastReplyDt = deviceDb.LastReplyDt;
-            IsBusy = false; 
             LastReply = null;
         }
         

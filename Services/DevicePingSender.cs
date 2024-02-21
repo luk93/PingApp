@@ -48,10 +48,6 @@ namespace PingApp.Tools
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
-        private void OnDeviceChange(object sender) 
-        {
-            DeviceChanged?.Invoke(sender, EventArgs.Empty);
-        }
         public void SendPingToDeviceList()
         {
             foreach (Device device in _deviceListService.GetDeviceStore().DeviceList)
@@ -67,7 +63,6 @@ namespace PingApp.Tools
                 _isSending = true;
                 Device nextDevice = _deviceQueue.Dequeue();
                 nextDevice.IsBusy = true;
-                OnDeviceChange(nextDevice);
                 if (nextDevice != null)
                     _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
             }
@@ -85,7 +80,6 @@ namespace PingApp.Tools
             {
                 await _deviceRecordService.Update(entity.Id, feedbackDevice);
             }
-            OnDeviceChange(feedbackDevice);
             _isSending = false;
             SendPingToNextDevice();
         }
@@ -93,9 +87,8 @@ namespace PingApp.Tools
         {
             feedbackDevice.LastReply = e.Reply;
             feedbackDevice.LastReplyDt = DateTime.Now;
-            feedbackDevice.Status = Device.PingStatus.Canceled;
+            feedbackDevice.Status = DeviceDb.PingStatus.Canceled;
             feedbackDevice.IpStatus = e.Reply.Status;
-            OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping canceled!";
             _logger.Warning(msg);
             Log.Warning($"{msg}");
@@ -104,9 +97,8 @@ namespace PingApp.Tools
         {
             feedbackDevice.LastReply = e.Reply;
             feedbackDevice.LastReplyDt = DateTime.Now;
-            feedbackDevice.Status = Device.PingStatus.Failure;
+            feedbackDevice.Status = DeviceDb.PingStatus.Failure;
             feedbackDevice.IpStatus = e.Reply.Status;
-            OnDeviceChange(feedbackDevice);
             var msg = $"{feedbackDevice.IpAddress}: Ping failed: {e.Error}";
             _logger.Warning(msg);
             Log.Warning($"{msg}");
@@ -117,8 +109,7 @@ namespace PingApp.Tools
             {
                 feedbackDevice.LastReply = e.Reply;
                 feedbackDevice.LastReplyDt = DateTime.Now;
-                feedbackDevice.Status = Device.PingStatus.None;
-                OnDeviceChange(feedbackDevice);
+                feedbackDevice.Status = DeviceDb.PingStatus.None;
                 return;
             }
 
@@ -126,9 +117,8 @@ namespace PingApp.Tools
             {
                 feedbackDevice.LastReply = e.Reply;
                 feedbackDevice.LastReplyDt = DateTime.Now;
-                feedbackDevice.Status = Device.PingStatus.Success;
+                feedbackDevice.Status = DeviceDb.PingStatus.Success;
                 feedbackDevice.IpStatus = e.Reply.Status;
-                OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply?.Options?.Ttl}, Size: {e.Reply?.Buffer.Length}";
                 _logger.Information(msg);
                 Log.Information($"{msg}");
@@ -137,9 +127,8 @@ namespace PingApp.Tools
             {
                 feedbackDevice.LastReply = e.Reply;
                 feedbackDevice.LastReplyDt = DateTime.Now;
-                feedbackDevice.Status = Device.PingStatus.Failure;
+                feedbackDevice.Status = DeviceDb.PingStatus.Failure;
                 feedbackDevice.IpStatus = e.Reply.Status;
-                OnDeviceChange(feedbackDevice);
                 var msg = $"{feedbackDevice.IpAddress}: Ping failed! {e.Reply.Status}";
                 _logger.Warning(msg);
                 Log.Warning($"{msg}");

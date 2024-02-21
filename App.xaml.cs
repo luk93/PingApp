@@ -55,7 +55,6 @@ namespace PingApp
                         dbExist = true;
                         List<Device> deviceList = (await deviceRecordService.GetAll()).ToList() ?? [];
                         deviceListStore.Load(deviceList);
-                        deviceListViewModel.UpdateDevices(deviceListStore.DeviceList);
                     }
                     else
                         context.Database.EnsureCreated();

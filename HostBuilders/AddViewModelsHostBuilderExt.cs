@@ -19,7 +19,6 @@ namespace PingApp.HostBuilders
             {
                 services.AddSingleton<IPingAppViewModelFactory, PingAppViewModelFactory>();
 
-                services.AddTransient<DeviceViewModel>();
                 services.AddTransient<DeviceListViewModel>();
                 services.AddTransient<LoggsViewModel>();
                 services.AddTransient<MainViewModel>();

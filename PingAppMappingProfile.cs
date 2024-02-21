@@ -3,11 +3,11 @@ using PingApp.Models;
 using System.IO;
 using System.Net.Sockets;
 
-namespace Restaurant_API
+namespace PingApp
 {
-    public class PingApptMappingProfile : Profile
+    public class PingAppMappingProfile : Profile
     {
-        public PingApptMappingProfile()
+        public PingAppMappingProfile()
         {
             CreateMap<Device, DeviceDb>();
             CreateMap<DeviceDb, Device>();

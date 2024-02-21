@@ -19,7 +19,7 @@ namespace PingApp.Selectors
         
         public override Style? SelectStyle(object item, DependencyObject container)
         {
-            if (item is not DeviceViewModel device) return null;
+            if (item is not Device device) return null;
 
             if(device.IsBusy) return IsBusyStyle;
             if(device.Status == DeviceDb.PingStatus.Success) return SuccessStyle;
