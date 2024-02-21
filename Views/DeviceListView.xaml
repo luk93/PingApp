@@ -16,8 +16,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
-        <ListView x:Name ="LV_Devices"  Margin="5,0,5,5" Grid.Row="1" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
-              ItemsSource="{Binding Path=Devices}">
+        <ListView Margin="5,0,5,5" Grid.Row="1" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
+              ItemsSource="{Binding Path=Devices}" ItemContainerStyleSelector="{StaticResource deviceItemStyleSelector}">
             <ListView.Background>
                 <SolidColorBrush Color="AliceBlue"/>
             </ListView.Background>

@@ -23,10 +23,7 @@ namespace PingApp.ViewModels
         private ObservableCollection<DeviceViewModel> _deviceViewModels;
         public ObservableCollection<DeviceViewModel> Devices
         {
-            get
-            {
-                return _deviceViewModels;
-            }
+            get => _deviceViewModels;
             set
             {
                 _deviceViewModels = value;

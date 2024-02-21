@@ -91,6 +91,7 @@ namespace PingApp.ViewModels
                 {
                     _ipString = value;
                     OnPropertyChanged(nameof(IpString));
+                    OnPropertyChanged(nameof(IpAddress));
                 }
             }
         }
