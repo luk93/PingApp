@@ -15,17 +15,12 @@ using System.Windows.Input;
 
 namespace PingApp.State.StatusBar
 {
-    public class PingAppStatusBar : IPingAppStatusBar
+    public class PingAppStatusBar(LoggsViewModel loggsViewModel) : IPingAppStatusBar
     {
-        private readonly LoggsViewModel _loggsViewModel;
-        public ObservableCollection<LogEvent> LogItems => _loggsViewModel.LogItems;
+        private readonly LoggsViewModel _loggsViewModel = loggsViewModel;
+        public ObservableCollection<LogEvent> LogItems => _loggsViewModel.LogItemsSorted;
         public string LastLogItem => LogItems?.LastOrDefault()?.MessageTemplate?.ToString() ?? string.Empty;
 
         public ICommand? Command => throw new NotImplementedException();
-
-        public PingAppStatusBar(LoggsViewModel loggsViewModel)
-        {
-            _loggsViewModel = loggsViewModel;
-        }
     }
 }

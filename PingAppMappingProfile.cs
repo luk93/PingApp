@@ -12,7 +12,5 @@ namespace PingApp
             CreateMap<Device, DeviceDb>();
             CreateMap<DeviceDb, Device>();
         }
-
-
     }
 }

@@ -53,7 +53,7 @@ namespace PingApp
                         DeviceListStore? deviceListStore = _host.Services.GetService<DeviceListStore>();
                         DeviceListViewModel? deviceListViewModel = _host.Services.GetService<DeviceListViewModel>();
                         dbExist = true;
-                        List<Device> deviceList = (await deviceRecordService.GetAll()).ToList() ?? [];
+                        List<Device> deviceList = (await deviceRecordService?.GetAll())?.ToList() ?? [];
                         deviceListStore.Load(deviceList);
                     }
                     else
