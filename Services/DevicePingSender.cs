@@ -28,7 +28,7 @@ namespace PingApp.Tools
         private readonly PingOptions _options;
         private readonly DeviceListService _deviceListService;
         private readonly Queue<Device> _deviceQueue;
-        private bool _isSending;
+        private bool _isBusy;
         private readonly DeviceRecordService _deviceRecordService;
 
         public event EventHandler<EventArgs> DeviceChanged;
@@ -43,7 +43,7 @@ namespace PingApp.Tools
             _timeout = 3000;
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<Device>();
-            _isSending = false;
+            _isBusy = false;
 
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
@@ -58,11 +58,11 @@ namespace PingApp.Tools
         }
         private void SendPingToNextDevice()
         {
-            if (!_isSending && _deviceQueue.Count > 0)
+            if (!_isBusy && _deviceQueue.Count > 0)
             {
-                _isSending = true;
+                _isBusy = true;
                 Device nextDevice = _deviceQueue.Dequeue();
-                nextDevice.IsBusy = true;
+                nextDevice.Status = DeviceDb.PingStatus.Busy;
                 if (nextDevice != null)
                     _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
             }
@@ -74,13 +74,12 @@ namespace PingApp.Tools
             if (e.Cancelled) PingCancelled(e, feedbackDevice);
             else if (e.Error != null) PingError(e, feedbackDevice);
             else PingFeedback(e, feedbackDevice);
-            feedbackDevice.IsBusy = false;
             var entity = await _deviceRecordService.GetByIpAddressAndName(feedbackDevice.IpAddress, feedbackDevice.Name);
             if (entity != null) 
             {
                 await _deviceRecordService.Update(entity.Id, feedbackDevice);
             }
-            _isSending = false;
+            _isBusy = false;
             SendPingToNextDevice();
         }
         private void PingCancelled(PingCompletedEventArgs e, Device feedbackDevice)

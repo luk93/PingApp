@@ -62,22 +62,6 @@ namespace PingApp.Models
                 }
             }
         }
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                if (_isBusy != value)
-                {
-                    _isBusy = value;
-                    OnPropertyChanged(nameof(IsBusy));
-                }
-            }
-        }
         private string? _ipString;
         public string? IpString
         {
@@ -155,7 +139,6 @@ namespace PingApp.Models
             IpStatus = IPStatus.Unknown;
             LastReply = null;
             LastReplyDt = DateTime.MinValue;
-            IsBusy = false;
             LastReply = null;
         }
         

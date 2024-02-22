@@ -9,7 +9,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="/Styles/LogItems.xaml"/>
-                <ResourceDictionary Source="/Styles/DeviceItems.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <DataTemplate DataType="{x:Type viewmodels:DeviceListViewModel}">

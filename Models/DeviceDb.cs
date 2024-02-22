@@ -30,7 +30,7 @@ namespace PingApp.Models
         public enum PingStatus
         {
             None,
-            Waiting,
+            Busy,
             Canceled,
             Success,
             Failure
