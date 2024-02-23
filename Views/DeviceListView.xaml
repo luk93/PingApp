@@ -53,24 +53,17 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Last Reply Timestamp">
+                    <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last Reply Timestamp">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding LastReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="IP Status">
+                    <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="IP Status">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding IpStatus, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="60" Width="60"  Header="Is Busy">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox Margin="5, 0" IsEnabled="False" IsChecked="{Binding IsBusy, Mode=OneWay}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

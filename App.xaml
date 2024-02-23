@@ -14,7 +14,13 @@
             <DataTemplate DataType="{x:Type viewmodels:DeviceListViewModel}">
                 <views:DeviceListView/>
             </DataTemplate>
-            
+            <DataTemplate DataType="{x:Type viewmodels:LoggsViewModel}">
+                <views:LoggsView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:StatusBarViewModel}">
+                <views:StatusBarView/>
+            </DataTemplate>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

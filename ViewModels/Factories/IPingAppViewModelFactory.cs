@@ -1,4 +1,4 @@
-﻿using PingApp.State.Navigators;
+﻿using PingApp.States.Navigators;
 using PingApp.ViewModels.Base;
 using System;
 using System.Collections.Generic;

@@ -21,6 +21,7 @@ namespace PingApp.HostBuilders
 
                 services.AddTransient<DeviceListViewModel>();
                 services.AddTransient<LoggsViewModel>();
+                services.AddTransient<StatusBarViewModel>();
                 services.AddTransient<MainViewModel>();
 
                 services.AddSingleton<CreateViewModel<DeviceListViewModel>>(services => () => services.GetRequiredService<DeviceListViewModel>());

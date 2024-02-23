@@ -1,7 +1,6 @@
-﻿using PingApp.State.Navigators;
-using PingApp.State.StatusBar;
+﻿using PingApp.States.Navigators;
 using PingApp.Controls;
-using PingApp.State.Ribbon;
+using PingApp.States.Ribbon;
 using PingApp.ViewModels.Base;
 using System.Windows.Input;
 using PingApp.Commands;
@@ -13,20 +12,21 @@ namespace PingApp.ViewModels
     {
         private readonly IPingAppNavigator _navigator;
         private readonly IPingAppViewModelFactory _viewModelFactory;
-        public IPingAppStatusBar StatusBar { get; set; }
+        public LoggsViewModel LoggsViewModel { get; set; }
+        public StatusBarViewModel StatusBarViewModel { get; set; }
         public IPingAppRibbon Ribbon { get; set; }
         public ViewModelBase? CurrentViewModel => _navigator.CurrentViewModel;
         public ICommand UpdateCurrentViewModelCommand { get; set; }
-        public MainViewModel(IPingAppNavigator navigator, IPingAppStatusBar statusBar, IPingAppRibbon ribbon, IPingAppViewModelFactory viewModelFactory)
+        public MainViewModel(IPingAppNavigator navigator, LoggsViewModel loggsViewModel, IPingAppRibbon ribbon, 
+            IPingAppViewModelFactory viewModelFactory, StatusBarViewModel statusBarViewModel)
         {
             _navigator = navigator;
             _viewModelFactory = viewModelFactory;
-            //Navigator.UpdateCurrentViewModelCommand.Execute(ViewType.DeviceList);
-            StatusBar = statusBar;
+            LoggsViewModel = loggsViewModel;
             Ribbon = ribbon;
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, _viewModelFactory);
             UpdateCurrentViewModelCommand.Execute(ViewType.DeviceList);
-            
+            StatusBarViewModel = statusBarViewModel;
         }
     }
 }

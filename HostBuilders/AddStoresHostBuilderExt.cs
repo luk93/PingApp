@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PingApp.Models;
-using PingApp.Ribbon;
-using PingApp.State.Navigators;
-using PingApp.State.Ribbon;
-using PingApp.State.StatusBar;
+using PingApp.States.Navigators;
+using PingApp.States.Ribbon;
 using PingApp.Stores;
 using PingApp.ViewModels;
 using System;
@@ -22,7 +20,8 @@ namespace PingApp.HostBuilders
             return host.ConfigureServices(services =>
             {
                 services.AddAutoMapper(typeof(App));
-                services.AddSingleton<IPingAppStatusBar, PingAppStatusBar>(s => new PingAppStatusBar(s.GetRequiredService<LoggsViewModel>()));
+                services.AddSingleton<StatusStore>();
+                services.AddSingleton<LoggsStore>();
                 services.AddSingleton<IPingAppNavigator, PingAppNavigator>();
                 services.AddSingleton<IPingAppRibbon, PingAppRibbon>();
                 services.AddSingleton<DeviceListStore>();

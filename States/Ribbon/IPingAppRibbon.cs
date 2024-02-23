@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PingApp.State.Ribbon
+namespace PingApp.States.Ribbon
 {
     public interface IPingAppRibbon
     {

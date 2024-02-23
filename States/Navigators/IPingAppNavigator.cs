@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PingApp.State.Navigators
+namespace PingApp.States.Navigators
 {
     public enum ViewType
     {

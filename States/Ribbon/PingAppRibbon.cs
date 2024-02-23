@@ -3,7 +3,7 @@ using PingApp.Commands;
 using PingApp.DbServices;
 using PingApp.Models;
 using PingApp.Services;
-using PingApp.State.Ribbon;
+using PingApp.States.Ribbon;
 using PingApp.Stores;
 using PingApp.Tools;
 using PingApp.ViewModels;
@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PingApp.Ribbon
+namespace PingApp.States.Ribbon
 {
     public class PingAppRibbon : IPingAppRibbon
     {

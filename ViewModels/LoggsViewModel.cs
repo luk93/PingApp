@@ -12,44 +12,18 @@ using static OfficeOpenXml.ExcelErrorValue;
 using PingApp.ViewModels.Base;
 using System.Reactive.Linq;
 using System.Collections.Specialized;
+using PingApp.Stores;
 
 namespace PingApp.ViewModels
 {
     public class LoggsViewModel : ViewModelBase
     {
-        public ObservableCollection<LogEvent> LogItemsSorted { get; set; }
-        public ObservableCollection<LogEvent> LogItems
+        private LoggsStore _loggsStore;
+        public ObservableCollection<LogEvent> LogItemsSorted => _loggsStore.LogItemsSorted;
+        public ObservableCollection<LogEvent> LogItems => _loggsStore.LogItems;
+        public LoggsViewModel(LoggsStore loggsStore)
         {
-            get;
-        }
-        public LoggsViewModel()
-        {
-            LogItemsSorted = [];
-            LogItems = [];
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Observers(events =>
-                        events.Do(evt => LogItems.Add(evt))
-                              .Subscribe())
-                              .CreateLogger();
-            LogItems.CollectionChanged += LogItems_CollectionChanged;
-        }
-
-        private void LogItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                if (sender is ObservableCollection<LogEvent> collection)
-                {
-                    if (collection.Count > 0)
-                    {
-                        LogItemsSorted.Insert(0, collection.LastOrDefault());
-                        return;
-                    }
-                    LogItemsSorted.Clear();
-                }
-
-            }
+            _loggsStore = loggsStore;
         }
     }
 }

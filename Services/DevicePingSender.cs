@@ -3,6 +3,7 @@ using PingApp.DbServices;
 using PingApp.Extensions;
 using PingApp.Models;
 using PingApp.Services;
+using PingApp.Stores;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,9 @@ namespace PingApp.Tools
         private readonly Queue<Device> _deviceQueue;
         private bool _isBusy;
         private readonly DeviceRecordService _deviceRecordService;
-
+        private readonly StatusStore _statusStore;
         public event EventHandler<EventArgs> DeviceChanged;
-        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService)
+        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService, StatusStore statusStore)
         {
             _deviceListService = deviceListService;
             _ping = new Ping();
@@ -44,13 +45,18 @@ namespace PingApp.Tools
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<Device>();
             _isBusy = false;
+            _statusStore = statusStore;
 
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
         public void SendPingToDeviceList()
         {
-            foreach (Device device in _deviceListService.GetDeviceStore().DeviceList)
+            var devices = _deviceListService.GetDeviceStore().DeviceList;
+            _statusStore.Status = "Pinging Devices Ongoing...";
+            _statusStore.MaxProgress = devices.Count;
+            _statusStore.ActProgress = 0;
+            foreach (Device device in devices)
             {
                 _deviceQueue.Enqueue(device);
             }
@@ -80,6 +86,7 @@ namespace PingApp.Tools
                 await _deviceRecordService.Update(entity.Id, feedbackDevice);
             }
             _isBusy = false;
+            _statusStore.ActProgress++;
             SendPingToNextDevice();
         }
         private void PingCancelled(PingCompletedEventArgs e, Device feedbackDevice)

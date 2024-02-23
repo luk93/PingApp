@@ -1,5 +1,4 @@
-﻿
-using PingApp.Commands;
+﻿using PingApp.Commands;
 using PingApp.ViewModels.Base;
 using PingApp.ViewModels.Factories;
 using System;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace PingApp.State.Navigators
+namespace PingApp.States.Navigators
 {
     public class PingAppNavigator : ViewModelBase, IPingAppNavigator
     {

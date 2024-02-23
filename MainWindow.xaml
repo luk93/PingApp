@@ -6,6 +6,7 @@
         xmlns:tools="clr-namespace:PingApp.Tools"
         xmlns:local="clr-namespace:PingApp"
         xmlns:controls="clr-namespace:PingApp.Controls"
+        xmlns:views="clr-namespace:PingApp.Views"
         mc:Ignorable="d"
         Title="Ping App" Height="auto" Width="auto" MinHeight="600" MinWidth="910"
         Background="#546A76"
@@ -16,11 +17,13 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <controls:PingAppRibbon Grid.Row="0" DataContext="{Binding Ribbon}"/>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <ContentControl Content="{Binding CurrentViewModel}"/>
         </ScrollViewer>
-        <controls:PingAppStatusBar Grid.Row="2" DataContext="{Binding StatusBar}"/>
+        <ContentControl Grid.Row="2" Content="{Binding LoggsViewModel}"/>
+        <ContentControl Grid.Row="3" Content="{Binding StatusBarViewModel}"/>
     </Grid>
 </Window>
