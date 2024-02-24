@@ -16,14 +16,10 @@ using PingApp.Stores;
 
 namespace PingApp.ViewModels
 {
-    public class LoggsViewModel : ViewModelBase
+    public class LoggsViewModel(LoggsStore loggsStore) : ViewModelBase
     {
-        private LoggsStore _loggsStore;
+        private readonly LoggsStore _loggsStore = loggsStore;
         public ObservableCollection<LogEvent> LogItemsSorted => _loggsStore.LogItemsSorted;
         public ObservableCollection<LogEvent> LogItems => _loggsStore.LogItems;
-        public LoggsViewModel(LoggsStore loggsStore)
-        {
-            _loggsStore = loggsStore;
-        }
     }
 }

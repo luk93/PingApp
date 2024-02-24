@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PingApp.Controls"
+             xmlns:converters="clr-namespace:PingApp.Converters"
+             xmlns:vm="clr-namespace:PingApp.ViewModels"
+             xmlns:nav="clr-namespace:PingApp.States.Navigators"
              xmlns:fluent="urn:fluent-ribbon"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:EqualValueToParameterConverter x:Key="EqualValueToParameterConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,7 +25,8 @@
                 <fluent:RibbonGroupBox x:Name="GroupExcel" Header="Excel File" Width="200">
                     <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
                     <fluent:Button Header="Export" Command="{Binding ExportDevicesToExcelCommand}" LargeIcon="Resources/excel_export.png"/>
-                    <fluent:Button Header="Config" LargeIcon="Resources/excel_config.png"/>
+                    <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
+                                   LargeIcon="Resources/excel_config.png"/>
                 </fluent:RibbonGroupBox>
                 <!--Export group-->
                 <fluent:RibbonGroupBox x:Name="GroupExport" Header="Export path" Width="200">

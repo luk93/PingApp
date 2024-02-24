@@ -29,9 +29,9 @@ namespace PingApp.Tools
         private readonly PingOptions _options;
         private readonly DeviceListService _deviceListService;
         private readonly Queue<Device> _deviceQueue;
-        private bool _isBusy;
         private readonly DeviceRecordService _deviceRecordService;
         private readonly StatusStore _statusStore;
+        private bool _isBusy;
         public event EventHandler<EventArgs> DeviceChanged;
         public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService, StatusStore statusStore)
         {
@@ -52,6 +52,7 @@ namespace PingApp.Tools
         }
         public void SendPingToDeviceList()
         {
+            _statusStore.IsAppBusy = true;
             var devices = _deviceListService.GetDeviceStore().DeviceList;
             _statusStore.Status = "Pinging Devices Ongoing...";
             _statusStore.MaxProgress = devices.Count;
@@ -71,6 +72,11 @@ namespace PingApp.Tools
                 nextDevice.Status = DeviceDb.PingStatus.Busy;
                 if (nextDevice != null)
                     _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
+            }
+            else
+            {
+                _statusStore.Status = "Pinging devices finished!";
+                _statusStore.IsAppBusy = false;
             }
         }
         public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)

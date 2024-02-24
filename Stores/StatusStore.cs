@@ -39,8 +39,19 @@ namespace PingApp.Stores
                 StatusChanged?.Invoke();
             }
         }
+        public bool _isAppBusy;
+        public bool IsAppBusy
+        {
+            get => _isAppBusy;
+            set 
+            {
+                _isAppBusy = value;
+                StatusChanged?.Invoke();
+            }
+        }
         public StatusStore()
         {
+            _isAppBusy = false;
             _maxProgress = 100;
             _actProgress = 10;
             _status = "Waiting for operations";

@@ -10,12 +10,14 @@ namespace PingApp.States.Navigators
 {
     public enum ViewType
     {
-        DeviceList
+        DeviceList,
+        Config
     }
     public interface IPingAppNavigator
     {
         
         ViewModelBase? CurrentViewModel { get; set; }
         ICommand UpdateCurrentViewModelCommand { get; }
+        event Action? StateChanged;
     }
 }

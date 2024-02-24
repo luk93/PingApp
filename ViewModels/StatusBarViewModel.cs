@@ -17,7 +17,6 @@ namespace PingApp.ViewModels
         private readonly LoggsStore _loggsStore;
         private string? _lastLogItem;
         public string? LastLogItem => _lastLogItem;
-        private string _status;
         private readonly StatusStore _statusStore;
         public string? Status => _statusStore?.Status;
         public int? MaxProgress => _statusStore?.MaxProgress;
@@ -46,6 +45,12 @@ namespace PingApp.ViewModels
                         _lastLogItem = collection.LastOrDefault().MessageTemplate.ToString();
                         OnPropertyChanged(nameof(LastLogItem));
                     }
+        }
+        public override void Dispose()
+        {
+            _loggsStore.LogItems.CollectionChanged -= LogItems_CollectionChanged;
+            _statusStore.StatusChanged -= StatusStore_StateChanged;
+            base.Dispose();
         }
     }
 }

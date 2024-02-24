@@ -27,7 +27,7 @@ namespace PingApp.Stores
         public event Action<List<Device>> Updated;
         public DeviceListStore()
         {
-            _deviceList = new List<Device>();
+            _deviceList = [];
         }
         public void Load(List<Device> deviceList)
         {

@@ -15,10 +15,13 @@ namespace PingApp.ViewModels.Factories
     public class PingAppViewModelFactory : IPingAppViewModelFactory
     {
         private readonly CreateViewModel<DeviceListViewModel> _createDeviceListViewModel;
+        private readonly CreateViewModel<ConfigViewModel> _createConfigViewModel;
 
-        public PingAppViewModelFactory(CreateViewModel<DeviceListViewModel> createDeviceListViewModel)
+        public PingAppViewModelFactory(CreateViewModel<DeviceListViewModel> createDeviceListViewModel, 
+            CreateViewModel<ConfigViewModel> createConfigViewModel)
         {
             _createDeviceListViewModel = createDeviceListViewModel;
+            _createConfigViewModel = createConfigViewModel;
         }
 
         public ViewModelBase CreateViewModel(ViewType viewType)
@@ -27,6 +30,8 @@ namespace PingApp.ViewModels.Factories
             {
                 case ViewType.DeviceList:
                     return _createDeviceListViewModel();
+                case ViewType.Config:
+                    return _createConfigViewModel();
                 default:
                     throw new ArgumentException("The ViewType does not hava a ViewModel", "viewType");
             }

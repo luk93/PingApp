@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace PingApp.States.Navigators
 {
-    public class PingAppNavigator : ViewModelBase, IPingAppNavigator
+    public class PingAppNavigator : IPingAppNavigator
     {
         private ViewModelBase? _currentViewModel;
         public ViewModelBase? CurrentViewModel
@@ -22,9 +22,10 @@ namespace PingApp.States.Navigators
                 return _currentViewModel;
             }
             set
-            {
+            { 
+                _currentViewModel?.Dispose();
                 _currentViewModel = value;
-                OnPropertyChanged(nameof(CurrentViewModel));
+                StateChanged?.Invoke();
             }
         }
         public ICommand UpdateCurrentViewModelCommand {get; set;}
@@ -32,5 +33,6 @@ namespace PingApp.States.Navigators
         {
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(this, viewModelFactory);
         }
+        public event Action? StateChanged;
     }
 }

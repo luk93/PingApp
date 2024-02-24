@@ -14,7 +14,7 @@ namespace PingApp.Stores
     public class LoggsStore
     {
         private string? _lastLogItem;
-        private ObservableCollection<LogEvent> _logItemsSorted;
+        private readonly ObservableCollection<LogEvent> _logItemsSorted;
         public string? LastLogItem => _lastLogItem;
         public ObservableCollection<LogEvent> LogItemsSorted => _logItemsSorted;
         public ObservableCollection<LogEvent> LogItems

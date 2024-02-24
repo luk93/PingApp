@@ -27,6 +27,18 @@ namespace PingApp.ViewModels
             UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator, _viewModelFactory);
             UpdateCurrentViewModelCommand.Execute(ViewType.DeviceList);
             StatusBarViewModel = statusBarViewModel;
+
+            _navigator.StateChanged += Navigator_StateChanged;
+        }
+
+        private void Navigator_StateChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
+        }
+        public override void Dispose()
+        {
+            _navigator.StateChanged -= Navigator_StateChanged;
+            base.Dispose();
         }
     }
 }
