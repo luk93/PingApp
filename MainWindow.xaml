@@ -8,7 +8,7 @@
         xmlns:controls="clr-namespace:PingApp.Controls"
         xmlns:views="clr-namespace:PingApp.Views"
         mc:Ignorable="d"
-        Title="Ping App" Height="auto" Width="auto" MinHeight="600" MinWidth="910"
+        Title="Ping App" Height="auto" Width="auto" MinHeight="800" MinWidth="910"
         Background="#546A76"
         Foreground="#F5E9E2" Icon="/icons8-ping-96.png"
         >

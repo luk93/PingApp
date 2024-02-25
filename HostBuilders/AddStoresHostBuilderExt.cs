@@ -21,6 +21,7 @@ namespace PingApp.HostBuilders
             {
                 services.AddAutoMapper(typeof(App));
                 services.AddSingleton<StatusStore>();
+                services.AddSingleton<ConfigStore>();
                 services.AddSingleton<LoggsStore>();
                 services.AddSingleton<IPingAppNavigator, PingAppNavigator>();
                 services.AddSingleton<IPingAppRibbon, PingAppRibbon>();

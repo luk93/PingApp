@@ -6,7 +6,7 @@
              xmlns:tools="clr-namespace:PingApp.Tools"
              xmlns:converters="clr-namespace:PingApp.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="900">
+             d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
     <UserControl.Resources>
         <converters:DeviceStatusToStyleConverter x:Key="DeviceStatusToStyleConverter"/>
     </UserControl.Resources>

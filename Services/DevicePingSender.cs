@@ -23,25 +23,28 @@ namespace PingApp.Tools
     {
         private readonly Ping _ping;
         private readonly ILogger _logger;
-        private readonly string _data;
-        private readonly byte[] _buffer;
-        private readonly int _timeout;
+        private string _data;
+        private byte[] _buffer;
+        private int _timeout;
         private readonly PingOptions _options;
         private readonly DeviceListService _deviceListService;
         private readonly Queue<Device> _deviceQueue;
         private readonly DeviceRecordService _deviceRecordService;
         private readonly StatusStore _statusStore;
+        private readonly ConfigStore _configStore;
         private bool _isBusy;
         public event EventHandler<EventArgs> DeviceChanged;
-        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService, StatusStore statusStore)
+        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceRecordService deviceRecordService, 
+            StatusStore statusStore, ConfigStore configStore)
         {
+            _configStore = configStore;
             _deviceListService = deviceListService;
             _ping = new Ping();
             _logger = logger;
             _deviceRecordService = deviceRecordService;
-            _data = "################################";
+            _data = _configStore.SelectedConfig.PingerData;
             _buffer = Encoding.ASCII.GetBytes(_data);
-            _timeout = 3000;
+            _timeout = _configStore.SelectedConfig.PingerTimeout;
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<Device>();
             _isBusy = false;
@@ -49,9 +52,15 @@ namespace PingApp.Tools
 
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
+            _configStore = configStore;
         }
         public void SendPingToDeviceList()
         {
+            //Update Pinger data
+            _data = _configStore.SelectedConfig.PingerData;
+            _timeout = _configStore.SelectedConfig.PingerTimeout;
+            _buffer = Encoding.ASCII.GetBytes(_data);
+
             _statusStore.IsAppBusy = true;
             var devices = _deviceListService.GetDeviceStore().DeviceList;
             _statusStore.Status = "Pinging Devices Ongoing...";

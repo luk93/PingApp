@@ -28,6 +28,7 @@ namespace PingApp.Commands
             if (_xlsxFile == null) return;
             Log.Information($"File '{_xlsxFile.FullName}' selected!");
             var deviceList = await _deviceListService.UpdateDevicesFromExcelFile(_xlsxFile);
+            if (deviceList == null) return;
             _deviceStore.Load(deviceList);
             try
             {

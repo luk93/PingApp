@@ -53,7 +53,7 @@ namespace PingApp.Stores
         {
             _isAppBusy = false;
             _maxProgress = 100;
-            _actProgress = 10;
+            _actProgress = 0;
             _status = "Waiting for operations";
         }
         public event Action? StatusChanged;

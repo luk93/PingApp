@@ -20,6 +20,9 @@
             <DataTemplate DataType="{x:Type viewmodels:StatusBarViewModel}">
                 <views:StatusBarView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ConfigViewModel}">
+                <views:ConfigView/>
+            </DataTemplate>
 
         </ResourceDictionary>
     </Application.Resources>

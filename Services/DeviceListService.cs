@@ -1,6 +1,7 @@
 ﻿using OfficeOpenXml;
 using PingApp.Models;
 using PingApp.Stores;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,18 +15,27 @@ using static PingApp.Models.Device;
 
 namespace PingApp.Services
 {
-    public class DeviceListService(DeviceListStore deviceList)
+    public class DeviceListService(DeviceListStore deviceList, ConfigStore configStore, ILogger logger)
     {
+        private readonly ILogger _logger = logger;
+        private readonly ConfigStore _configStore = configStore;
         private readonly DeviceListStore _deviceStore = deviceList;
 
-        public async Task<List<Device>> UpdateDevicesFromExcelFile(FileInfo file)
+        public async Task<List<Device>?> UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceStore.DeviceList.Clear();
             var package = new ExcelPackage(file);
             await package.LoadAsync(file);
-            var ws = package.Workbook.Worksheets[0];
-            int row = 2;
-            int col = 1;
+            int wsIndex = _configStore.SelectedConfig.SheetIndex;
+            if (package.Workbook.Worksheets.Count() < wsIndex + 1)
+            {
+                Log.Error($"Worksheet with index '{wsIndex}' does not exist! Change import excel configuration");
+                return null;
+            }
+            var ws = package.Workbook.Worksheets[wsIndex];
+            int row = _configStore.SelectedConfig.StartRow;
+            int col = _configStore.SelectedConfig.StartColumn;
+            int invalidCount = 0;
             if (ws != null)
             {
                 while (!string.IsNullOrWhiteSpace(ws.Cells[row, col].Value?.ToString()))
@@ -33,13 +43,29 @@ namespace PingApp.Services
                     if (!string.IsNullOrWhiteSpace(ws.Cells[row, col + 1].Value?.ToString()))
                     {
                         var name = (ws.Cells[row, col].Value.ToString());
+                        if (!IsDeviceNameValid(name))
+                        {
+                            invalidCount++;
+                            _logger.Error($"Error while trying to get 'Name' of device from excel file. Row:{row} Column:{col}");
+                            row++;
+                            continue;
+                        }
                         var ipString = (ws.Cells[row, col + 1].Value.ToString());
+                        if (!IsIpAddressValid(ipString))
+                        {
+                            _logger.Error($"Error while trying to get 'Ip Address' of device from excel file. Row:{row} Column:{col}");
+                            invalidCount++;
+                            row++;
+                            continue;
+                        }
                         Device newObj = new(name, ipString);
                         _deviceStore.DeviceList.Add(newObj);
                     }
                     row++;
                 }
             }
+            if (invalidCount > 0) Log.Warning($"Imported {_deviceStore.DeviceList.Count} devices! There were some invalid ones, check loggs for details!");
+            else Log.Information($"Imported {_deviceStore.DeviceList.Count} devices!");
             return _deviceStore.DeviceList;
         }
 
@@ -47,5 +73,17 @@ namespace PingApp.Services
         {
             return _deviceStore;
         }
+        private bool IsDeviceNameValid(string? deviceName)
+        {
+            if(string.IsNullOrWhiteSpace(deviceName)) return false;
+            return true;
+        }
+        private bool IsIpAddressValid(string? ipAddress)
+        {
+            if(string.IsNullOrWhiteSpace(ipAddress)) return false;
+            if(Tools.Converters.ConvertStrToIpAddress(ipAddress) == null) return false;
+            return true;
+        }
+
     }
 }

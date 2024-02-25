@@ -83,7 +83,7 @@ namespace PingApp.Models
         {
             get
             {
-                return ConvertStrToIpAddress(IpString);
+                return Tools.Converters.ConvertStrToIpAddress(IpString);
             }
             private set { }
         }
@@ -119,18 +119,7 @@ namespace PingApp.Models
                 }
             }
         }
-        private static IPAddress? ConvertStrToIpAddress(string? ipString)
-        {
-            if (ipString == null) return null;
-            try
-            {
-                return IPAddress.Parse(ipString);
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        
         public Device(string? name, string? ipString)
         {
             Name = name;

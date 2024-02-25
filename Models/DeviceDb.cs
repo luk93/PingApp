@@ -20,7 +20,7 @@ namespace PingApp.Models
         {
             get
             {
-                return ConvertStrToIpAddress(IpString);
+                return Tools.Converters.ConvertStrToIpAddress(IpString);
             }
             set { }
         }
@@ -34,18 +34,6 @@ namespace PingApp.Models
             Canceled,
             Success,
             Failure
-        }
-        private static IPAddress? ConvertStrToIpAddress(string? ipString)
-        {
-            if (ipString == null) return null;
-            try
-            {
-                return IPAddress.Parse(ipString);
-            }
-            catch
-            {
-                return null;
-            }
         }
     }
 }
