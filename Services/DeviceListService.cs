@@ -11,7 +11,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
-using static PingApp.Models.Device;
+using static PingApp.Models.DeviceDTO;
 
 namespace PingApp.Services
 {
@@ -21,13 +21,13 @@ namespace PingApp.Services
         private readonly ConfigStore _configStore = configStore;
         private readonly DeviceListStore _deviceStore = deviceList;
 
-        public async Task<List<Device>?> UpdateDevicesFromExcelFile(FileInfo file)
+        public async Task<List<DeviceDTO>?> UpdateDevicesFromExcelFile(FileInfo file)
         {
             _deviceStore.DeviceList.Clear();
             var package = new ExcelPackage(file);
             await package.LoadAsync(file);
             int wsIndex = _configStore.SelectedConfig.SheetIndex;
-            if (package.Workbook.Worksheets.Count() < wsIndex + 1)
+            if (package.Workbook.Worksheets.Count < wsIndex + 1)
             {
                 Log.Error($"Worksheet with index '{wsIndex}' does not exist! Change import excel configuration");
                 return null;
@@ -58,7 +58,7 @@ namespace PingApp.Services
                             row++;
                             continue;
                         }
-                        Device newObj = new(name, ipString);
+                        DeviceDTO newObj = new(name, ipString);
                         _deviceStore.DeviceList.Add(newObj);
                     }
                     row++;
@@ -73,12 +73,12 @@ namespace PingApp.Services
         {
             return _deviceStore;
         }
-        private bool IsDeviceNameValid(string? deviceName)
+        private static bool IsDeviceNameValid(string? deviceName)
         {
             if(string.IsNullOrWhiteSpace(deviceName)) return false;
             return true;
         }
-        private bool IsIpAddressValid(string? ipAddress)
+        private static bool IsIpAddressValid(string? ipAddress)
         {
             if(string.IsNullOrWhiteSpace(ipAddress)) return false;
             if(Tools.Converters.ConvertStrToIpAddress(ipAddress) == null) return false;

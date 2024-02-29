@@ -17,7 +17,8 @@ namespace PingApp.HostBuilders
         {
             return host.ConfigureServices(services =>
             {
-                services.AddSingleton<DeviceRecordService>();
+                services.AddSingleton<DeviceDbService>();
+                services.AddSingleton<PingResultDbService>();
                 services.AddSingleton<DeviceListService>();
                 services.AddSingleton<DevicePingSender>();
             });

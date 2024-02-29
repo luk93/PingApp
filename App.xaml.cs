@@ -49,11 +49,11 @@ namespace PingApp
                 {
                     if(context.Database.CanConnect())
                     {
-                        DeviceRecordService? deviceRecordService = _host.Services.GetRequiredService<DeviceRecordService>();
+                        DeviceDbService? deviceDbService = _host.Services.GetRequiredService<DeviceDbService>();
                         DeviceListStore? deviceListStore = _host.Services.GetService<DeviceListStore>();
                         DeviceListViewModel? deviceListViewModel = _host.Services.GetService<DeviceListViewModel>();
                         dbExist = true;
-                        List<Device> deviceList = (await deviceRecordService?.GetAll())?.ToList() ?? [];
+                        List<DeviceDTO> deviceList = (await deviceDbService?.GetAllWithPingResults())?.ToList() ?? [];
                         deviceListStore.Load(deviceList);
                     }
                     else

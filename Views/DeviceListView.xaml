@@ -63,7 +63,7 @@
                     <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="IP Status">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding IpStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding LastIpStatus, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

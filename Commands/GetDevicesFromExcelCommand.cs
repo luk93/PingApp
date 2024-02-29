@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceRecordService deviceRecordService) : AsyncCommandBase
+    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceDbService deviceDbService) : AsyncCommandBase
     {
         private readonly DeviceListService _deviceListService = deviceListService;
         private readonly DeviceListStore _deviceStore = deviceStore;
         private readonly ILogger _logger = logger;
         private FileInfo? _xlsxFile = null; 
-        private readonly DeviceRecordService _deviceRecordService = deviceRecordService;
+        private readonly DeviceDbService _deviceDbService = deviceDbService;
 
         public override async Task ExecuteAsync(object? parameter)
         {
@@ -32,10 +32,10 @@ namespace PingApp.Commands
             _deviceStore.Load(deviceList);
             try
             {
-                await _deviceRecordService.DeleteAll();
+                await _deviceDbService.DeleteAll();
                 foreach (var device in _deviceStore.DeviceList)
                 {
-                    await _deviceRecordService.Create(device);
+                    await _deviceDbService.Create(device);
                 }
             }
             catch (Exception ex)

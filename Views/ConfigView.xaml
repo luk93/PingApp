@@ -69,5 +69,11 @@
                  Foreground="Black" Background="AliceBlue" 
                  Height="20" Width="400" HorizontalAlignment="Left"
                  Text="{Binding SelectedConfig.PingerData, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Margin="5 0 0 0" VerticalAlignment="Top"
+                 Text="Repeat count" Height="25"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Margin="5 20 0 0" VerticalAlignment="Top"
+                 Foreground="Black" Background="AliceBlue" 
+                 Height="20" Width="100" HorizontalAlignment="Left"
+                 Text="{Binding SelectedConfig.PingerRepeatCount, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

@@ -9,8 +9,8 @@ namespace PingApp
     {
         public PingAppMappingProfile()
         {
-            CreateMap<Device, DeviceDb>();
-            CreateMap<DeviceDb, Device>();
+            CreateMap<DeviceDTO, Device>();
+            CreateMap<Device, DeviceDTO>();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace PingApp.States.Ribbon
         private readonly StatusStore _statusStore;
         private readonly DevicePingSender _devicePingSender;
         private readonly DeviceListService _deviceListService;
-        private readonly DeviceRecordService _deviceRecordService;
+        private readonly DeviceDbService _deviceDbService;
         private readonly DeviceListStore _deviceStore;
         private readonly IPingAppViewModelFactory _viewModelFactory;
         private readonly IPingAppNavigator _navigator;
@@ -43,19 +43,19 @@ namespace PingApp.States.Ribbon
         public ICommand? UpdateCurrentViewModel {  get; }
 
         public PingAppRibbon(ILogger logger, IMapper mapper, StatusStore statusStore, DevicePingSender devicePingSender, DeviceListService deviceListService,
-                            DeviceRecordService deviceRecordService, DeviceListStore deviceStore, IPingAppViewModelFactory viewModelFactory, IPingAppNavigator navigator)
+                            DeviceDbService deviceDbService, DeviceListStore deviceStore, IPingAppViewModelFactory viewModelFactory, IPingAppNavigator navigator)
         {
             _logger = logger;
             _mapper = mapper;
             _statusStore = statusStore;
             _devicePingSender = devicePingSender;
             _deviceListService = deviceListService;
-            _deviceRecordService = deviceRecordService;
+            _deviceDbService = deviceDbService;
             _deviceStore = deviceStore;
             _viewModelFactory = viewModelFactory;
             _navigator = navigator;
             TriggerAllCommand = new TriggerAllCommand(_devicePingSender, _statusStore);
-            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceRecordService);
+            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceDbService);
             ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
             ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _logger, _mapper);
             OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);

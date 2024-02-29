@@ -11,7 +11,7 @@ namespace PingApp.Stores
 {
     public class ConfigStore
     {
-        private ObservableCollection<Config>? _config;
+        private readonly ObservableCollection<Config>? _config;
         public ObservableCollection<Config>? Configs => _config;
         public Config? SelectedConfig => _config?.FirstOrDefault() ?? null;
 
@@ -31,6 +31,7 @@ namespace PingApp.Stores
                 SheetIndex = 0,
                 PingerData = "################################",
                 PingerTimeout = 3000,
+                PingerRepeatCount = 1,
             });
         }
     }

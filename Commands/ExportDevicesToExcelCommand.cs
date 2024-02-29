@@ -48,7 +48,7 @@ namespace PingApp.Commands
             try
             {
                 var ws = excelPackage.Workbook.Worksheets.Add("DeviceList");
-                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<DeviceDb>>(_deviceStore.DeviceList), true);
+                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<Device>>(_deviceStore.DeviceList), true);
                 range.AutoFitColumns();
                 await ExcelManager.SaveExcelFile(excelPackage);
                 var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";

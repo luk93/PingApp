@@ -90,5 +90,22 @@ namespace PingApp.Models
                 }
             }
         }
+        private int _pingerRepeatCount;
+        public int PingerRepeatCount
+        {
+            get
+            {
+                return _pingerRepeatCount;
+            }
+            set
+            {
+                if (_pingerRepeatCount != value)
+                {
+                    _pingerRepeatCount = value;
+                    OnPropertyChanged(nameof(PingerRepeatCount));
+                }
+            }
+        }
+
     }
 }

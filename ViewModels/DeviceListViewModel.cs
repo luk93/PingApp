@@ -19,8 +19,8 @@ namespace PingApp.ViewModels
     public class DeviceListViewModel : ViewModelBase
     {
         private readonly DeviceListStore? _deviceStore;
-        private ObservableCollection<Device> _devices;
-        public ObservableCollection<Device> Devices
+        private ObservableCollection<DeviceDTO> _devices;
+        public ObservableCollection<DeviceDTO> Devices
         {
             get => _devices;
             set
@@ -29,7 +29,6 @@ namespace PingApp.ViewModels
                 OnPropertyChanged(nameof(Devices));
             }
         }
-        public bool CanTrigger => Devices.Count > 0;
         public DeviceListViewModel(DeviceListStore deviceStore)
         {
             _deviceStore = deviceStore;
@@ -44,11 +43,11 @@ namespace PingApp.ViewModels
             if(_deviceStore != null) _deviceStore.Updated -= OnUpdate;
             base.Dispose();
         }
-        private void OnLoad(List<Device> deviceList)
+        private void OnLoad(List<DeviceDTO> deviceList)
         {
             Devices = new(deviceList);
         }
-        private void OnUpdate(List<Device> deviceList)
+        private void OnUpdate(List<DeviceDTO> deviceList)
         {
             Devices = new(deviceList);
         }       

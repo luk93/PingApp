@@ -22,7 +22,8 @@ namespace PingApp.Db
         private const string _connString = "Data Source=internalDb.db";
 
         private readonly ILoggerFactory _loggerFactory;
-        public virtual DbSet<DeviceDb> Devices { get; set; } = null!;
+        public virtual DbSet<Device> Devices { get; set; } = null!;
+        public virtual DbSet<PingResult> PingResults { get; set; } = null!;
 
         public AppDbContext(ILoggerFactory loggerFactory)
         {
@@ -56,9 +57,16 @@ namespace PingApp.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DeviceDb>(entity =>
+            modelBuilder.Entity<Device>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+            modelBuilder.Entity<PingResult>(entity =>
+            {
+                entity.Property(e =>e.Id).ValueGeneratedOnAdd();
+                entity.HasOne(x => x.Device)
+                      .WithMany(x => x.PingResults)
+                      .HasForeignKey(x => x.DeviceId);
             });
             OnModelCreatingPartial(modelBuilder);
         }
