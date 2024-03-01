@@ -1,6 +1,9 @@
 ﻿using PingApp.Models.Base;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -119,8 +122,7 @@ namespace PingApp.Models
                 }
             }
         }
-        public List<PingResult> PingResults { get; set; } = [];
-        
+        public ObservableCollection<PingResult> PingResults {get;set;} = [];
         public DeviceDTO(string? name, string? ipString)
         {
             _name = name;
@@ -130,6 +132,5 @@ namespace PingApp.Models
             _lastReply = null;
             _lastReplyDt = DateTime.MinValue;
         }
-        
     }
 }

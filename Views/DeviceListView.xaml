@@ -8,7 +8,8 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
     <UserControl.Resources>
-        <converters:DeviceStatusToStyleConverter x:Key="DeviceStatusToStyleConverter"/>
+        <converters:DeviceStatusToColorConverter x:Key="DeviceStatusToColorConverter"/>
+        <converters:IpStatusToColorConverter x:Key="IpStatusToColorConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -16,59 +17,102 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
-        <ListView Margin="5,0,5,5" Grid.Row="1" Grid.ColumnSpan="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
-              ItemsSource="{Binding Path=Devices}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="{Binding Status, Converter={StaticResource DeviceStatusToStyleConverter}}" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.Background>
-                <SolidColorBrush Color="AliceBlue"/>
-            </ListView.Background>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160" Header="Name" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Ip Address">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding IpString, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="100" Width="100"  Header="Status">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last Reply Timestamp">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LastReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="IP Status">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LastIpStatus, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
+        <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView x:Name="DevicesLV" Margin="5,0,5,5" Grid.Row="1"  Width="Auto" Height="Auto" Foreground="#FF010111" 
+                    ItemsSource="{Binding Path=Devices}" SelectedIndex="{Binding SelectedIndex}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="{Binding Status, Converter={StaticResource DeviceStatusToColorConverter}}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.Background>
+                    <SolidColorBrush Color="AliceBlue"/>
+                </ListView.Background>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn tools:GridColumn.MinWidth="160" Width="160" Header="Name">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="100" Width="100"  Header="Ip Address">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding IpString, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="100" Width="100"  Header="Status">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last Reply Timestamp">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding LastReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last IP Status">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding LastIpStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
+        <!--<Label Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2">
+            <Label.Content>
+                <MultiBinding StringFormat="Ping Result History for: {0}">
+                    <Binding Path="SelectedDevice.Name"/>
+                </MultiBinding>
+            </Label.Content>
+        </Label>-->
+        <Label Content="{Binding SelectedDevice.Name}" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2"/>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView Margin="5,0,5,5" Grid.Row="2" Grid.Column="1"  Width="Auto" Height="{Binding ActualHeight, ElementName=DevicesLV}" Foreground="#FF010111" 
+                ItemsSource="{Binding Path=SelectedDevice.PingResults}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="{Binding IpStatus, Converter={StaticResource IpStatusToColorConverter}}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.Background>
+                    <SolidColorBrush Color="AliceBlue"/>
+                </ListView.Background>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Reply Timestamp">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="IP Status">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding IpStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </ScrollViewer>
     </Grid>
 </UserControl>

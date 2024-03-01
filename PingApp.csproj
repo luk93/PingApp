@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="icons8-ping-96.png" />
+    <None Remove="Resources\cancel.png" />
     <None Remove="Resources\config_template.png" />
     <None Remove="Resources\excel_config.png" />
     <None Remove="Resources\excel_export.png" />
@@ -42,6 +43,7 @@
 
   <ItemGroup>
     <Resource Include="icons8-ping-96.png" />
+    <Resource Include="Resources\cancel.png" />
     <Resource Include="Resources\config_template.png" />
     <Resource Include="Resources\excel_config.png" />
     <Resource Include="Resources\excel_export.png" />

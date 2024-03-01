@@ -15,7 +15,7 @@ using static PingApp.Models.Device;
 
 namespace PingApp.Converters
 {
-    public class DeviceStatusToStyleConverter : IValueConverter
+    public class DeviceStatusToColorConverter : IValueConverter
     {
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

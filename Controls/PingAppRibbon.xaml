@@ -39,6 +39,7 @@
                  <!--Status  group-->
                 <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Devices Operations" Width="200">
                     <fluent:Button Header="Trigger All" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
+                    <fluent:Button Header="Cancel" Command="{Binding CancelPingCommand}" LargeIcon="Resources/cancel.png"/>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>
                 </fluent:RibbonGroupBox>

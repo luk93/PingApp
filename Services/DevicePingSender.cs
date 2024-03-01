@@ -34,6 +34,7 @@ namespace PingApp.Tools
         private readonly StatusStore _statusStore;
         private readonly ConfigStore _configStore;
         private bool _isBusy;
+        private bool _isCanceled;
         private int _pingRepeatCountConfig;
         private int _pingRepeatCount;
 
@@ -60,6 +61,7 @@ namespace PingApp.Tools
         public void SendPingToDeviceList()
         {
             //Update Pinger data
+            _isCanceled = false;
             _data = _configStore.SelectedConfig.PingerData;
             _timeout = _configStore.SelectedConfig.PingerTimeout;
             _pingRepeatCountConfig = _configStore.SelectedConfig.PingerRepeatCount;
@@ -98,7 +100,21 @@ namespace PingApp.Tools
             }
             else
             {
-                _statusStore.Status = "Pinging devices finished!";
+                if (_isCanceled)
+                {
+                    var msg = "Pinging devices canceled!";
+                    _statusStore.Status = msg;
+                    _statusStore.ActProgress = 0;
+                    Log.Information(msg);
+                    _logger.Information(msg);
+                }
+                else
+                {
+                    var msg = "Pinging devices finished!";
+                    _statusStore.Status = msg;
+                    Log.Information(msg);
+                    _logger.Information(msg);
+                }
                 _statusStore.IsAppBusy = false;
             }
         }
@@ -127,6 +143,7 @@ namespace PingApp.Tools
                         ReplyDt = feedbackDevice.LastReplyDt,
                     };
                     await _pingResultDbService.Create(device.Id, pingResult);
+                    feedbackDevice.PingResults.Insert(0,pingResult);
                     await _deviceDbService.Update(device.Id, feedbackDevice);
                 }
             }
@@ -185,6 +202,10 @@ namespace PingApp.Tools
                 Log.Warning($"{msg}");
             }
         }
-
+        public void CancelPingToDeviceList()
+        {
+            _isCanceled = true;
+            _deviceQueue.Clear();
+        }
     }
 }

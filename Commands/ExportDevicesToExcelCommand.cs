@@ -35,6 +35,11 @@ namespace PingApp.Commands
                     _deviceStore.XlsxExportPath = openFolderDialog.SelectedPath;
                     Log.Information($"Export path changed to '{_deviceStore.XlsxExportPath}'");
                 }
+                else
+                {
+                    Log.Warning("Export path not selected!");
+                    return;
+                }
             }
             var xlsxFilePath = $"{_deviceStore.XlsxExportPath}\\DevicesPingStatus_{FileTools.GetDateTimeString()}.xlsx";
             var excelPackage = ExcelManager.CreateExcelFile(xlsxFilePath);

@@ -37,7 +37,7 @@ namespace PingApp.DbServices
         {
             using var context = _contextFactory.CreateDbContext();
             return _mapper.Map<DeviceDTO> (await context.Devices
-                                                       .Include(f => f.PingResults)
+                                                       .Include(f => f.PingResults.OrderByDescending(d => d.ReplyDt))
                                                        .FirstOrDefaultAsync((t) => t.Id == id) ?? null);
         }
         public async Task<IEnumerable<DeviceDTO>?> GetAll()
@@ -49,7 +49,7 @@ namespace PingApp.DbServices
         {
             using var context = _contextFactory.CreateDbContext();
             return _mapper.Map<IEnumerable<DeviceDTO>>(await context.Devices
-                                                       .Include(f => f.PingResults)
+                                                       .Include(f => f.PingResults.OrderByDescending(d => d.ReplyDt))
                                                        .ToListAsync() ?? null);
         }
 

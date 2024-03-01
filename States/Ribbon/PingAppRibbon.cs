@@ -40,6 +40,7 @@ namespace PingApp.States.Ribbon
 
         public ICommand? ExportDevicesToExcelCommand { get; }
         public ICommand? OpenExportFolderCommand { get; }
+        public ICommand? CancelPingCommand { get; }
         public ICommand? UpdateCurrentViewModel {  get; }
 
         public PingAppRibbon(ILogger logger, IMapper mapper, StatusStore statusStore, DevicePingSender devicePingSender, DeviceListService deviceListService,
@@ -60,7 +61,7 @@ namespace PingApp.States.Ribbon
             ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _logger, _mapper);
             OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);
             UpdateCurrentViewModel = new UpdateCurrentViewModelCommand(_navigator, _viewModelFactory);
-            
+            CancelPingCommand = new CancelPingCommand(_devicePingSender, _statusStore);
         }
     }
 }

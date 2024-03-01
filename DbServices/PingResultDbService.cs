@@ -71,7 +71,7 @@ namespace PingApp.DbServices
             using var context = _contextFactory.CreateDbContext();
             var device = GetDeviceById(deviceId);
             if (device == null) return null;
-            return device.PingResults;
+            return device.PingResults.OrderByDescending(p => p.ReplyDt).ToList();
         }
         public async Task<PingResult?> Update(int id, PingResult pingResult) => await _nonQueryDataService.Update(id, pingResult);
         
