@@ -23,11 +23,12 @@ namespace PingApp.Stores
             }
         }
         public List<DeviceDTO> DeviceList => _deviceList;
-        public event Action<List<DeviceDTO>> Loaded;
-        public event Action<List<DeviceDTO>> Updated;
-        public event Action AnyDeviceChanged;
+        public event Action<List<DeviceDTO>>? Loaded;
+        public event Action<List<DeviceDTO>>? Updated;
+        public event Action? AnyDeviceChanged;
         public DeviceListStore()
         {
+            _xlsxExportPath = string.Empty;
             _deviceList = [];
         }
         public void Load(List<DeviceDTO> deviceList)
@@ -50,7 +51,7 @@ namespace PingApp.Stores
         {
             Updated?.Invoke(deviceList);
         }
-        private void SubscribeDevicesChanged()
+        public void SubscribeDevicesChanged()
         {
             foreach (var device in _deviceList) 
             {

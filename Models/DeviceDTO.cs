@@ -140,7 +140,7 @@ namespace PingApp.Models
         }
         public ObservableCollection<PingResult> PingResults {get;set;} = [];
 
-        public event Action DeviceChanged;
+        public event Action? DeviceChanged;
         public DeviceDTO(string? name, string? ipString)
         {
             _name = name;

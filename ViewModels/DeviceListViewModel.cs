@@ -44,8 +44,8 @@ namespace PingApp.ViewModels
                 OnPropertyChanged(nameof(SelectedDevice));
             }
         }
-        private DeviceDTO _selectedDevice;
-        public DeviceDTO SelectedDevice
+        private DeviceDTO? _selectedDevice;
+        public DeviceDTO? SelectedDevice
         {
             get => _selectedDevice;
         }
@@ -78,6 +78,7 @@ namespace PingApp.ViewModels
         private void OnLoad(List<DeviceDTO> deviceList)
         {
             Devices = new(deviceList);
+            _deviceStore.SubscribeDevicesChanged();
         }
         private void OnUpdate(List<DeviceDTO> deviceList)
         {
