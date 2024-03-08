@@ -15,10 +15,11 @@ using System.Windows.Input;
 
 namespace PingApp.ViewModels
 {
-    
+
     public class DeviceListViewModel : ViewModelBase
     {
         private readonly DeviceListStore? _deviceStore;
+        private readonly StatusStore _statusStore;
         private ObservableCollection<DeviceDTO> _devices;
         public ObservableCollection<DeviceDTO> Devices
         {
@@ -35,7 +36,7 @@ namespace PingApp.ViewModels
             get => _selectedIndex;
             set
             {
-                if (_selectedIndex == value) 
+                if (_selectedIndex == value)
                     return;
                 _selectedIndex = value;
                 OnSelectedIndexChange();
@@ -48,18 +49,30 @@ namespace PingApp.ViewModels
         {
             get => _selectedDevice;
         }
-        public DeviceListViewModel(DeviceListStore deviceStore)
+        private bool _isAppNotBusy;
+        public bool IsAppNotBusy => _isAppNotBusy;
+        public DeviceListViewModel(DeviceListStore deviceStore, StatusStore statusStore)
         {
+            _statusStore = statusStore;
             _deviceStore = deviceStore;
             _devices = new(_deviceStore.DeviceList);
+            _isAppNotBusy = true;
 
             _deviceStore.Loaded += OnLoad;
             _deviceStore.Updated += OnUpdate;
+            _statusStore.StatusChanged += StatusStore_StatusChanged;
         }
+
+        private void StatusStore_StatusChanged()
+        {
+            _isAppNotBusy = !_statusStore.IsAppBusy;
+            OnPropertyChanged(nameof(IsAppNotBusy));
+        }
+
         public override void Dispose()
         {
-            if(_deviceStore != null) _deviceStore.Loaded -= OnLoad;
-            if(_deviceStore != null) _deviceStore.Updated -= OnUpdate;
+            if (_deviceStore != null) _deviceStore.Loaded -= OnLoad;
+            if (_deviceStore != null) _deviceStore.Updated -= OnUpdate;
             base.Dispose();
         }
         private void OnLoad(List<DeviceDTO> deviceList)

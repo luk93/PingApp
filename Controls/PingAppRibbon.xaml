@@ -20,7 +20,7 @@
 
         <fluent:Ribbon x:Name="RibbonWin" Grid.Row="0">
              <!--Ribbon Tab #2: Excel-->
-            <fluent:RibbonTabItem Header="Excel" KeyTip="S">
+            <fluent:RibbonTabItem Header="Excel file operations" KeyTip="S">
                 <!--Excel group-->
                 <fluent:RibbonGroupBox x:Name="GroupExcel" Header="Excel File" Width="200">
                     <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
@@ -35,13 +35,17 @@
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
             <!--Ribbon Tab #2: Pinger--> 
-            <fluent:RibbonTabItem Header="Pinger" KeyTip="P">
+            <fluent:RibbonTabItem Header="Devices operations" KeyTip="P">
                  <!--Status  group-->
-                <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Devices Operations" Width="200">
-                    <fluent:Button Header="Trigger All" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
-                    <fluent:Button Header="Cancel" Command="{Binding CancelPingCommand}" LargeIcon="Resources/cancel.png"/>
+                <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Pinger Operations" Width="200">
+                    <fluent:Button Header="Ping Selected" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
+                    <fluent:Button Header="Cancel Pinging" Command="{Binding CancelPingCommand}" LargeIcon="Resources/cancel.png"/>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox x:Name="GroupDevices" Header="Device List Operations" Width="200">
+                    <fluent:Button Header="Select All" Command="{Binding SelectAllDevicesCommand}" LargeIcon="Resources/check_all.png"/>
+                    <fluent:Button Header="Unselect All" Command="{Binding UnselectAllDevicesCommand}" LargeIcon="Resources/uncheck_all.png"/>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
         </fluent:Ribbon>

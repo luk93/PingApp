@@ -1,25 +1,29 @@
-﻿using PingApp.Stores;
+﻿using AutoMapper;
+using OfficeOpenXml;
+using PingApp.DbServices;
+using PingApp.Models;
+using PingApp.Services;
+using PingApp.Stores;
 using PingApp.Tools;
 using PingApp.ViewModels;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class TriggerAllCommand : AsyncCommandBase
+    public class SelectAllDevicesCommand : CommandBase
     {
-        private readonly DevicePingSender _devicePingSender;
-        private readonly StatusStore _statusStore;
         private readonly DeviceListStore _deviceStore;
-
-        public TriggerAllCommand(DevicePingSender devicePingSender, StatusStore statusStore, DeviceListStore deviceStore)
+        private readonly StatusStore _statusStore;
+        public SelectAllDevicesCommand(DeviceListStore deviceStore, StatusStore statusStore)
         {
-            _devicePingSender = devicePingSender;
-            _statusStore = statusStore;
             _deviceStore = deviceStore;
+            _statusStore = statusStore;
 
             _deviceStore.AnyDeviceChanged += DeviceStore_AnyDeviceChanged;
             _statusStore.StatusChanged += StatusStore_StatusChanged;
@@ -35,18 +39,18 @@ namespace PingApp.Commands
             OnCanExecutedChanged();
         }
 
-        public override Task ExecuteAsync(object? parameter)
+        public override void Execute(object? parameter)
         {
-            _devicePingSender.SendPingToDeviceList();
-            return Task.CompletedTask;
+            foreach (var device in _deviceStore.DeviceList)
+            {
+                device.SelectedToPing = true;
+            }
+            _deviceStore.Update(_deviceStore.DeviceList);
         }
-
         public override bool CanExecute(object? parameter)
         {
-            var selectedDevices = _deviceStore.DeviceList.Where(x => x.SelectedToPing);
-            return !_statusStore.IsAppBusy && selectedDevices.Count() > 0 && base.CanExecute(parameter);
+            return _deviceStore.DeviceList.Count > 0 && !_statusStore.IsAppBusy && base.CanExecute(parameter);
         }
 
-        
     }
 }

@@ -69,13 +69,15 @@ namespace PingApp.Tools
 
             _statusStore.IsAppBusy = true;
             var devices = _deviceListService.GetDeviceStore().DeviceList;
-            _statusStore.Status = "Pinging Devices Ongoing...";
-            _statusStore.MaxProgress = devices.Count * (_pingRepeatCountConfig + 1);
-            _statusStore.ActProgress = 0;
             foreach (DeviceDTO device in devices)
             {
-                _deviceQueue.Enqueue(device);
+                if(device.SelectedToPing)
+                    _deviceQueue.Enqueue(device);
             }
+            _statusStore.Status = "Pinging Devices Ongoing...";
+            _statusStore.ActProgress = 0;
+            _statusStore.MaxProgress = _deviceQueue.Count * (_pingRepeatCountConfig + 1);
+
             SendPingToNextDevice();
         }
         private void SendPingToNextDevice()

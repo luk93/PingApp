@@ -25,14 +25,16 @@ namespace PingApp.Stores
         public List<DeviceDTO> DeviceList => _deviceList;
         public event Action<List<DeviceDTO>> Loaded;
         public event Action<List<DeviceDTO>> Updated;
+        public event Action AnyDeviceChanged;
         public DeviceListStore()
         {
             _deviceList = [];
         }
         public void Load(List<DeviceDTO> deviceList)
         {
-            _deviceList = deviceList;
+            _deviceList = deviceList; 
             OnLoad(deviceList);
+            SubscribeDevicesChanged();
         }
         private void OnLoad(List<DeviceDTO> deviceList)
         {
@@ -41,11 +43,19 @@ namespace PingApp.Stores
         public void Update(List<DeviceDTO> deviceList)
         {
             _deviceList = deviceList;
-            OnUpdate(deviceList);
+            OnUpdate(deviceList); 
+            SubscribeDevicesChanged();
         }
         private void OnUpdate(List<DeviceDTO> deviceList)
         {
             Updated?.Invoke(deviceList);
+        }
+        private void SubscribeDevicesChanged()
+        {
+            foreach (var device in _deviceList) 
+            {
+                device.DeviceChanged += AnyDeviceChanged;
+            }
         }
     }
 }

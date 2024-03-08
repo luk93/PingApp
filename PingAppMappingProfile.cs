@@ -11,6 +11,9 @@ namespace PingApp
         {
             CreateMap<DeviceDTO, Device>();
             CreateMap<Device, DeviceDTO>();
+
+            CreateMap<DeviceDTO, DeviceExport>();
+            CreateMap<DeviceExport, DeviceDTO>();
         }
     }
 }

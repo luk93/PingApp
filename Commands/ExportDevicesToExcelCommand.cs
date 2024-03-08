@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OfficeOpenXml;
 using PingApp.DbServices;
 using PingApp.Models;
 using PingApp.Services;
@@ -53,8 +54,9 @@ namespace PingApp.Commands
             try
             {
                 var ws = excelPackage.Workbook.Worksheets.Add("DeviceList");
-                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<Device>>(_deviceStore.DeviceList), true);
+                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<DeviceExport>>(_deviceStore.DeviceList), true);
                 range.AutoFitColumns();
+                StyleWorksheet(ws);
                 await ExcelManager.SaveExcelFile(excelPackage);
                 var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
                 Log.Information(msg);
@@ -64,6 +66,12 @@ namespace PingApp.Commands
                 var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
                 Log.Error(msg);
             }
+        }
+        private static void StyleWorksheet(ExcelWorksheet ws)
+        {
+            ws.Column(5).Style.Numberformat.Format = "dd.mm.yyyy hh:mm:ss";
+            ws.Column(5).AutoFit();
+            ws.Row(1).Style.Font.Bold = true;
         }
 
     }

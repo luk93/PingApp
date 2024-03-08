@@ -122,14 +122,32 @@ namespace PingApp.Models
                 }
             }
         }
+        private bool _selectedToPing;
+        public bool SelectedToPing
+        {
+            get
+            {
+                return _selectedToPing;
+            }
+            set
+            {
+                if (_selectedToPing != value)
+                {
+                    _selectedToPing = value;
+                    DeviceChanged?.Invoke();
+                }
+            }
+        }
         public ObservableCollection<PingResult> PingResults {get;set;} = [];
+
+        public event Action DeviceChanged;
         public DeviceDTO(string? name, string? ipString)
         {
             _name = name;
             _ipString = ipString;
             _status = PingStatus.None;
             _lastIpStatus = IPStatus.Unknown;
-            _lastReply = null;
+            _selectedToPing = false;
             _lastReplyDt = DateTime.MinValue;
         }
     }

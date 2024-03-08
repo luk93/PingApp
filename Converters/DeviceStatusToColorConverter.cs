@@ -22,7 +22,7 @@ namespace PingApp.Converters
             if (value is not PingStatus status) return null;
             return status switch
             {
-                PingStatus.Busy => new SolidColorBrush(Colors.LightSkyBlue),
+                PingStatus.Busy => new SolidColorBrush(Colors.Yellow),
                 PingStatus.Failure => new SolidColorBrush(Colors.LightCoral),
                 PingStatus.Success => new SolidColorBrush(Colors.LightGreen),
                 _ => null,

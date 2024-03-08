@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tools="clr-namespace:PingApp.Tools"
              xmlns:converters="clr-namespace:PingApp.Converters"
+             xmlns:local="clr-namespace:PingApp.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
     <UserControl.Resources>
         <converters:DeviceStatusToColorConverter x:Key="DeviceStatusToColorConverter"/>
         <converters:IpStatusToColorConverter x:Key="IpStatusToColorConverter"/>
+        <converters:BusyToEnabledConverter x:Key="BusyToEnabledConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -70,18 +72,20 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="60" Width="60"  Header="To Ping">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding SelectedToPing, Mode=TwoWay}"
+                                              IsEnabled="{Binding Path=DataContext.IsAppNotBusy, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>
         </ScrollViewer>
-        <!--<Label Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2">
-            <Label.Content>
-                <MultiBinding StringFormat="Ping Result History for: {0}">
-                    <Binding Path="SelectedDevice.Name"/>
-                </MultiBinding>
-            </Label.Content>
-        </Label>-->
-        <Label Content="{Binding SelectedDevice.Name}" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2"/>
+        <Label Content="{Binding SelectedDevice.Name}" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2" HorizontalAlignment="Center"/>
+        <Label Content="Ping Result History" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2" HorizontalAlignment="Left"/>
         <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ListView Margin="5,0,5,5" Grid.Row="2" Grid.Column="1"  Width="Auto" Height="{Binding ActualHeight, ElementName=DevicesLV}" Foreground="#FF010111" 
                 ItemsSource="{Binding Path=SelectedDevice.PingResults}">

@@ -9,6 +9,7 @@ using PingApp.Models;
 using PingApp.Stores;
 using PingApp.ViewModels;
 using Serilog;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -53,7 +54,7 @@ namespace PingApp
                         DeviceListStore? deviceListStore = _host.Services.GetService<DeviceListStore>();
                         DeviceListViewModel? deviceListViewModel = _host.Services.GetService<DeviceListViewModel>();
                         dbExist = true;
-                        List<DeviceDTO> deviceList = (await deviceDbService?.GetAllWithPingResults())?.ToList() ?? [];
+                        var deviceList = (await deviceDbService?.GetAllWithPingResults())?.ToList() ?? [];
                         deviceListStore.Load(deviceList);
                     }
                     else

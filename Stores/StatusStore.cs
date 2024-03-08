@@ -29,7 +29,7 @@ namespace PingApp.Stores
                 StatusChanged?.Invoke();
             }
         }
-        public string? _status;
+        private string? _status;
         public string? Status
         {
             get => _status;
@@ -39,7 +39,7 @@ namespace PingApp.Stores
                 StatusChanged?.Invoke();
             }
         }
-        public bool _isAppBusy;
+        private bool _isAppBusy;
         public bool IsAppBusy
         {
             get => _isAppBusy;
