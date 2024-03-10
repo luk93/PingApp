@@ -35,10 +35,9 @@ namespace PingApp.States.Ribbon
 
         public ICommand? TriggerAllCommand { get;}
         public ICommand? GetDevicesFromExcelCommand { get ;}
-
         public ICommand? ChangeExportPathCommand { get; }
-
-        public ICommand? ExportDevicesToExcelCommand { get; }
+        public ICommand? ExportDevicesWithoutHistoryToExcelCommand { get; }
+        public ICommand? ExportDevicesWithHistoryToExcelCommand { get; }
         public ICommand? OpenExportFolderCommand { get; }
         public ICommand? CancelPingCommand { get; }
         public ICommand? UpdateCurrentViewModel {  get; }
@@ -60,7 +59,8 @@ namespace PingApp.States.Ribbon
             TriggerAllCommand = new TriggerAllCommand(_devicePingSender, _statusStore, _deviceStore);
             GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceDbService);
             ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
-            ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
+            ExportDevicesWithoutHistoryToExcelCommand = new ExportDevicesWithoutHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
+            ExportDevicesWithHistoryToExcelCommand = new ExportDevicesWithHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
             OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);
             UpdateCurrentViewModel = new UpdateCurrentViewModelCommand(_navigator, _viewModelFactory);
             CancelPingCommand = new CancelPingCommand(_devicePingSender, _statusStore);

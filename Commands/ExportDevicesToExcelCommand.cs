@@ -9,6 +9,7 @@ using PingApp.ViewModels;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,10 +19,10 @@ namespace PingApp.Commands
 {
     public class ExportDevicesToExcelCommand : AsyncCommandBase
     {
-        private readonly DeviceListStore _deviceStore;
-        private readonly StatusStore _statusStore;
-        private readonly ILogger _logger;
-        private readonly IMapper _mapper;
+        protected readonly DeviceListStore _deviceStore;
+        protected readonly StatusStore _statusStore;
+        protected readonly ILogger _logger;
+        protected readonly IMapper _mapper;
 
         public ExportDevicesToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper)
         {
@@ -45,6 +46,46 @@ namespace PingApp.Commands
         }
         public override async Task ExecuteAsync(object? parameter)
         {
+            if (!IsXlsxExportPathSelected())
+                return;
+            var xlsxFilePath = $"{_deviceStore.XlsxExportPath}\\DevicesPingStatus_{FileTools.GetDateTimeString()}.xlsx";
+            var excelPackage = CreateExcelPackage(xlsxFilePath);
+            if (excelPackage == null)
+                return;
+            try
+            {
+                CreateAndStyleDeviceListSheet(excelPackage);
+                await ExcelManager.SaveExcelFile(excelPackage);
+                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
+                Log.Information(msg);
+            }
+            catch (Exception ex)
+            {
+                var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
+                Log.Error(msg);
+            }
+        }
+        protected void CreateAndStyleDeviceListSheet(ExcelPackage excelPackage)
+        {
+            var ws = excelPackage.Workbook.Worksheets.Add("DeviceList");
+            var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<DeviceExport>>(_deviceStore.DeviceList), true);
+            range.AutoFitColumns();
+            StyleDeviceListWorksheet(ws);
+        }
+        protected ExcelPackage? CreateExcelPackage(string xlsxFilePath) 
+        {
+            var excelPackage = ExcelManager.CreateExcelFile(xlsxFilePath);
+            if (excelPackage == null)
+            {
+                var msg = $"Failed to create (.xlsx) file '{xlsxFilePath}'!";
+                Log.Error(msg);
+                _logger.Error(msg);
+                return null;
+            }
+            return excelPackage;
+        }
+        protected bool IsXlsxExportPathSelected()
+        {
             if (!Directory.Exists(_deviceStore.XlsxExportPath))
             {
                 var openFolderDialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
@@ -60,35 +101,12 @@ namespace PingApp.Commands
                 else
                 {
                     Log.Warning("Export path not selected!");
-                    return;
+                    return false;
                 }
             }
-            var xlsxFilePath = $"{_deviceStore.XlsxExportPath}\\DevicesPingStatus_{FileTools.GetDateTimeString()}.xlsx";
-            var excelPackage = ExcelManager.CreateExcelFile(xlsxFilePath);
-            if (excelPackage == null)
-            {
-                var msg = $"Failed to create (.xlsx) file '{xlsxFilePath}'!";
-                Log.Error(msg);
-                _logger.Error(msg);
-                return;
-            }
-            try
-            {
-                var ws = excelPackage.Workbook.Worksheets.Add("DeviceList");
-                var range = ws.Cells["A1"].LoadFromCollection(_mapper.Map<List<DeviceExport>>(_deviceStore.DeviceList), true);
-                range.AutoFitColumns();
-                StyleWorksheet(ws);
-                await ExcelManager.SaveExcelFile(excelPackage);
-                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
-                Log.Information(msg);
-            }
-            catch (Exception ex)
-            {
-                var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
-                Log.Error(msg);
-            }
+            return true;
         }
-        private static void StyleWorksheet(ExcelWorksheet ws)
+        protected static void StyleDeviceListWorksheet(ExcelWorksheet ws)
         {
             ws.Column(5).Style.Numberformat.Format = "dd.mm.yyyy hh:mm:ss";
             ws.Column(5).AutoFit();

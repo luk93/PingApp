@@ -22,6 +22,9 @@ namespace PingApp
                 .Select(x => x.ReplyDt)
                 .FirstOrDefault()));
             CreateMap<DeviceExport, DeviceDTO>();
+
+            CreateMap<PingResultExport, PingResult>();
+            CreateMap<PingResult, PingResultExport>();
         }
     }
 }

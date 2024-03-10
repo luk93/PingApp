@@ -26,11 +26,11 @@
                     <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
                     <fluent:DropDownButton Header="Export"  LargeIcon="Resources/excel_export.png">
                         <fluent:MenuItem Header="Export Devices List without Ping History" 
-                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
+                                         Command="{Binding ExportDevicesWithoutHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
                         <fluent:MenuItem Header="Export Devices List with Ping History in separate sheets" 
-                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
-                        <fluent:MenuItem Header="Export Selected Device Ping History" 
-                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
+                                         Command="{Binding ExportDevicesWithHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
+                        <fluent:MenuItem Header="Export Devices with Ping History of Selected Device" 
+                                         Command="{Binding ExportDevicesWithHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
                     </fluent:DropDownButton>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>
