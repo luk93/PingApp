@@ -60,7 +60,7 @@ namespace PingApp.States.Ribbon
             TriggerAllCommand = new TriggerAllCommand(_devicePingSender, _statusStore, _deviceStore);
             GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceDbService);
             ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
-            ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _logger, _mapper);
+            ExportDevicesToExcelCommand = new ExportDevicesToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
             OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);
             UpdateCurrentViewModel = new UpdateCurrentViewModelCommand(_navigator, _viewModelFactory);
             CancelPingCommand = new CancelPingCommand(_devicePingSender, _statusStore);

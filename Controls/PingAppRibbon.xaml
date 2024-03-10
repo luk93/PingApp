@@ -19,12 +19,19 @@
         </Grid.RowDefinitions>
 
         <fluent:Ribbon x:Name="RibbonWin" Grid.Row="0">
-             <!--Ribbon Tab #2: Excel-->
+            <!--Ribbon Tab #2: Excel-->
             <fluent:RibbonTabItem Header="Excel file operations" KeyTip="S">
                 <!--Excel group-->
                 <fluent:RibbonGroupBox x:Name="GroupExcel" Header="Excel File" Width="200">
                     <fluent:Button Header="Import" Command="{Binding GetDevicesFromExcelCommand}" LargeIcon="Resources/excel_import.png"/>
-                    <fluent:Button Header="Export" Command="{Binding ExportDevicesToExcelCommand}" LargeIcon="Resources/excel_export.png"/>
+                    <fluent:DropDownButton Header="Export"  LargeIcon="Resources/excel_export.png">
+                        <fluent:MenuItem Header="Export Devices List without Ping History" 
+                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
+                        <fluent:MenuItem Header="Export Devices List with Ping History in separate sheets" 
+                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
+                        <fluent:MenuItem Header="Export Selected Device Ping History" 
+                                         Command="{Binding ExportDevicesToExcelCommand}" Icon="Resources/excel_export.png"/>
+                    </fluent:DropDownButton>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>
                 </fluent:RibbonGroupBox>

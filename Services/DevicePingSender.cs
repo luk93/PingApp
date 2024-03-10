@@ -49,12 +49,12 @@ namespace PingApp.Tools
             _pingResultDbService = pingResultDbService;
             _data = _configStore.SelectedConfig.PingerData;
             _buffer = Encoding.ASCII.GetBytes(_data);
-            _timeout = _configStore.SelectedConfig.PingerTimeout;
+            _timeout = (int)_configStore.SelectedConfig.PingerTimeout;
             _options = new PingOptions(64, true);
             _deviceQueue = new Queue<DeviceDTO>();
             _isBusy = false;
             _statusStore = statusStore;
-            _pingRepeatCountConfig = configStore.SelectedConfig.PingerRepeatCount;
+            _pingRepeatCountConfig = (int)configStore.SelectedConfig.PingerRepeatCount;
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
@@ -63,16 +63,19 @@ namespace PingApp.Tools
             //Update Pinger data
             _isCanceled = false;
             _data = _configStore.SelectedConfig.PingerData;
-            _timeout = _configStore.SelectedConfig.PingerTimeout;
-            _pingRepeatCountConfig = _configStore.SelectedConfig.PingerRepeatCount;
+            _timeout = (int)_configStore.SelectedConfig.PingerTimeout;
+            _pingRepeatCountConfig = (int)_configStore.SelectedConfig.PingerRepeatCount;
             _buffer = Encoding.ASCII.GetBytes(_data);
 
             _statusStore.IsAppBusy = true;
             var devices = _deviceListService.GetDeviceStore().DeviceList;
             foreach (DeviceDTO device in devices)
             {
-                if(device.SelectedToPing)
+                if (device.SelectedToPing)
+                {
+                    device.PingCount = _pingRepeatCountConfig + 1;
                     _deviceQueue.Enqueue(device);
+                }
             }
             _statusStore.Status = "Pinging Devices Ongoing...";
             _statusStore.ActProgress = 0;
@@ -96,6 +99,7 @@ namespace PingApp.Tools
                     _pingRepeatCount++;
                     nextDevice = _deviceQueue.Peek();
                 }
+                nextDevice.PingCount--;
                 nextDevice.Status = Device.PingStatus.Busy;
                 if (nextDevice != null && nextDevice.IpAddress != null)
                     _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);

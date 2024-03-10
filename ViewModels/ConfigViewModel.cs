@@ -23,9 +23,9 @@ namespace PingApp.ViewModels
         private readonly IPingAppViewModelFactory _viewModelFactory;
         private readonly IPingAppNavigator _navigator;
         public ICommand? UpdateCurrentViewModel { get; }
-        private ConfigStore _configStore;
-        private Config _selectedConfig => _configStore.SelectedConfig;
-        public Config SelectedConfig
+        private readonly ConfigStore _configStore;
+        private Config? _selectedConfig => _configStore.SelectedConfig;
+        public Config? SelectedConfig
         {
             get =>_selectedConfig;
             set

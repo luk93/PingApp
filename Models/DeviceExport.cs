@@ -15,6 +15,7 @@ namespace PingApp.Models
         public PingStatus Status { get; set; }
         public IPAddress? IpAddress { get; set; }
         public IPStatus LastIpStatus { get; set; }
-        public DateTime LastReplyDt { get; set; }
+        public DateTime? LastReplyDt { get; set; }
+        public DateTime? LastSuccessfulReplyDt { get; set;}
     }
 }

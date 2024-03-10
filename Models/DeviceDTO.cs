@@ -15,9 +15,9 @@ using static PingApp.Models.Device;
 
 namespace PingApp.Models
 {
-    public partial class DeviceDTO : ObservableBaseModel
+    public partial class DeviceDTO(string? name, string? ipString) : ObservableBaseModel
     {
-        private string? _name;
+        private string? _name = name;
         public string? Name
         {
             get
@@ -33,7 +33,7 @@ namespace PingApp.Models
                 }
             }
         }
-        private PingStatus _status;
+        private PingStatus _status = PingStatus.None;
         public PingStatus Status
         {
             get
@@ -49,7 +49,7 @@ namespace PingApp.Models
                 }
             }
         }
-        private IPStatus _lastIpStatus;
+        private IPStatus _lastIpStatus = IPStatus.Unknown;
         public IPStatus LastIpStatus
         {
             get
@@ -65,7 +65,7 @@ namespace PingApp.Models
                 }
             }
         }
-        private string? _ipString;
+        private string? _ipString = ipString;
         public string? IpString
         {
             get
@@ -90,7 +90,7 @@ namespace PingApp.Models
             }
             private set { }
         }
-        private DateTime _lastReplyDt;
+        private DateTime _lastReplyDt = DateTime.MinValue;
         public DateTime LastReplyDt
         {
             get
@@ -122,7 +122,7 @@ namespace PingApp.Models
                 }
             }
         }
-        private bool _selectedToPing;
+        private bool _selectedToPing = false;
         public bool SelectedToPing
         {
             get
@@ -134,21 +134,29 @@ namespace PingApp.Models
                 if (_selectedToPing != value)
                 {
                     _selectedToPing = value;
-                    DeviceChanged?.Invoke();
+                    DeviceChanged?.Invoke(this,value);
+                }
+            }
+        }
+        private int _pingCount = 0;
+        public int PingCount
+        {
+            get
+            {
+                return _pingCount;
+            }
+            set
+            {
+                if (_pingCount != value)
+                {
+                    _pingCount = value;
+                    OnPropertyChanged(nameof(PingCount));
                 }
             }
         }
         public ObservableCollection<PingResult> PingResults {get;set;} = [];
 
-        public event Action? DeviceChanged;
-        public DeviceDTO(string? name, string? ipString)
-        {
-            _name = name;
-            _ipString = ipString;
-            _status = PingStatus.None;
-            _lastIpStatus = IPStatus.Unknown;
-            _selectedToPing = false;
-            _lastReplyDt = DateTime.MinValue;
-        }
+        public delegate void DeviceChangedEventHandler(DeviceDTO device, bool selectedToPing);
+        public event DeviceChangedEventHandler? DeviceChanged;
     }
 }

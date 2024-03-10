@@ -15,7 +15,7 @@ namespace PingApp.Stores
         public ObservableCollection<Config>? Configs => _config;
         public Config? SelectedConfig => _config?.FirstOrDefault() ?? null;
 
-        public void UpdateSelectedConfig(Config selectedConfig)
+        public void UpdateSelectedConfig(Config? selectedConfig)
         {
             var config = _config?.FirstOrDefault(c => c.Id == selectedConfig.Id);
             config = selectedConfig;

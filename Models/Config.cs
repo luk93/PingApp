@@ -1,6 +1,7 @@
 ﻿using PingApp.Models.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
 using System.Text;
@@ -10,8 +11,8 @@ namespace PingApp.Models
 {
     public class Config : ObservableBaseModel
     {
-        private int _sheetIndex;
-        public int SheetIndex
+        private uint _sheetIndex;
+        public uint SheetIndex
         {
             get
             {
@@ -26,8 +27,8 @@ namespace PingApp.Models
                 }
             }
         }
-        private int _startRow;
-        public int StartRow
+        private uint _startRow;
+        public uint StartRow
         {
             get
             {
@@ -42,8 +43,8 @@ namespace PingApp.Models
                 }
             }
         }
-        private int _startColumn;
-        public int StartColumn
+        private uint _startColumn;
+        public uint StartColumn
         {
             get
             {
@@ -58,8 +59,8 @@ namespace PingApp.Models
                 }
             }
         }
-        private int _pingerTimeout;
-        public int PingerTimeout
+        private uint _pingerTimeout;
+        public uint PingerTimeout
         {
             get
             {
@@ -75,6 +76,7 @@ namespace PingApp.Models
             }
         }
         private string _pingerData = string.Empty;
+        [MaxLength(10)]
         public string PingerData
         {
             get
@@ -90,8 +92,8 @@ namespace PingApp.Models
                 }
             }
         }
-        private int _pingerRepeatCount;
-        public int PingerRepeatCount
+        private uint _pingerRepeatCount;
+        public uint PingerRepeatCount
         {
             get
             {

@@ -25,11 +25,11 @@ namespace PingApp.Commands
             _deviceStore = deviceStore;
             _statusStore = statusStore;
 
-            _deviceStore.AnyDeviceChanged += DeviceStore_AnyDeviceChanged;
             _statusStore.StatusChanged += StatusStore_StatusChanged;
+            _deviceStore.Loaded += DeviceStore_Loaded;
         }
 
-        private void DeviceStore_AnyDeviceChanged()
+        private void DeviceStore_Loaded(List<DeviceDTO> deviceList)
         {
             OnCanExecutedChanged();
         }

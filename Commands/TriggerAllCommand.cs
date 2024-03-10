@@ -1,4 +1,5 @@
-﻿using PingApp.Stores;
+﻿using PingApp.Models;
+using PingApp.Stores;
 using PingApp.Tools;
 using PingApp.ViewModels;
 using System;
@@ -25,7 +26,7 @@ namespace PingApp.Commands
             _statusStore.StatusChanged += StatusStore_StatusChanged;
         }
 
-        private void DeviceStore_AnyDeviceChanged()
+        private void DeviceStore_AnyDeviceChanged(DeviceDTO device,bool selectedToPing)
         {
             OnCanExecutedChanged();
         }
@@ -44,7 +45,7 @@ namespace PingApp.Commands
         public override bool CanExecute(object? parameter)
         {
             var selectedDevices = _deviceStore.DeviceList.Where(x => x.SelectedToPing);
-            return !_statusStore.IsAppBusy && selectedDevices.Count() > 0 && base.CanExecute(parameter);
+            return !_statusStore.IsAppBusy && selectedDevices.Any() && base.CanExecute(parameter);
         }
 
         

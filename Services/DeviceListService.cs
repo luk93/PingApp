@@ -26,15 +26,15 @@ namespace PingApp.Services
             _deviceStore.DeviceList.Clear();
             var package = new ExcelPackage(file);
             await package.LoadAsync(file);
-            int wsIndex = _configStore.SelectedConfig.SheetIndex;
+            int wsIndex = (int)_configStore.SelectedConfig.SheetIndex;
             if (package.Workbook.Worksheets.Count < wsIndex + 1)
             {
                 Log.Error($"Worksheet with index '{wsIndex}' does not exist! Change import excel configuration");
                 return null;
             }
             var ws = package.Workbook.Worksheets[wsIndex];
-            int row = _configStore.SelectedConfig.StartRow;
-            int col = _configStore.SelectedConfig.StartColumn;
+            int row = (int)_configStore.SelectedConfig.StartRow;
+            int col = (int)_configStore.SelectedConfig.StartColumn;
             int invalidCount = 0;
             if (ws != null)
             {

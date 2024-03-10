@@ -18,7 +18,7 @@ namespace PingApp.ViewModels
 
     public class DeviceListViewModel : ViewModelBase
     {
-        private readonly DeviceListStore? _deviceStore;
+        private readonly DeviceListStore _deviceStore;
         private readonly StatusStore _statusStore;
         private ObservableCollection<DeviceDTO> _devices;
         public ObservableCollection<DeviceDTO> Devices
@@ -78,7 +78,6 @@ namespace PingApp.ViewModels
         private void OnLoad(List<DeviceDTO> deviceList)
         {
             Devices = new(deviceList);
-            _deviceStore.SubscribeDevicesChanged();
         }
         private void OnUpdate(List<DeviceDTO> deviceList)
         {

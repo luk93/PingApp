@@ -16,12 +16,33 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class ExportDevicesToExcelCommand(DeviceListStore deviceStore, ILogger logger, IMapper mapper) : AsyncCommandBase
+    public class ExportDevicesToExcelCommand : AsyncCommandBase
     {
-        private readonly DeviceListStore _deviceStore = deviceStore;
-        private readonly ILogger _logger = logger;
-        private readonly IMapper _mapper = mapper;
+        private readonly DeviceListStore _deviceStore;
+        private readonly StatusStore _statusStore;
+        private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
+        public ExportDevicesToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper)
+        {
+            _deviceStore = deviceStore;
+            _statusStore = statusStore;
+            _logger = logger;
+            _mapper = mapper;
+
+            _deviceStore.Loaded += DeviceStore_Loaded;
+            _statusStore.StatusChanged += StatusStore_StatusChanged;
+        }
+
+        private void StatusStore_StatusChanged()
+        {
+            OnCanExecutedChanged();
+        }
+
+        private void DeviceStore_Loaded(List<DeviceDTO> deviceList)
+        {
+            OnCanExecutedChanged();
+        }
         public override async Task ExecuteAsync(object? parameter)
         {
             if (!Directory.Exists(_deviceStore.XlsxExportPath))
@@ -71,8 +92,13 @@ namespace PingApp.Commands
         {
             ws.Column(5).Style.Numberformat.Format = "dd.mm.yyyy hh:mm:ss";
             ws.Column(5).AutoFit();
+            ws.Column(6).Style.Numberformat.Format = "dd.mm.yyyy hh:mm:ss";
+            ws.Column(6).AutoFit();
             ws.Row(1).Style.Font.Bold = true;
         }
-
+        public override bool CanExecute(object? parameter)
+        {
+            return _deviceStore.DeviceList.Count > 0 && !_statusStore.IsAppBusy && base.CanExecute(parameter);
+        }
     }
 }
