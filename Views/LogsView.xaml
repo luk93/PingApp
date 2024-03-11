@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0"
             Height="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <ListView ItemsSource="{Binding LogItemsSorted}" ItemContainerStyleSelector="{StaticResource logItemStyleSelector}" Margin="0,10,0,0">
+            <ListView ItemsSource="{Binding LogItemsSorted}" ItemContainerStyle="{StaticResource ListViewItemStyle}" Margin="0,10,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="events:LogEvent">
                         <StackPanel Orientation="Horizontal">

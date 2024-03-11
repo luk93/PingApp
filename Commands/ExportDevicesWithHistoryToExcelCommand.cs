@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Interop;
 
 namespace PingApp.Commands
 {
@@ -34,7 +35,7 @@ namespace PingApp.Commands
                 CreateAndStyleDeviceListSheet(excelPackage);
                 CreateAndStyleHistorySheets(excelPackage);
                 await ExcelManager.SaveExcelFile(excelPackage);
-                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
+                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'";
                 Log.Information(msg);
             }
             catch (Exception ex)
@@ -49,6 +50,7 @@ namespace PingApp.Commands
             {
                 CreateAndStyleHistorySheet(excelPackage, device);
             }
+            Log.Information($"Created sheets with Ping History for {_deviceStore.DeviceList.Count} devices");
         }
         protected void CreateAndStyleHistorySheet(ExcelPackage excelPackage, DeviceDTO device) 
         {

@@ -14,6 +14,7 @@ namespace PingApp.States.Ribbon
         public ICommand? ChangeExportPathCommand { get; }
         public ICommand? ExportDevicesWithoutHistoryToExcelCommand { get; }
         public ICommand? ExportDevicesWithHistoryToExcelCommand { get; }
+        public ICommand? ExportDevicesWithSelHistoryToExcelCommand { get; }
         public ICommand? OpenExportFolderCommand { get; }
         public ICommand? CancelPingCommand { get; }
         public ICommand? UpdateCurrentViewModel { get; }

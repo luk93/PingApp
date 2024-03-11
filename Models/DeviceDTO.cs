@@ -90,8 +90,8 @@ namespace PingApp.Models
             }
             private set { }
         }
-        private DateTime _lastReplyDt = DateTime.MinValue;
-        public DateTime LastReplyDt
+        private DateTime? _lastReplyDt;
+        public DateTime? LastReplyDt
         {
             get
             {

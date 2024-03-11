@@ -19,11 +19,11 @@ namespace PingApp.HostBuilders
             {
                 services.AddSingleton<IPingAppViewModelFactory, PingAppViewModelFactory>();
 
-                services.AddTransient<DeviceListViewModel>();
-                services.AddTransient<ConfigViewModel>();
-                services.AddTransient<LoggsViewModel>();
-                services.AddTransient<StatusBarViewModel>();
-                services.AddTransient<MainViewModel>();
+                services.AddSingleton<DeviceListViewModel>();
+                services.AddSingleton<ConfigViewModel>();
+                services.AddSingleton<LoggsViewModel>();
+                services.AddSingleton<StatusBarViewModel>();
+                services.AddSingleton<MainViewModel>();
 
                 services.AddSingleton<CreateViewModel<DeviceListViewModel>>(services => () => services.GetRequiredService<DeviceListViewModel>());
                 services.AddSingleton<CreateViewModel<LoggsViewModel>>(services => () => services.GetRequiredService<LoggsViewModel>());

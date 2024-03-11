@@ -30,7 +30,7 @@
                         <fluent:MenuItem Header="Export Devices List with Ping History in separate sheets" 
                                          Command="{Binding ExportDevicesWithHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
                         <fluent:MenuItem Header="Export Devices with Ping History of Selected Device" 
-                                         Command="{Binding ExportDevicesWithHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
+                                         Command="{Binding ExportDevicesWithSelHistoryToExcelCommand}" Icon="Resources/excel_export.png"/>
                     </fluent:DropDownButton>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>

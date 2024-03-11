@@ -26,7 +26,7 @@ namespace PingApp.Models
 
         public string? IpString { get; set; }
         public IPStatus LastIpStatus { get; set; }
-        public DateTime LastReplyDt { get; set; }
+        public DateTime? LastReplyDt { get; set; }
         public enum PingStatus
         {
             None,

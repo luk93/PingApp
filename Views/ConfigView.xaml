@@ -51,7 +51,8 @@
                    FontSize="10"
                    Text="Note: Only 'Name' and 'IP Address' will be imported!" Height="25"/>
         <Button Grid.Column="0" Grid.Row="6" Margin="5 5 5 5"
-                Height="30" Width="100" HorizontalAlignment="Left" 
+                Height="35" Width="200" HorizontalAlignment="Left" Background="AliceBlue" BorderBrush="Black"
+                FontSize="20"
                 Content="Show Device List" 
                 Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.DeviceList}"/>
         <!--Pinger Configuration-->

@@ -56,7 +56,7 @@ namespace PingApp.Commands
             {
                 CreateAndStyleDeviceListSheet(excelPackage);
                 await ExcelManager.SaveExcelFile(excelPackage);
-                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'!";
+                var msg = $"Successfully created (.xlsx) file '{xlsxFilePath}'";
                 Log.Information(msg);
             }
             catch (Exception ex)
