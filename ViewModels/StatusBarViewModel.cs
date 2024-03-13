@@ -15,8 +15,7 @@ namespace PingApp.ViewModels
     public class StatusBarViewModel: ViewModelBase
     {
         private readonly LoggsStore _loggsStore;
-        private string? _lastLogItem;
-        public string? LastLogItem => _lastLogItem;
+        public string? LastLogItem => _loggsStore.LastLogItem;
         private readonly StatusStore _statusStore;
         public string? Status => _statusStore?.Status;
         public int? MaxProgress => _statusStore?.MaxProgress;
@@ -41,10 +40,7 @@ namespace PingApp.ViewModels
             if (e.Action == NotifyCollectionChangedAction.Add)
                 if (sender is ObservableCollection<LogEvent> collection)
                     if (collection.Count > 0)
-                    {
-                        _lastLogItem = collection.LastOrDefault().MessageTemplate.ToString();
                         OnPropertyChanged(nameof(LastLogItem));
-                    }
         }
         public override void Dispose()
         {

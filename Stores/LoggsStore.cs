@@ -42,7 +42,9 @@ namespace PingApp.Stores
                     if (collection.Count > 0)
                     {
                         _logItemsSorted.Insert(0, collection.LastOrDefault());
-                        _lastLogItem = collection.LastOrDefault().MessageTemplate.ToString();
+                        _lastLogItem = collection
+                            .Where(x => x.Level < LogEventLevel.Error)
+                            .LastOrDefault().MessageTemplate.ToString();
                         return;
                     }
                     _logItemsSorted.Clear();

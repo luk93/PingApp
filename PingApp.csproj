@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\lan.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,10 @@
     <None Remove="Resources\folder_open.png" />
     <None Remove="Resources\folder_select.png" />
     <None Remove="Resources\uncheck_all.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\lan.ico" />
   </ItemGroup>
 
   <ItemGroup>
