@@ -60,6 +60,9 @@ namespace PingApp.Db
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.HasMany(d => d.PingResults)
+                    .WithOne(p => p.Device)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<PingResult>(entity =>
             {
