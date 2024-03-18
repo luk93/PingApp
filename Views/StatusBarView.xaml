@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fluent="urn:fluent-ribbon"
+             xmlns:controls="clr-namespace:PingApp.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -15,10 +16,10 @@
                           Value="150"
                           ToolTip="Progress"
                           HorizontalAlignment="Left">
-                <ProgressBar Maximum="{Binding MaxProgress, Mode=OneWay}" 
+                <controls:MyProgressBar Maximum="{Binding MaxProgress, Mode=OneWay}" 
                              Value="{Binding ActProgress, Mode=OneWay}"
-                             Width="100" 
-                             Height="10"
+                             Width="150" 
+                             Height="15"
                              Margin="10 0 0 0"/>
             </fluent:StatusBarItem>
 
