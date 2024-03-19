@@ -10,6 +10,7 @@ namespace PingApp.States.Ribbon
     public interface IPingAppRibbon
     {
         public ICommand? TriggerAllCommand { get; }
+        public ICommand? TriggerAllContCommand { get; }
         public ICommand? GetDevicesFromExcelCommand { get; }
         public ICommand? ChangeExportPathCommand { get; }
         public ICommand? ExportDevicesWithoutHistoryToExcelCommand { get; }

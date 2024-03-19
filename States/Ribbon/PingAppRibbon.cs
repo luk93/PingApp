@@ -35,6 +35,7 @@ namespace PingApp.States.Ribbon
         private readonly IPingAppNavigator _navigator;
 
         public ICommand? TriggerAllCommand { get;}
+        public ICommand? TriggerAllContCommand { get; }
         public ICommand? GetDevicesFromExcelCommand { get ;}
         public ICommand? ChangeExportPathCommand { get; }
         public ICommand? ExportDevicesWithoutHistoryToExcelCommand { get; }
@@ -61,6 +62,7 @@ namespace PingApp.States.Ribbon
             _viewModelFactory = viewModelFactory;
             _navigator = navigator;
             TriggerAllCommand = new TriggerAllCommand(_devicePingSender, _statusStore, _deviceStore);
+            TriggerAllContCommand = new TriggerAllContCommand(_devicePingSender, _statusStore, _deviceStore);
             GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceDbService);
             ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
             ExportDevicesWithoutHistoryToExcelCommand = new ExportDevicesWithoutHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);

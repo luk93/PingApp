@@ -44,8 +44,9 @@
             <!--Ribbon Tab #2: Pinger--> 
             <fluent:RibbonTabItem Header="Devices operations" KeyTip="P">
                  <!--Status  group-->
-                <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Pinger Operations" Width="200">
+                <fluent:RibbonGroupBox x:Name="GroupPinger" Header="Pinger Operations" Width="250">
                     <fluent:Button Header="Ping Selected" Command="{Binding TriggerAllCommand}" LargeIcon="Resources/exchange.png"/>
+                    <fluent:Button Header="Ping Selected Continously" Command="{Binding TriggerAllContCommand}" LargeIcon="Resources/ping_cont.png"/>
                     <fluent:Button Header="Cancel Pinging" Command="{Binding CancelPingCommand}" LargeIcon="Resources/cancel.png"/>
                     <fluent:Button Header="Config" Command="{Binding UpdateCurrentViewModel}" CommandParameter="{x:Static nav:ViewType.Config}"
                                    LargeIcon="Resources/excel_config.png"/>

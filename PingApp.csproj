@@ -20,6 +20,7 @@
     <None Remove="Resources\exchange.png" />
     <None Remove="Resources\folder_open.png" />
     <None Remove="Resources\folder_select.png" />
+    <None Remove="Resources\ping_cont.png" />
     <None Remove="Resources\uncheck_all.png" />
   </ItemGroup>
 
@@ -59,6 +60,7 @@
     <Resource Include="Resources\exchange.png" />
     <Resource Include="Resources\folder_open.png" />
     <Resource Include="Resources\folder_select.png" />
+    <Resource Include="Resources\ping_cont.png" />
     <Resource Include="Resources\uncheck_all.png" />
   </ItemGroup>
 

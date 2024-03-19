@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class TriggerAllCommand : AsyncCommandBase
+    public class TriggerAllContCommand : AsyncCommandBase
     {
         private readonly DevicePingSender _devicePingSender;
         private readonly StatusStore _statusStore;
         private readonly DeviceListStore _deviceStore;
 
-        public TriggerAllCommand(DevicePingSender devicePingSender, StatusStore statusStore, DeviceListStore deviceStore)
+        public TriggerAllContCommand(DevicePingSender devicePingSender, StatusStore statusStore, DeviceListStore deviceStore)
         {
             _devicePingSender = devicePingSender;
             _statusStore = statusStore;
@@ -38,7 +38,7 @@ namespace PingApp.Commands
 
         public override Task ExecuteAsync(object? parameter)
         {
-            _devicePingSender.SendPingToDeviceList(false);
+            _devicePingSender.SendPingToDeviceList(true);
             return Task.CompletedTask;
         }
 

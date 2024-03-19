@@ -27,22 +27,23 @@ namespace PingApp.Tools
         private byte[] _buffer;
         private int _timeout;
         private readonly PingOptions _options;
-        private readonly DeviceListService _deviceListService;
+        private readonly DeviceListStore _devicesStore;
         private readonly Queue<DeviceDTO> _deviceQueue;
         private readonly DeviceDbService _deviceDbService;
         private readonly PingResultDbService _pingResultDbService;
         private readonly StatusStore _statusStore;
         private readonly ConfigStore _configStore;
         private bool _isBusy;
+        private bool _isContinous;
         private bool _isCanceled;
         private int _pingRepeatCountConfig;
         private int _pingRepeatCount;
 
-        public DevicePingSender(DeviceListService deviceListService, ILogger logger, DeviceDbService deviceDbService,
+        public DevicePingSender(DeviceListStore devicesStore, ILogger logger, DeviceDbService deviceDbService,
             StatusStore statusStore, ConfigStore configStore, PingResultDbService pingResultDbService)
         {
             _configStore = configStore;
-            _deviceListService = deviceListService;
+            _devicesStore = devicesStore;
             _ping = new Ping();
             _logger = logger;
             _deviceDbService = deviceDbService;
@@ -58,8 +59,9 @@ namespace PingApp.Tools
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
-        public void SendPingToDeviceList()
+        public void SendPingToDeviceList(bool isContinous)
         {
+            _isContinous = isContinous;
             //Update Pinger data
             _isCanceled = false;
             _data = _configStore.SelectedConfig.PingerData;
@@ -68,7 +70,7 @@ namespace PingApp.Tools
             _buffer = Encoding.ASCII.GetBytes(_data);
 
             _statusStore.IsAppBusy = true;
-            var devices = _deviceListService.GetDeviceStore().DeviceList;
+            var devices = _devicesStore.DeviceList;
             foreach (DeviceDTO device in devices)
             {
                 if (device.SelectedToPing)
@@ -77,7 +79,10 @@ namespace PingApp.Tools
                     _deviceQueue.Enqueue(device);
                 }
             }
-            _statusStore.Status = "Pinging Devices Ongoing...";
+            if(_isContinous) 
+                _statusStore.Status = "Continously Pinging Devices Ongoing...";
+            else
+                _statusStore.Status = "Pinging Devices Ongoing...";
             _statusStore.ActProgress = 0;
             _statusStore.MaxProgress = _deviceQueue.Count * (_pingRepeatCountConfig + 1);
 
@@ -113,6 +118,10 @@ namespace PingApp.Tools
                     _statusStore.ActProgress = 0;
                     Log.Information(msg);
                     _logger.Information(msg);
+                }
+                else if (_isContinous) 
+                {
+                    SendPingToDeviceList(true);
                 }
                 else
                 {
