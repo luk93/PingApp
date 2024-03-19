@@ -1,4 +1,5 @@
-﻿using PingApp.Models.Base;
+﻿using Microsoft.VisualBasic.Logging;
+using PingApp.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,10 @@ namespace PingApp.Models
     {
         public IPStatus IpStatus { get; set; }
         public DateTime? ReplyDt { get; set; }
+        public long? RoundTripTime { get; set; }
+        public int? TimeToLive { get; set; }
+        public int? BufferSizeSent { get; set; }
+        public int? BufferSizeReceived { get; set; }
         //Relations
         public int? DeviceId { get; set; }
         public virtual Device? Device { get; set; }

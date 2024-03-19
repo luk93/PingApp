@@ -19,8 +19,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
         <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -64,14 +64,14 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last Reply Timestamp">
+                        <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Last Reply Timestamp">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding LastReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Last IP Status">
+                        <GridViewColumn tools:GridColumn.MinWidth="160" Width="160"  Header="Last IP Status">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding LastIpStatus, UpdateSourceTrigger=PropertyChanged}"/>
@@ -113,17 +113,45 @@
                 </ListView.Background>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="Reply Timestamp">
+                        <GridViewColumn tools:GridColumn.MinWidth="140" Width="140"  Header="Reply Timestamp">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding ReplyDt, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn tools:GridColumn.MinWidth="200" Width="200"  Header="IP Status">
+                        <GridViewColumn tools:GridColumn.MinWidth="140" Width="140"  Header="IP Status">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding IpStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="50" Width="50"  Header="RTL">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding RoundTripTime, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="50" Width="50"  Header="TTL">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding TimeToLive, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="85" Width="85"  Header="Sent[byte]">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BufferSizeSent, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn tools:GridColumn.MinWidth="85" Width="85"  Header="Received[byte]">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding BufferSizeReceived, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

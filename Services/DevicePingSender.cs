@@ -118,6 +118,7 @@ namespace PingApp.Tools
                     _statusStore.ActProgress = 0;
                     Log.Information(msg);
                     _logger.Information(msg);
+                    _statusStore.IsAppBusy = false;
                 }
                 else if (_isContinous) 
                 {
@@ -129,8 +130,8 @@ namespace PingApp.Tools
                     _statusStore.Status = msg;
                     Log.Information(msg);
                     _logger.Information(msg);
-                }
-                _statusStore.IsAppBusy = false;
+                    _statusStore.IsAppBusy = false;
+                } 
             }
         }
         public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)
@@ -156,6 +157,10 @@ namespace PingApp.Tools
                         DeviceId = device.Id,
                         IpStatus = feedbackDevice.LastIpStatus,
                         ReplyDt = feedbackDevice.LastReplyDt,
+                        RoundTripTime = feedbackDevice.LastReply.RoundtripTime,
+                        TimeToLive = e.Reply?.Options?.Ttl,
+                        BufferSizeSent = _buffer.Length,
+                        BufferSizeReceived = feedbackDevice.LastReply.Buffer.Length,
                     };
                     await _pingResultDbService.Create(device.Id, pingResult);
                     feedbackDevice.PingResults.Insert(0,pingResult);
@@ -202,7 +207,7 @@ namespace PingApp.Tools
                 feedbackDevice.LastReplyDt = DateTime.Now;
                 feedbackDevice.Status = Device.PingStatus.Success;
                 feedbackDevice.LastIpStatus = e.Reply.Status;
-                var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply?.Options?.Ttl}, Size: {e.Reply?.Buffer.Length}";
+                var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply?.Options?.Ttl}, Sent[byte]: {_buffer.Length}, Received[byte]: {e.Reply?.Buffer.Length}";
                 _logger.Information(msg);
                 Log.Information($"{msg}");
             }

@@ -12,5 +12,9 @@ namespace PingApp.Models
     {
         public IPStatus IpStatus { get; set; }
         public DateTime? ReplyDt { get; set; }
+        public long? RoundTripTime { get; set; }
+        public int? TimeToLive { get; set; }
+        public int? BufferSizeSent { get; set; }
+        public int? BufferSizeReceived { get; set; }
     }
 }
