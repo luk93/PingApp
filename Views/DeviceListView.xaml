@@ -10,6 +10,7 @@
              d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
     <UserControl.Resources>
         <converters:DeviceStatusToColorConverter x:Key="DeviceStatusToColorConverter"/>
+        <converters:DeviceStatusToBorderColor x:Key="DeviceStatusToBorderColor"/>
         <converters:IpStatusToColorConverter x:Key="IpStatusToColorConverter"/>
         <converters:BusyToEnabledConverter x:Key="BusyToEnabledConverter"/>
     </UserControl.Resources>
@@ -29,6 +30,8 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Background" Value="{Binding Status, Converter={StaticResource DeviceStatusToColorConverter}}" />
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="BorderBrush" Value="{Binding Status, Converter={StaticResource DeviceStatusToBorderColor}}"/>
                         <Setter Property="HorizontalContentAlignment" Value="Center" />
                         <Setter Property="FontWeight" Value="Normal" />
                         <Style.Triggers>

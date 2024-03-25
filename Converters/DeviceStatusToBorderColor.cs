@@ -10,22 +10,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Media;
 using static PingApp.Models.Device;
 
 namespace PingApp.Converters
 {
-    public class DeviceStatusToColorConverter : IValueConverter
+    public class DeviceStatusToBorderColor : IValueConverter
     {
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not PingStatus status) return null;
             return status switch
             {
-                PingStatus.Busy => new SolidColorBrush(Color.FromRgb(243, 249, 210)),
-                PingStatus.Failure => new SolidColorBrush(Colors.LightCoral),
-                PingStatus.Success => new SolidColorBrush(Colors.LightGreen),
-                _ => null,
+                PingStatus.Busy => new SolidColorBrush(Color.FromRgb(189, 196, 167)),
+                _ => new SolidColorBrush(Colors.WhiteSmoke),
             };
         }
 
