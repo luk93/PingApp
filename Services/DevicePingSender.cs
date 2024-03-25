@@ -77,7 +77,9 @@ namespace PingApp.Tools
                 {
                     device.PingCount = _pingRepeatCountConfig + 1;
                     _deviceQueue.Enqueue(device);
+                    continue;
                 }
+                device.PingCount = 0;
             }
             if(_isContinous) 
                 _statusStore.Status = "Continously Pinging Devices Ongoing...";
@@ -119,6 +121,7 @@ namespace PingApp.Tools
                     Log.Information(msg);
                     _logger.Information(msg);
                     _statusStore.IsAppBusy = false;
+                    _devicesStore.DeviceList.ForEach(x=>x.PingCount = 0);
                 }
                 else if (_isContinous) 
                 {

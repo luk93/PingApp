@@ -85,8 +85,8 @@ namespace PingApp.Controls
 
         void Update()
         {
-            ProgressBarWidth = Math.Min((Value / (Maximum + Minimum) * this.ActualWidth) - 2, this.ActualWidth - 2);
-            ProgressBarWidth = ProgressBarWidth < 0 ? 0 : ProgressBarWidth;
+            var pbWidth = Math.Min((Value / (Maximum + Minimum) * this.ActualWidth) - 2, this.ActualWidth - 2);
+            ProgressBarWidth = pbWidth < 0 ? 0 : pbWidth;
             Percent = Math.Min((int)(Value / (Maximum + Minimum) * 100), 100);
         }
     }
