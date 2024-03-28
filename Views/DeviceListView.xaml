@@ -85,7 +85,7 @@
                         <GridViewColumn tools:GridColumn.MinWidth="60" Width="60"  Header="To Ping">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding SelectedToPing, Mode=TwoWay}"
+                                    <CheckBox IsChecked="{Binding SelectedToPing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding Path=DataContext.IsAppNotBusy, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

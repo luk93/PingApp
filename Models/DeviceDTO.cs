@@ -134,6 +134,7 @@ namespace PingApp.Models
                 if (_selectedToPing != value)
                 {
                     _selectedToPing = value;
+                    OnPropertyChanged(nameof(SelectedToPing));
                     DeviceChanged?.Invoke(this,value);
                 }
             }
