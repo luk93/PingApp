@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace PingApp.Controls
 {
@@ -22,8 +24,10 @@ namespace PingApp.Controls
     public partial class ProgressBarTimeout : UserControl
     {
         private DispatcherTimer _timerUpdate;
-        private DispatcherTimer _timerCheck;
+        private Stopwatch _stopWatch;
         private readonly int _interval = 20;
+        private long _currentTime = 0;
+        private long _previousTime = 0;
 
         public ProgressBarTimeout()
         {
@@ -112,10 +116,8 @@ namespace PingApp.Controls
             _timerUpdate.Tick += TimerUpdate_Tick;
             _timerUpdate.Start();
 
-            _timerCheck = new DispatcherTimer();
-            _timerCheck.Interval = TimeSpan.FromMilliseconds(_interval);
-            _timerCheck.Tick += TimerCheck_Tick;
-            _timerCheck.Start();
+            _stopWatch = new Stopwatch();
+            _stopWatch.Start();
 
             Value = 0;
             ProgressBarWidth = 0;
@@ -128,26 +130,22 @@ namespace PingApp.Controls
                 _timerUpdate.Stop();
                 _timerUpdate.Tick -= TimerUpdate_Tick;
             }
-
-            if (_timerCheck != null)
+            if (_stopWatch != null)
             {
-                _timerCheck.Stop();
-                _timerCheck.Tick -= TimerCheck_Tick;
+                _stopWatch.Stop();
+                _stopWatch.Reset();
             }
         }
 
         private void TimerUpdate_Tick(object sender, EventArgs e)
-        {
-            Value += _interval*2;
-        }
-
-        private void TimerCheck_Tick(object sender, EventArgs e)
         {
             if (Value >= Maximum)
             {
                 StopTimers();
                 Value = 0;
             }
+            else
+                Value = _stopWatch.ElapsedMilliseconds;
         }
 
         private void Update()
