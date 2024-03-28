@@ -16,7 +16,7 @@
                           Value="150"
                           ToolTip="Progress"
                           HorizontalAlignment="Left">
-                <controls:MyProgressBar Maximum="{Binding MaxProgress, Mode=OneWay}" 
+                <controls:ProgressBarPercent Maximum="{Binding MaxProgress, Mode=OneWay}" 
                              Value="{Binding ActProgress, Mode=OneWay}"
                              Width="150" 
                              Height="15"

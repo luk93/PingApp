@@ -107,6 +107,7 @@ namespace PingApp.Tools
                     nextDevice = _deviceQueue.Peek();
                 }
                 nextDevice.PingCount--;
+                nextDevice.Timeout = _timeout;
                 nextDevice.Status = Device.PingStatus.Busy;
                 if (nextDevice != null && nextDevice.IpAddress != null)
                     _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
@@ -168,6 +169,7 @@ namespace PingApp.Tools
                     await _pingResultDbService.Create(device.Id, pingResult);
                     feedbackDevice.PingResults.Insert(0,pingResult);
                     await _deviceDbService.Update(device.Id, feedbackDevice);
+                    feedbackDevice.Timeout = 0;
                 }
             }
             _isBusy = false;

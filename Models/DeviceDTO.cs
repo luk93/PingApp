@@ -154,6 +154,22 @@ namespace PingApp.Models
                 }
             }
         }
+        private int _timeout = 0;
+        public int Timeout
+        {
+            get
+            {
+                return _timeout;
+            }
+            set
+            {
+                if (_timeout != value)
+                {
+                    _timeout = value;
+                    OnPropertyChanged(nameof(Timeout));
+                }
+            }
+        }
         public ObservableCollection<PingResult> PingResults {get;set;} = [];
 
         public delegate void DeviceChangedEventHandler(DeviceDTO device, bool selectedToPing);

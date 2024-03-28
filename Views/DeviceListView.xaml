@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:tools="clr-namespace:PingApp.Tools"
              xmlns:converters="clr-namespace:PingApp.Converters"
+             xmlns:controls="clr-namespace:PingApp.Controls"
              xmlns:local="clr-namespace:PingApp.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
@@ -92,7 +93,11 @@
                         <GridViewColumn tools:GridColumn.MinWidth="80" Width="80"  Header="To Ping Count">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding PingCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <!--<TextBlock Text="{Binding PingCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                                    <controls:ProgressBarTimeout  
+                                        Timeout="{Binding Timeout, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Count="{Binding PingCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Height="15" Width="60"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
