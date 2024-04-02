@@ -108,6 +108,15 @@ namespace PingApp.Models
                 }
             }
         }
-
+        private bool _isExcelTemplateShown;
+        public bool IsExcelTemplateShown
+        {
+            get => _isExcelTemplateShown;
+            set
+            {
+                _isExcelTemplateShown = value;
+                OnPropertyChanged(nameof(IsExcelTemplateShown));
+            }
+        }
     }
 }

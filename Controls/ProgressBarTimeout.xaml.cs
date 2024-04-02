@@ -26,12 +26,12 @@ namespace PingApp.Controls
         private DispatcherTimer _timerUpdate;
         private Stopwatch _stopWatch;
         private readonly int _interval = 20;
-        private long _currentTime = 0;
-        private long _previousTime = 0;
 
         public ProgressBarTimeout()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            _timerUpdate = new DispatcherTimer();
+            _stopWatch = new Stopwatch();
             Loaded += new RoutedEventHandler(ProgressBarTimeout_Loaded);
         }
 
@@ -111,12 +111,11 @@ namespace PingApp.Controls
 
             Maximum = Timeout;
 
-            _timerUpdate = new DispatcherTimer();
+            
             _timerUpdate.Interval = TimeSpan.FromMilliseconds(_interval);
             _timerUpdate.Tick += TimerUpdate_Tick;
             _timerUpdate.Start();
 
-            _stopWatch = new Stopwatch();
             _stopWatch.Start();
 
             Value = 0;
@@ -137,7 +136,7 @@ namespace PingApp.Controls
             }
         }
 
-        private void TimerUpdate_Tick(object sender, EventArgs e)
+        private void TimerUpdate_Tick(object? sender, EventArgs e)
         {
             if (Value >= Maximum)
             {

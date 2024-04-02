@@ -32,6 +32,7 @@ namespace PingApp.Stores
                 PingerData = "################################",
                 PingerTimeout = 3000,
                 PingerRepeatCount = 1,
+                IsExcelTemplateShown = false
             });
         }
     }

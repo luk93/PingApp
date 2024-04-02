@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PingApp.Views"
              xmlns:nav="clr-namespace:PingApp.States.Navigators"
+             xmlns:converters="clr-namespace:PingApp.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="350" MinHeight="350" d:DesignWidth="900" MinWidth="900">
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:BoolToShowHideTextConverter x:Key="BoolToShowHideTextConverter"/>
+    </UserControl.Resources>
     <Grid Margin="5 5 5 5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -44,12 +49,18 @@
                  Text="{Binding SelectedConfig.StartColumn, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Grid.Column="0" Grid.Row="4" Margin="5 0 0 0" VerticalAlignment="Top"
                 Text="Excel template" Height="25"/>
+        <Button Grid.Column="0" Grid.Row="4" Margin="90 -1 0 0" VerticalAlignment="Top"
+                Height="20" Width="45" HorizontalAlignment="Left" Background="AliceBlue" BorderBrush="Black"
+                Content="{Binding SelectedConfig.IsExcelTemplateShown, Converter={StaticResource BoolToShowHideTextConverter}}"
+                Command="{Binding ShowHideCfgTempCommand}"/>
         <Image Grid.Column="0" Grid.Row="4" Grid.RowSpan="2" Margin="5 20 10 30" VerticalAlignment="Top"
                HorizontalAlignment="Left"
-               Source="/Resources/config_template.png" />
+               Source="/Resources/config_template.png" 
+               Visibility="{Binding SelectedConfig.IsExcelTemplateShown, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <TextBlock Grid.Column="0" Grid.Row="5" Margin="5 0 5 0" VerticalAlignment="Bottom"
                    FontSize="10"
-                   Text="Note: Only 'Name' and 'IP Address' will be imported!" Height="25"/>
+                   Text="Note: Only 'Name' and 'IP Address' will be imported!" Height="25"
+                   Visibility="{Binding SelectedConfig.IsExcelTemplateShown, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <Button Grid.Column="0" Grid.Row="6" Margin="5 5 5 5"
                 Height="35" Width="200" HorizontalAlignment="Left" Background="AliceBlue" BorderBrush="Black"
                 FontSize="20"
