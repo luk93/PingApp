@@ -110,7 +110,18 @@ namespace PingApp.Tools
                 nextDevice.Timeout = _timeout;
                 nextDevice.Status = Device.PingStatus.Busy;
                 if (nextDevice != null && nextDevice.IpAddress != null)
-                    _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
+                {
+                    try
+                    {
+                        _ping.SendAsync(nextDevice.IpAddress, _timeout, _buffer, _options, nextDevice);
+                    }
+                    catch (Exception ex) 
+                    {
+                        var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
+                        Log.Error(msg);
+                        nextDevice.Status = Device.PingStatus.Failure;
+                    }
+                }
             }
             else
             {
