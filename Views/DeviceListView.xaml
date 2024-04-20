@@ -8,14 +8,17 @@
              xmlns:controls="clr-namespace:PingApp.Controls"
              xmlns:local="clr-namespace:PingApp.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:MinHeight="450" d:DesignWidth="900" MinWidth="900">
+             d:DesignWidth="900"
+             d:DesignHeight="450"
+             MinHeight="450"  MinWidth="900"
+             Name="UserControl">
     <UserControl.Resources>
         <converters:DeviceStatusToColorConverter x:Key="DeviceStatusToColorConverter"/>
         <converters:DeviceStatusToBorderColor x:Key="DeviceStatusToBorderColor"/>
         <converters:IpStatusToColorConverter x:Key="IpStatusToColorConverter"/>
         <converters:BusyToEnabledConverter x:Key="BusyToEnabledConverter"/>
     </UserControl.Resources>
-    <Grid>
+    <Grid Height="{Binding ElementName=UserControl, Path=ActualHeight}" Margin="0 0 30 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -26,7 +29,7 @@
         </Grid.ColumnDefinitions>
         <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
         <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="DevicesLV" Margin="5,0,5,5" Grid.Row="1"  Width="Auto" Height="Auto" Foreground="#FF010111" 
+            <ListView x:Name="DevicesLV" Margin="5,0,5,5" Grid.Row="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
                     ItemsSource="{Binding Path=Devices}" SelectedIndex="{Binding SelectedIndex}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -93,7 +96,6 @@
                         <GridViewColumn tools:GridColumn.MinWidth="80" Width="80"  Header="To Ping Count">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <!--<TextBlock Text="{Binding PingCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>-->
                                     <controls:ProgressBarTimeout  
                                         Timeout="{Binding Timeout, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Count="{Binding PingCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
