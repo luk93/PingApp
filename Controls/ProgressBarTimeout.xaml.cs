@@ -29,7 +29,7 @@ namespace PingApp.Controls
 
         public ProgressBarTimeout()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             _timerUpdate = new DispatcherTimer();
             _stopWatch = new Stopwatch();
             Loaded += new RoutedEventHandler(ProgressBarTimeout_Loaded);
@@ -38,15 +38,15 @@ namespace PingApp.Controls
         void ProgressBarTimeout_Loaded(object sender, RoutedEventArgs e)
         {
             Value = 0;
-            Maximum = 1;
+            Maximum = 0;
             ProgressBarWidth = 0;
         }
 
         private static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(double), typeof(ProgressBarTimeout), new PropertyMetadata(100d, OnMaximumChanged));
-        public double Maximum
+        public double Maximum 
         {
             get { return (double)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            set { SetValue(MaximumProperty, value); } 
         }
 
 
