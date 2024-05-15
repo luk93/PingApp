@@ -20,9 +20,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <controls:PingAppRibbon Grid.Row="0" DataContext="{Binding Ribbon}"/>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <ContentControl Content="{Binding CurrentViewModel}"/>
-        </ScrollViewer>
+        <ContentControl Grid.Row="1"  Content="{Binding CurrentViewModel}"/>
         <ContentControl Grid.Row="2" Content="{Binding LoggsViewModel}"/>
         <ContentControl Grid.Row="3" Content="{Binding StatusBarViewModel}"/>
     </Grid>
