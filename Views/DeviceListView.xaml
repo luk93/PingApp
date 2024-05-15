@@ -8,9 +8,9 @@
              xmlns:controls="clr-namespace:PingApp.Controls"
              xmlns:local="clr-namespace:PingApp.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="900"
+             d:DesignWidth="920"
              d:DesignHeight="450"
-             MinHeight="450"  MinWidth="900"
+             MinHeight="450"  MinWidth="920"
              Name="UserControl">
     <UserControl.Resources>
         <converters:DeviceStatusToColorConverter x:Key="DeviceStatusToColorConverter"/>
@@ -18,19 +18,18 @@
         <converters:IpStatusToColorConverter x:Key="IpStatusToColorConverter"/>
         <converters:BusyToEnabledConverter x:Key="BusyToEnabledConverter"/>
     </UserControl.Resources>
-    <Grid Height="{Binding ElementName=UserControl, Path=ActualHeight}" Margin="0 0 30 0">
+    <Grid Height="{Binding ElementName=UserControl, Path=ActualHeight}" Margin="5 0 10 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Label Content="Devices to Ping" Margin="5,0,5,0" Grid.Row="0" Width="Auto" Height="Auto" Foreground="#F5E9E2" />
-        <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView x:Name="DevicesLV" Margin="5,0,5,5" Grid.Row="2" Width="Auto" Height="Auto" Foreground="#FF010111" 
-                    ItemsSource="{Binding Path=Devices}" SelectedIndex="{Binding SelectedIndex}">
+            <ListView Grid.Column="0" Grid.Row="2"  x:Name="DevicesLV" Margin="5,0,5,5" Width="Auto" Height="Auto" Foreground="#FF010111" 
+                    ItemsSource="{Binding Path=Devices}" SelectedIndex="{Binding SelectedIndex}" ScrollViewer.CanContentScroll="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Background" Value="{Binding Status, Converter={StaticResource DeviceStatusToColorConverter}}" />
@@ -106,12 +105,10 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </ScrollViewer>
         <Label Content="{Binding SelectedDevice.Name}" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2" HorizontalAlignment="Center"/>
         <Label Content="Ping Result History" Margin="5,0,5,0" Grid.Row="0" Grid.Column="1" Width="Auto" Height="Auto" Foreground="#F5E9E2" HorizontalAlignment="Left"/>
-        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ListView Margin="5,0,5,5" Grid.Row="2" Grid.Column="1"  Width="Auto" Height="{Binding ActualHeight, ElementName=DevicesLV}" Foreground="#FF010111" 
-                ItemsSource="{Binding Path=SelectedDevice.PingResults}">
+                ItemsSource="{Binding Path=SelectedDevice.PingResults}" ScrollViewer.CanContentScroll="True">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Background" Value="{Binding IpStatus, Converter={StaticResource IpStatusToColorConverter}}"/>
@@ -158,7 +155,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn tools:GridColumn.MinWidth="85" Width="85"  Header="Received[byte]">
+                        <GridViewColumn tools:GridColumn.MinWidth="95" Width="95"  Header="Received[byte]">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding BufferSizeReceived, UpdateSourceTrigger=PropertyChanged}"/>
@@ -168,6 +165,5 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </ScrollViewer>
     </Grid>
 </UserControl>
