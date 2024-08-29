@@ -185,6 +185,7 @@ namespace PingApp.Tools
             }
             _isBusy = false;
             _statusStore.ActProgress++;
+            await Task.Delay(500); //temporary
             SendPingToNextDevice();
         }
         private void PingCancelled(PingCompletedEventArgs e, DeviceDTO feedbackDevice)
