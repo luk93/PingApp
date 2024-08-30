@@ -30,6 +30,7 @@ namespace PingApp.Stores
                 StartColumn = 1,
                 SheetIndex = 0,
                 PingerData = "################################",
+                PingDelay = 100,
                 PingerTimeout = 3000,
                 PingerRepeatCount = 1,
                 IsExcelTemplateShown = false

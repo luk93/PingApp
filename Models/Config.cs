@@ -75,6 +75,23 @@ namespace PingApp.Models
                 }
             }
         }
+        private uint _pingDelay;
+        [MinLength(3)]
+        public uint PingDelay
+        {
+            get
+            {
+                return _pingDelay;
+            }
+            set
+            {
+                if (_pingDelay != value)
+                {
+                    _pingDelay = value;
+                    OnPropertyChanged(nameof(PingDelay));
+                }
+            }
+        }
         private string _pingerData = string.Empty;
         [MaxLength(10)]
         public string PingerData

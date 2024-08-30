@@ -38,6 +38,7 @@ namespace PingApp.Tools
         private bool _isCanceled;
         private int _pingRepeatCountConfig;
         private int _pingRepeatCount;
+        private int _pingDelay;
 
         public DevicePingSender(DeviceListStore devicesStore, ILogger logger, DeviceDbService deviceDbService,
             StatusStore statusStore, ConfigStore configStore, PingResultDbService pingResultDbService)
@@ -56,6 +57,7 @@ namespace PingApp.Tools
             _isBusy = false;
             _statusStore = statusStore;
             _pingRepeatCountConfig = (int)configStore.SelectedConfig.PingerRepeatCount;
+            _pingDelay = (int)_configStore.SelectedConfig.PingDelay;
 
             _ping.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
         }
@@ -66,6 +68,7 @@ namespace PingApp.Tools
             _isCanceled = false;
             _data = _configStore.SelectedConfig.PingerData;
             _timeout = (int)_configStore.SelectedConfig.PingerTimeout;
+            _pingDelay = (int)_configStore.SelectedConfig.PingDelay;
             _pingRepeatCountConfig = (int)_configStore.SelectedConfig.PingerRepeatCount;
             _buffer = Encoding.ASCII.GetBytes(_data);
 
@@ -151,6 +154,7 @@ namespace PingApp.Tools
         }
         public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)
         {
+            await Task.Delay(_pingDelay); //temporary
             DeviceDTO? feedbackDevice = (DeviceDTO?)e.UserState ?? null;
             if (feedbackDevice == null) return;
             if (e.Cancelled) PingCancelled(e, feedbackDevice);
@@ -185,7 +189,6 @@ namespace PingApp.Tools
             }
             _isBusy = false;
             _statusStore.ActProgress++;
-            await Task.Delay(500); //temporary
             SendPingToNextDevice();
         }
         private void PingCancelled(PingCompletedEventArgs e, DeviceDTO feedbackDevice)
