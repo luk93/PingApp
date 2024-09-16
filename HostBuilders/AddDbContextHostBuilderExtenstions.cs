@@ -8,6 +8,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,24 @@ namespace PingApp.HostBuilders
         {
             return host.ConfigureServices((context, services) =>
             {
-                string connectionString = "Data Source=internalDb.db";
+                string connectionString = context.Configuration.GetConnectionString("DefaultConnection")
+                                          ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+                var basePath = AppContext.BaseDirectory;
+                var dbPath = Path.Combine(basePath, connectionString);
+                connectionString = $"Data Source={dbPath}";
+
                 void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString);
 
-                services.AddDbContext<AppDbContext>(configureDbContext);
-                services.AddSingleton(new AppDbContextFactory(configureDbContext));
+                var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+                services.AddDbContext<AppDbContext>(options =>
+                {
+                    configureDbContext(options);
+                    options.UseLoggerFactory(loggerFactory);
+                });
+
+                services.AddSingleton(new AppDbContextFactory(configureDbContext, loggerFactory));
             });
         }
     }

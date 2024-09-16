@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,22 @@ using System.Threading.Tasks;
 
 namespace PingApp.Db
 {
-    public class AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
+    public class AppDbContextFactory
     {
-        private readonly Action<DbContextOptionsBuilder> _configureDbContext = configureDbContext;
+        private readonly Action<DbContextOptionsBuilder> _configureDbContext;
+        private readonly ILoggerFactory _loggerFactory;
+
+        public AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext, ILoggerFactory loggerFactory)
+        {
+            _configureDbContext = configureDbContext;
+            _loggerFactory = loggerFactory;
+        }
 
         public AppDbContext CreateDbContext()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>();
-            _configureDbContext(options);
-            return new AppDbContext(options.Options);
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            _configureDbContext(optionsBuilder);
+            return new AppDbContext(optionsBuilder.Options, _loggerFactory);
         }
     }
 }

@@ -154,7 +154,7 @@ namespace PingApp.Tools
         }
         public async void PingCompletedCallback(object sender, PingCompletedEventArgs e)
         {
-            await Task.Delay(_pingDelay); //temporary
+            await Task.Delay(_pingDelay);
             DeviceDTO? feedbackDevice = (DeviceDTO?)e.UserState ?? null;
             if (feedbackDevice == null) return;
             if (e.Cancelled) PingCancelled(e, feedbackDevice);

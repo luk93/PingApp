@@ -31,6 +31,7 @@ namespace PingApp
         public static IHostBuilder CreateHostBuilder(string[]? args = null)
         {
             return Host.CreateDefaultBuilder(args)
+                       .AddConfiguration()
                        .AddSerilog()
                        .AddDbContext()
                        .AddStores()
