@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Windows.Navigation;
 using PingApp.Models;
+using Serilog;
 
 namespace PingApp.Db
 {
@@ -30,18 +31,14 @@ namespace PingApp.Db
             _loggerFactory = loggerFactory;
         }
 
-        public AppDbContext() : this(new DbContextOptionsBuilder<AppDbContext>().Options, LoggerFactory.Create(builder => builder.AddConsole()))
-        {
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .LogTo(message => Debug.WriteLine(message))
                     .UseLoggerFactory(_loggerFactory)
-                    .EnableSensitiveDataLogging();
+                    .EnableSensitiveDataLogging()
+                    .LogTo(Log.Logger.Information, LogLevel.Information);
             }
         }
 

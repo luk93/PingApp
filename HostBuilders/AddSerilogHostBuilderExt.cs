@@ -1,13 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using OfficeOpenXml;
+﻿using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PingApp.HostBuilders
 {
@@ -15,14 +8,10 @@ namespace PingApp.HostBuilders
     {
         public static IHostBuilder AddSerilog(this IHostBuilder host)
         {
-
-            return host.UseSerilog((host, loggerConfiguration) =>
+            return host.UseSerilog((context, loggerConfiguration) =>
             {
                 loggerConfiguration
-                    .WriteTo.File("logs.txt", rollingInterval: RollingInterval.Day)
-                    .MinimumLevel.Information()
-                    .MinimumLevel.Override("Logging: ", Serilog.Events.LogEventLevel.Debug);
-
+                    .ReadFrom.Configuration(context.Configuration);
             });
         }
     }

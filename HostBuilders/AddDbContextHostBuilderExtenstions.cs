@@ -5,17 +5,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PingApp.Db;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PingApp.HostBuilders
 {
-    public static class AddDbContextHostBuilderExtenstions
+    public static class AddDbContextHostBuilderExtensions
     {
         public static IHostBuilder AddDbContext(this IHostBuilder host)
         {
@@ -30,15 +25,19 @@ namespace PingApp.HostBuilders
 
                 void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString);
 
-                var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+                services.AddSingleton<ILoggerFactory>(sp => LoggerFactory.Create(builder =>
+                {
+                    builder.AddSerilog(Log.Logger, dispose: true);
+                }));
 
-                services.AddDbContext<AppDbContext>(options =>
+                services.AddDbContext<AppDbContext>((serviceProvider, options) =>
                 {
                     configureDbContext(options);
+                    var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
                     options.UseLoggerFactory(loggerFactory);
                 });
 
-                services.AddSingleton(new AppDbContextFactory(configureDbContext, loggerFactory));
+                services.AddSingleton(new AppDbContextFactory(configureDbContext, services.BuildServiceProvider().GetRequiredService<ILoggerFactory>()));
             });
         }
     }
