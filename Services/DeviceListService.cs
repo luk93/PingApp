@@ -15,9 +15,8 @@ using static PingApp.Models.DeviceDTO;
 
 namespace PingApp.Services
 {
-    public class DeviceListService(DeviceListStore deviceList, ConfigStore configStore, ILogger logger)
+    public class DeviceListService(DeviceListStore deviceList, ConfigStore configStore)
     {
-        private readonly ILogger _logger = logger;
         private readonly ConfigStore _configStore = configStore;
         private readonly DeviceListStore _deviceStore = deviceList;
 
@@ -46,14 +45,14 @@ namespace PingApp.Services
                         if (!IsDeviceNameValid(name))
                         {
                             invalidCount++;
-                            _logger.Error($"Error while trying to get 'Name' of device from excel file. Row:{row} Column:{col}");
+                            Log.Error($"Error while trying to get 'Name' of device from excel file. Row:{row} Column:{col}");
                             row++;
                             continue;
                         }
                         var ipString = (ws.Cells[row, col + 1].Value.ToString());
                         if (!IsIpAddressValid(ipString))
                         {
-                            _logger.Error($"Error while trying to get 'Ip Address' of device from excel file. Row:{row} Column:{col}");
+                            Log.Error($"Error while trying to get 'Ip Address' of device from excel file. Row:{row} Column:{col}");
                             invalidCount++;
                             row++;
                             continue;

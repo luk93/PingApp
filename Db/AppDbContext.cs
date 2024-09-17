@@ -26,7 +26,7 @@ namespace PingApp.Db
         public virtual DbSet<PingResult> PingResults { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options, ILoggerFactory loggerFactory)
-            : base(options)
+        : base(options)
         {
             _loggerFactory = loggerFactory;
         }
@@ -38,7 +38,7 @@ namespace PingApp.Db
                 optionsBuilder
                     .UseLoggerFactory(_loggerFactory)
                     .EnableSensitiveDataLogging()
-                    .LogTo(Log.Logger.Information, LogLevel.Information);
+                    .LogTo(message => Log.Information(message), LogLevel.Information);
             }
         }
 

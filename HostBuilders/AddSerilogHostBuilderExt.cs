@@ -11,7 +11,9 @@ namespace PingApp.HostBuilders
             return host.UseSerilog((context, loggerConfiguration) =>
             {
                 loggerConfiguration
-                    .ReadFrom.Configuration(context.Configuration);
+                    .ReadFrom.Configuration(context.Configuration)
+                    .Enrich.FromLogContext()
+                    .Enrich.WithThreadId();
             });
         }
     }

@@ -18,7 +18,7 @@ namespace PingApp.Commands
 {
     public class ExportDevicesWithoutHistoryToExcelCommand : ExportDevicesToExcelCommand
     {
-        public ExportDevicesWithoutHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper) : base(deviceStore, statusStore, logger, mapper)
+        public ExportDevicesWithoutHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, IMapper mapper) : base(deviceStore, statusStore, mapper)
         {
         }
     }

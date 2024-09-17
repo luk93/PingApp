@@ -22,7 +22,6 @@ namespace PingApp.Tools
     public class DevicePingSender
     {
         private readonly Ping _ping;
-        private readonly ILogger _logger;
         private string _data;
         private byte[] _buffer;
         private int _timeout;
@@ -40,13 +39,12 @@ namespace PingApp.Tools
         private int _pingRepeatCount;
         private int _pingDelay;
 
-        public DevicePingSender(DeviceListStore devicesStore, ILogger logger, DeviceDbService deviceDbService,
+        public DevicePingSender(DeviceListStore devicesStore, DeviceDbService deviceDbService,
             StatusStore statusStore, ConfigStore configStore, PingResultDbService pingResultDbService)
         {
             _configStore = configStore;
             _devicesStore = devicesStore;
             _ping = new Ping();
-            _logger = logger;
             _deviceDbService = deviceDbService;
             _pingResultDbService = pingResultDbService;
             _data = _configStore.SelectedConfig.PingerData;
@@ -134,7 +132,6 @@ namespace PingApp.Tools
                     _statusStore.Status = msg;
                     _statusStore.ActProgress = 0;
                     Log.Information(msg);
-                    _logger.Information(msg);
                     _statusStore.IsAppBusy = false;
                     _devicesStore.DeviceList.ForEach(x=>x.PingCount = 0);
                 }
@@ -147,7 +144,6 @@ namespace PingApp.Tools
                     var msg = "Pinging devices finished!";
                     _statusStore.Status = msg;
                     Log.Information(msg);
-                    _logger.Information(msg);
                     _statusStore.IsAppBusy = false;
                 } 
             }
@@ -163,7 +159,6 @@ namespace PingApp.Tools
             if (feedbackDevice.IpAddress == null || feedbackDevice.Name == null)
             {
                 var msg = "Ping callback came from device with no IpAddress or Name!";
-                _logger.Error(msg);
                 Log.Error(msg);
             }
             else
@@ -198,7 +193,6 @@ namespace PingApp.Tools
             feedbackDevice.Status = Device.PingStatus.Canceled;
             feedbackDevice.LastIpStatus = e.Reply.Status;
             var msg = $"{feedbackDevice.IpAddress}: Ping canceled!";
-            _logger.Warning(msg);
             Log.Warning($"{msg}");
         }
         private void PingError(PingCompletedEventArgs e, DeviceDTO feedbackDevice)
@@ -208,7 +202,6 @@ namespace PingApp.Tools
             feedbackDevice.Status = Device.PingStatus.Failure;
             feedbackDevice.LastIpStatus = e.Reply.Status;
             var msg = $"{feedbackDevice.IpAddress}: Ping failed: {e.Error}";
-            _logger.Warning(msg);
             Log.Warning($"{msg}");
         }
         private void PingFeedback(PingCompletedEventArgs e, DeviceDTO feedbackDevice)
@@ -228,7 +221,6 @@ namespace PingApp.Tools
                 feedbackDevice.Status = Device.PingStatus.Success;
                 feedbackDevice.LastIpStatus = e.Reply.Status;
                 var msg = $"{feedbackDevice.IpAddress}: Ping correct! RoundTrip time: {e.Reply.RoundtripTime}, Time to live: {e.Reply?.Options?.Ttl}, Sent[byte]: {_buffer.Length}, Received[byte]: {e.Reply?.Buffer.Length}";
-                _logger.Information(msg);
                 Log.Information($"{msg}");
             }
             else
@@ -238,7 +230,6 @@ namespace PingApp.Tools
                 feedbackDevice.Status = Device.PingStatus.Failure;
                 feedbackDevice.LastIpStatus = e.Reply.Status;
                 var msg = $"{feedbackDevice.IpAddress}: Ping failed! {e.Reply.Status}";
-                _logger.Warning(msg);
                 Log.Warning($"{msg}");
             }
         }

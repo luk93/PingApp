@@ -24,14 +24,12 @@ namespace PingApp.Commands
     {
         protected readonly DeviceListStore _deviceStore;
         protected readonly StatusStore _statusStore;
-        protected readonly ILogger _logger;
         protected readonly IMapper _mapper;
 
-        public ExportDevicesToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper)
+        public ExportDevicesToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, IMapper mapper)
         {
             _deviceStore = deviceStore;
             _statusStore = statusStore;
-            _logger = logger;
             _mapper = mapper;
 
             _deviceStore.Loaded += DeviceStore_Loaded;
@@ -82,7 +80,6 @@ namespace PingApp.Commands
             {
                 var msg = $"Failed to create (.xlsx) file '{xlsxFilePath}'!";
                 Log.Error(msg);
-                _logger.Error(msg);
                 return null;
             }
             return excelPackage;

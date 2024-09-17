@@ -23,7 +23,7 @@ namespace PingApp.Commands
 {
     public class ExportDevicesWithHistoryToExcelCommand : ExportDevicesToExcelCommand
     {
-        public ExportDevicesWithHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper) : base(deviceStore, statusStore, logger, mapper)
+        public ExportDevicesWithHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, IMapper mapper) : base(deviceStore, statusStore, mapper)
         {
         }
         public override async Task ExecuteAsync(object? parameter)

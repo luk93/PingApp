@@ -14,11 +14,10 @@ using System.Threading.Tasks;
 
 namespace PingApp.Commands
 {
-    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, ILogger logger, DeviceListService deviceListService, DeviceDbService deviceDbService) : AsyncCommandBase
+    public class GetDevicesFromExcelCommand(DeviceListStore deviceStore, DeviceListService deviceListService, DeviceDbService deviceDbService) : AsyncCommandBase
     {
         private readonly DeviceListService _deviceListService = deviceListService;
         private readonly DeviceListStore _deviceStore = deviceStore;
-        private readonly ILogger _logger = logger;
         private FileInfo? _xlsxFile = null; 
         private readonly DeviceDbService _deviceDbService = deviceDbService;
 
@@ -41,7 +40,6 @@ namespace PingApp.Commands
             catch (Exception ex)
             {
                 var msg = $"Error message: {ex.Message}, Stack: {ex.StackTrace}";
-                _logger.Error(msg);
                 Log.Error(msg);
             }
         }

@@ -14,11 +14,10 @@ using System.Threading.Tasks;
 
 namespace PingApp.DbServices
 {
-    public class PingResultDbService(AppDbContextFactory contextFactory, IMapper mapper, ILogger logger)
+    public class PingResultDbService(AppDbContextFactory contextFactory, IMapper mapper)
     {
         private readonly AppDbContextFactory _contextFactory = contextFactory;
         private readonly IMapper _mapper = mapper;
-        private readonly ILogger _logger = logger;
         private readonly NonQueryDataService<PingResult> _nonQueryDataService = new(contextFactory);
 
         public async Task<PingResult?> Create(int deviceId, PingResult pingResult)
@@ -37,7 +36,7 @@ namespace PingApp.DbServices
             var pingResult = context.PingResults.FirstOrDefault(p => p.Id == id);
             if (pingResult == null || pingResult.DeviceId != deviceId)
             {
-                _logger.Error($"Ping Result with id {deviceId} was not found!");
+                Log.Error($"Ping Result with id {deviceId} was not found!");
                 return false;
             }
             context.PingResults.Remove(pingResult);
@@ -61,7 +60,7 @@ namespace PingApp.DbServices
             var pingResult = context.PingResults.FirstOrDefault(p => p.Id == id);
             if (pingResult == null || pingResult.DeviceId != deviceId)
             {
-                _logger.Error($"Ping Result with id {deviceId} was not found!");
+                Log.Error($"Ping Result with id {deviceId} was not found!");
                 return null;
             }
             return pingResult;
@@ -83,7 +82,7 @@ namespace PingApp.DbServices
                                 .FirstOrDefault(d => d.Id == deviceId);
             if (device == null)
             {
-                _logger.Error($"Device with id {deviceId} was not found!");
+                Log.Error($"Device with id {deviceId} was not found!");
                 return null;
             }
             return device;

@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Core;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -17,22 +18,22 @@ namespace PingApp.Stores
         private readonly ObservableCollection<LogEvent> _logItemsSorted;
         public string? LastLogItem => _lastLogItem;
         public ObservableCollection<LogEvent> LogItemsSorted => _logItemsSorted;
-        public ObservableCollection<LogEvent> LogItems
-        {
-            get;
-        }
+        public ObservableCollection<LogEvent> LogItems { get; }
+
         public LoggsStore()
         {
-            _logItemsSorted = [];
-            LogItems = [];
+            _logItemsSorted = new ObservableCollection<LogEvent>();
+            LogItems = new ObservableCollection<LogEvent>();
+
+            var logSink = new ObservableCollectionSink(logEvent => LogItems.Add(logEvent));
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Observers(events =>
-                        events.Do(evt => LogItems.Add(evt))
-                              .Subscribe())
-                              .CreateLogger();
+                             .WriteTo.Logger(Log.Logger)
+                             .WriteTo.Sink(logSink)
+                             .CreateLogger();
+
             LogItems.CollectionChanged += LogItems_CollectionChanged;
         }
+
         private void LogItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
@@ -44,14 +45,27 @@ namespace PingApp.Stores
                         _logItemsSorted.Insert(0, collection.LastOrDefault());
                         _lastLogItem = collection
                             .Where(x => x.Level < LogEventLevel.Error)
-                            .LastOrDefault().MessageTemplate.ToString();
+                            .LastOrDefault()?.MessageTemplate.ToString();
                         return;
                     }
                     _logItemsSorted.Clear();
                 }
-
             }
         }
 
+        private class ObservableCollectionSink : ILogEventSink
+        {
+            private readonly Action<LogEvent> _writeAction;
+
+            public ObservableCollectionSink(Action<LogEvent> writeAction)
+            {
+                _writeAction = writeAction;
+            }
+
+            public void Emit(LogEvent logEvent)
+            {
+                _writeAction(logEvent);
+            }
+        }
     }
 }

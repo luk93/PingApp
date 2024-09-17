@@ -1,4 +1,5 @@
 ﻿using ControlzEx.Theming;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -27,25 +28,36 @@ namespace PingApp
 
         public App()
         {
+            Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build())
+            .Enrich.FromLogContext()
+            .Enrich.WithThreadId()
+            .CreateLogger();
+
+            Log.Information("Started Logging to file");
+
             _host = CreateHostBuilder().Build();
         }
         public static IHostBuilder CreateHostBuilder(string[]? args = null)
         {
             return Host.CreateDefaultBuilder(args)
-                       .AddConfiguration()
-                       .AddSerilog()
-                       .AddDbContext()
-                       .AddStores()
-                       .AddServices()
-                       .AddViewModels()
-                       .AddViews();
+                        .AddConfiguration()
+                        .UseSerilog()
+                        .AddDbContext()
+                        .AddStores()
+                        .AddServices()
+                        .AddViewModels()
+                        .AddViews();
+                        
         }
         protected override async void OnStartup(StartupEventArgs e)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             if (_host != null)
             {
-                _host.Start();
+                await _host.StartAsync();
                 var dbExist = false;
                 AppDbContextFactory contextFactory = _host.Services.GetRequiredService<AppDbContextFactory>();
                 using (var context = contextFactory.CreateDbContext())

@@ -23,7 +23,6 @@ namespace PingApp.States.Ribbon
 {
     public class PingAppRibbon : IPingAppRibbon
     {
-        private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private readonly StatusStore _statusStore;
         private readonly DevicePingSender _devicePingSender;
@@ -47,11 +46,10 @@ namespace PingApp.States.Ribbon
         public ICommand? SelectAllDevicesCommand {  get; }
         public ICommand? UnselectAllDevicesCommand {  get; }
 
-        public PingAppRibbon(ILogger logger, IMapper mapper, StatusStore statusStore, DevicePingSender devicePingSender, DeviceListService deviceListService,
+        public PingAppRibbon(IMapper mapper, StatusStore statusStore, DevicePingSender devicePingSender, DeviceListService deviceListService,
                             DeviceDbService deviceDbService, DeviceListStore deviceStore, IPingAppViewModelFactory viewModelFactory, IPingAppNavigator navigator,
                             DeviceListViewModel deviceListViewModel)
         {
-            _logger = logger;
             _mapper = mapper;
             _statusStore = statusStore;
             _devicePingSender = devicePingSender;
@@ -63,11 +61,11 @@ namespace PingApp.States.Ribbon
             _navigator = navigator;
             TriggerAllCommand = new TriggerAllCommand(_devicePingSender, _statusStore, _deviceStore);
             TriggerAllContCommand = new TriggerAllContCommand(_devicePingSender, _statusStore, _deviceStore);
-            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _logger, _deviceListService, _deviceDbService);
+            GetDevicesFromExcelCommand = new GetDevicesFromExcelCommand(_deviceStore, _deviceListService, _deviceDbService);
             ChangeExportPathCommand = new ChangeExportPathCommand(_deviceStore);
-            ExportDevicesWithoutHistoryToExcelCommand = new ExportDevicesWithoutHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
-            ExportDevicesWithHistoryToExcelCommand = new ExportDevicesWithHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper);
-            ExportDevicesWithSelHistoryToExcelCommand = new ExportDevicesWithSelHistoryToExcelCommand(_deviceStore, _statusStore, _logger, _mapper, _deviceListViewModel);
+            ExportDevicesWithoutHistoryToExcelCommand = new ExportDevicesWithoutHistoryToExcelCommand(_deviceStore, _statusStore, _mapper);
+            ExportDevicesWithHistoryToExcelCommand = new ExportDevicesWithHistoryToExcelCommand(_deviceStore, _statusStore, _mapper);
+            ExportDevicesWithSelHistoryToExcelCommand = new ExportDevicesWithSelHistoryToExcelCommand(_deviceStore, _statusStore, _mapper, _deviceListViewModel);
             OpenExportFolderCommand = new OpenExportFolderCommand(_deviceStore);
             UpdateCurrentViewModel = new UpdateCurrentViewModelCommand(_navigator, _viewModelFactory);
             CancelPingCommand = new CancelPingCommand(_devicePingSender, _statusStore);

@@ -20,7 +20,7 @@ namespace PingApp.Commands
     public class ExportDevicesWithSelHistoryToExcelCommand : ExportDevicesWithHistoryToExcelCommand
     {
         private readonly DeviceListViewModel _deviceListViewModel;
-        public ExportDevicesWithSelHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, ILogger logger, IMapper mapper, DeviceListViewModel deviceListViewModel) : base(deviceStore, statusStore, logger, mapper)
+        public ExportDevicesWithSelHistoryToExcelCommand(DeviceListStore deviceStore, StatusStore statusStore, IMapper mapper, DeviceListViewModel deviceListViewModel) : base(deviceStore, statusStore, mapper)
         {
             _deviceListViewModel = deviceListViewModel;
         }
