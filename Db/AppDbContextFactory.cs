@@ -11,19 +11,17 @@ namespace PingApp.Db
     public class AppDbContextFactory
     {
         private readonly Action<DbContextOptionsBuilder> _configureDbContext;
-        private readonly ILoggerFactory _loggerFactory;
 
-        public AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext, ILoggerFactory loggerFactory)
+        public AppDbContextFactory(Action<DbContextOptionsBuilder> configureDbContext)
         {
             _configureDbContext = configureDbContext;
-            _loggerFactory = loggerFactory;
         }
 
         public AppDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             _configureDbContext(optionsBuilder);
-            return new AppDbContext(optionsBuilder.Options, _loggerFactory);
+            return new AppDbContext(optionsBuilder.Options);
         }
     }
 }

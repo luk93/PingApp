@@ -23,30 +23,12 @@ namespace PingApp.HostBuilders
                 var dbPath = Path.Combine(basePath, connectionString);
                 connectionString = $"Data Source={dbPath}";
 
-                void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString);
-
-                services.AddSingleton<ILoggerFactory>(sp =>
-                {
-                    var loggerFactory = LoggerFactory.Create(builder =>
-                    {
-                        builder.AddSerilog(Log.Logger, dispose: true);
-                    });
-                    return loggerFactory;
-                });
-
-                services.AddDbContext<AppDbContext>((serviceProvider, options) =>
-                {
-                    configureDbContext(options);
-                    var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-                    options.UseLoggerFactory(loggerFactory)
-                           .EnableSensitiveDataLogging()
-                           .LogTo(message => Log.Information(message), LogLevel.Information);
-                });
+                void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString)
+                                                                      .LogTo(Log.Logger.Warning, LogLevel.Warning, null);
 
                 services.AddSingleton(sp =>
                 {
-                    var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
-                    return new AppDbContextFactory(configureDbContext, loggerFactory);
+                    return new AppDbContextFactory(configureDbContext);
                 });
             });
         }

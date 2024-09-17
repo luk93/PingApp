@@ -20,15 +20,13 @@ namespace PingApp.Db
 {
     public partial class AppDbContext : DbContext
     {
-        private readonly ILoggerFactory _loggerFactory;
-
         public virtual DbSet<Device> Devices { get; set; } = null!;
         public virtual DbSet<PingResult> PingResults { get; set; } = null!;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, ILoggerFactory loggerFactory)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
         {
-            _loggerFactory = loggerFactory;
+           
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,9 +34,8 @@ namespace PingApp.Db
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder
-                    .UseLoggerFactory(_loggerFactory)
                     .EnableSensitiveDataLogging()
-                    .LogTo(message => Log.Information(message), LogLevel.Information);
+                    .LogTo(Log.Information, LogLevel.Information);
             }
         }
 
