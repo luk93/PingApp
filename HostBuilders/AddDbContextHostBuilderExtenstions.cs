@@ -26,10 +26,7 @@ namespace PingApp.HostBuilders
                 void configureDbContext(DbContextOptionsBuilder o) => o.UseSqlite(connectionString)
                                                                       .LogTo(Log.Logger.Warning, LogLevel.Warning, null);
 
-                services.AddSingleton(sp =>
-                {
-                    return new AppDbContextFactory(configureDbContext);
-                });
+                services.AddSingleton(new AppDbContextFactory(configureDbContext));
             });
         }
     }
